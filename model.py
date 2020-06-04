@@ -27,15 +27,14 @@ class User(db.Model):
     over_period = db.Column(db.Integer)
     credit_score = db.Column(db.Integer)
 
-    cc_accounts = db.relationship('CreditCardAccount')
 
     banks = db.relationship("Bank",
-                            secondary="users_banks",
+                            secondary="userbanks",
                             backref="users")
 
 
     def __repr__(self):
-        return f'<User user_id={self.user_id} email={self.email} name = {first_name} {last_name}>'
+        return f'<User user_id={self.user_id} email={self.email} name = {self.first_name} {self.last_name}>'
 
 
     
@@ -51,6 +50,8 @@ class Bank(db.Model):
     bank_name = db.Column(db.String)
     approval_rule_num_accounts = db.Column(db.Integer)
     approval_rule_time_period = db.Column(db.Integer)
+
+    credit_card = db.relationship('CreditCard') #, backref='banks')
 
 
     def __repr__(self):
@@ -83,13 +84,21 @@ class CreditCard(db.Model):
                         primary_key=True,
                         )
     credit_card_name = db.Column(db.String)
+    
     signup_bonus = db.Column(db.Integer)
     required_spending = db.Column(db.Integer)
     spending_timeframe_months = db.Column(db.Integer)
     has_annual_fee = db.Column(db.Boolean)
 
-    bank = db.relationship('Bank')
-    loyalty_program = db.relationship("LoyaltyProgram")
+    bank_id = db.Column(db.Integer,
+                        db.ForeignKey('banks.bank_id'),
+                        nullable=False)
+    loyalty_program_id = db.Column(db.Integer,
+                                    db.ForeignKey('loyalty_programs.loyalty_program_id'),
+                                    nullable=False)
+
+    bank = db.relationship('Bank')#, backref='credit_cards')
+    loyalty_program = db.relationship('LoyaltyProgram')
 
     def __repr__(self):
         return f'<Credit Card credit_card_id={self.credit_card_id} Name credit_card_name={self.credit_card_name}>'
@@ -112,9 +121,11 @@ class CreditCardAccount(db.Model):
     points_expiration_timeframe_months = db.Column(db.Integer)
     last_owned = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False)
 
-    credit_card = db.relationship('CreditCard')
-    user = db.relationship('User')
+    user = db.relationship('User', backref='cc_accounts')
 
     def __repr__(self):
         return f'<Credit Card cc_account_id={self.cc_account_id} Name cc_account_name={self.cc_account_name}>'
@@ -156,3 +167,29 @@ class UserLoyaltyProgram(db.Model):
     loyalty_program_id = db.Column(db.Integer,
                         db.ForeignKey('loyalty_programs.loyalty_program_id'),
                         nullable=False)
+
+
+
+
+
+
+
+
+def connect_to_db(flask_app, db_uri='postgresql:///webapp', echo=True):
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    # flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.app = flask_app
+    db.init_app(flask_app)
+
+    print('Connected to the db!')
+
+if __name__ == '__main__':
+    from server import app
+
+    # Call connect_to_db(app, echo=False) if your program output gets
+    # too annoying; this will tell SQLAlchemy not to print out every
+    # query it executes.
+
+    connect_to_db(app)
