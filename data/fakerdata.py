@@ -20,13 +20,22 @@ class User:
         # self.over_period = over_period
     
     def get_user_attributes(self):
-         user_attributes = [self.login_id, self.first_name, self.last_name, self.email, self.password, self.credit_score]
+        user_attributes = [self.login_id, self.first_name, self.last_name, self.email, self.password, self.credit_score]
 
-         return user_attributes
+        return user_attributes
     
     def __repr__(self):
         return f'{self.login_id}, {self.first_name}, {self.last_name}, {self.email}, {self.password}, {self.credit_score}'
 
+
+def make_user():
+    """Returns a user."""
+
+    user = User(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
+
+    user = user.get_user_attributes()
+    
+    return user
 
 
 def make_user_list():
@@ -43,8 +52,8 @@ def make_user_list():
     return user_list
  
 
-def make_user_dictionary(user_list):
-    """Returns a dictionary of users by attribute."""
+def make_user_dictionaries(user_list):
+    """Returns a list of user dictionaries."""
     
     all_users = []
         
@@ -74,12 +83,24 @@ class CreditCardAccount:
 
     
     def get_acct_attributes(self):
-         cc_account_attributes = [self.cc_account_name, self.bonus_received, self.date_opened, self.last_owned, self.is_active]
+        cc_account_attributes = [self.cc_account_name, self.bonus_received, self.date_opened, self.last_owned, self.is_active]
 
-         return cc_account_attributes
+        return cc_account_attributes
     
     def __repr__(self):
         return f'{self.cc_account_name}, {self.bonus_received}, {self.date_opened}, {self.last_owned}, {self.is_active}'
+
+
+def make_acct():
+    """Returns a credit card account."""
+
+    cc_names = ["Sapphire Preferred", "Sapphire Reserve", "The Platinum Card","The Gold Card", "British Airways Visa Signature","Marriott Bonvoy Brilliant"]
+    
+    cc_account = CreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
+
+    cc_account = cc_account.get_acct_attributes()
+    
+    return cc_account
 
 
 def make_acct_list():
@@ -93,7 +114,7 @@ def make_acct_list():
     cc_account_list = []
 
     for i in range(20):
-        cc_account = CreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date_between(), True)
+        cc_account = CreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
 
         cc_account = cc_account.get_acct_attributes()
         cc_account_list.append(cc_account)
@@ -101,8 +122,8 @@ def make_acct_list():
     return cc_account_list
 
 
-def make_acct_dictionary(account_list):
-    """Returns a dictionary of credit card accounts."""
+def make_acct_dictionaries(account_list):
+    """Returns a list of credit card account dictionaries."""
 
     all_accts = []
 

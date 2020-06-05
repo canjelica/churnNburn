@@ -55,8 +55,7 @@ class Bank(db.Model):
     max_accounts = db.Column(db.Integer)
 
     credit_card = db.relationship('CreditCard')
-    # backref relationship to Users uses the same secondary argument 
-    # for the reverse relationship
+    # backref relationship to Users uses the same secondary argument for the reverse relationship
 
 
     def __repr__(self):
@@ -146,26 +145,26 @@ class CreditCardAccount(db.Model):
 
 
 
-class Transaction(db.Model):
-    """A transaction."""
+# class Transaction(db.Model):
+#     """A transaction."""
 
-    __tablename__ = 'transactions'
+#     __tablename__ = 'transactions'
 
-    transaction_id = db.Column(db.Integer,
-                                autoincrement=True,
-                                primary_key=True,
-                                )
-    transaction_amt = db.Column(db.Integer)
-    transaction_date = db.Column(db.DateTime)
+#     transaction_id = db.Column(db.Integer,
+#                                 autoincrement=True,
+#                                 primary_key=True,
+#                                 )
+#     transaction_amt = db.Column(db.Integer)
+#     transaction_date = db.Column(db.DateTime)
 
-    cc_account_id = db.Column(db.Integer,
-                                db.ForeignKey('cc_accounts.cc_account_id'),
-                                )
+#     cc_account_id = db.Column(db.Integer,
+#                                 db.ForeignKey('cc_accounts.cc_account_id'),
+#                                 )
     
-    cc_account = db.relationship('CreditCardAccount', backref='transactions')
+#     cc_account = db.relationship('CreditCardAccount', backref='transactions')
 
-    def __repr__(self):
-        return f'<Transaction Date transaction_date={self.transaction_date} Amount={self.transaction_amt}>'
+#     def __repr__(self):
+#         return f'<Transaction Date transaction_date={self.transaction_date} Amount={self.transaction_amt}>'
 
 
 
@@ -208,22 +207,22 @@ class UserLoyaltyProgram(db.Model):
                         nullable=False)
 
 
-class Bonus(db.Model):
-    """A bonus."""
+# class Bonus(db.Model):
+#     """A bonus."""
 
-    __tablename__ = "bonuses"
+#     __tablename__ = "bonuses"
 
-    bonus_id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True,
-                        )
-    signup_bonus = db.Column(db.Integer)
-    annual_bonus = db.Column(db.Integer)
-    category_spending_bonus = db.Column(db.Integer)
+#     bonus_id = db.Column(db.Integer,
+#                         autoincrement=True,
+#                         primary_key=True,
+#                         )
+#     signup_bonus = db.Column(db.Integer)
+#     annual_bonus = db.Column(db.Integer)
+#     category_spending_bonus = db.Column(db.Integer)
 
-    credit_card_id = db.Column(db.Integer,
-                        db.ForeignKey('loyalty_programs.loyalty_program_id'),
-                        )
+#     credit_card_id = db.Column(db.Integer,
+#                         db.ForeignKey('loyalty_programs.loyalty_program_id'),
+#                         )
 
     
 

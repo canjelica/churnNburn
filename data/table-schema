@@ -1,0 +1,116 @@
+
+Table "public.users"
+    Column    |       Type        | Collation | Nullable |                Default                 
+--------------+-------------------+-----------+----------+----------------------------------------
+ user_id      | integer           |           | not null | nextval('users_user_id_seq'::regclass)
+ login_id     | character varying |           |          | 
+ first_name   | character varying |           |          | 
+ last_name    | character varying |           |          | 
+ email        | character varying |           |          | 
+ password     | character varying |           |          | 
+ credit_score | integer           |           |          | 
+Indexes:
+    "users_pkey" PRIMARY KEY, btree (user_id)
+    "users_email_key" UNIQUE CONSTRAINT, btree (email)
+    "users_login_id_key" UNIQUE CONSTRAINT, btree (login_id)
+Referenced by:
+    TABLE "credit_card_accounts" CONSTRAINT "credit_card_accounts_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    TABLE "user_loyalty_program" CONSTRAINT "user_loyalty_program_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    TABLE "userbanks" CONSTRAINT "userbanks_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+
+-------------------------------------------------------------
+Table "public.banks"
+
+           Column           |       Type        | Collation | Nullable |                Default                 
+----------------------------+-------------------+-----------+----------+----------------------------------------
+ bank_id                    | integer           |           | not null | nextval('banks_bank_id_seq'::regclass)
+ bank_name                  | character varying |           |          | 
+ approval_rule_num_accounts | integer           |           |          | 
+ approval_rule_time_months  | integer           |           |          | 
+ max_accounts               | integer           |           |          | 
+Indexes:
+    "banks_pkey" PRIMARY KEY, btree (bank_id)
+Referenced by:
+    TABLE "credit_cards" CONSTRAINT "credit_cards_bank_id_fkey" FOREIGN KEY (bank_id) REFERENCES banks(bank_id)
+    TABLE "userbanks" CONSTRAINT "userbanks_bank_id_fkey" FOREIGN KEY (bank_id) REFERENCES banks(bank_id)
+
+-------------------------------------------------------------
+
+Table "public.credit_cards"
+          Column           |       Type        | Collation | Nullable |                       Default                        
+---------------------------+-------------------+-----------+----------+------------------------------------------------------
+ credit_card_id            | integer           |           | not null | nextval('credit_cards_credit_card_id_seq'::regclass)
+ credit_card_name          | character varying |           |          | 
+ signup_bonus              | integer           |           |          | 
+ required_spending         | integer           |           |          | 
+ spending_timeframe_months | integer           |           |          | 
+ annual_fee                | integer           |           |          | 
+ bonus_value_dollars       | integer           |           |          | 
+ processor                 | character varying |           |          | 
+ bank_id                   | integer           |           |          | 
+ loyalty_program_id        | integer           |           |          | 
+Indexes:
+    "credit_cards_pkey" PRIMARY KEY, btree (credit_card_id)
+Foreign-key constraints:
+    "credit_cards_bank_id_fkey" FOREIGN KEY (bank_id) REFERENCES banks(bank_id)
+    "credit_cards_loyalty_program_id_fkey" FOREIGN KEY (loyalty_program_id) REFERENCES loyalty_programs(loyalty_program_id)
+Referenced by:
+    TABLE "credit_card_accounts" CONSTRAINT "credit_card_accounts_credit_card_id_fkey" FOREIGN KEY (credit_card_id) REFERENCES credit_cards(credit_card_id)
+
+-------------------------------------------------------------
+
+Table "public.credit_card_accounts"
+     Column      |            Type             | Collation | Nullable |                           Default                           
+-----------------+-----------------------------+-----------+----------+-------------------------------------------------------------
+ cc_account_id   | integer                     |           | not null | nextval('credit_card_accounts_cc_account_id_seq'::regclass)
+ cc_account_name | character varying           |           |          | 
+ bonus_received  | integer                     |           |          | 
+ date_opened     | timestamp without time zone |           |          | 
+ last_owned      | timestamp without time zone |           |          | 
+ is_active       | boolean                     |           |          | 
+ user_id         | integer                     |           |          | 
+ credit_card_id  | integer                     |           |          | 
+Indexes:
+    "credit_card_accounts_pkey" PRIMARY KEY, btree (cc_account_id)
+Foreign-key constraints:
+    "credit_card_accounts_credit_card_id_fkey" FOREIGN KEY (credit_card_id) REFERENCES credit_cards(credit_card_id)
+    "credit_card_accounts_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+
+-------------------------------------------------------------
+
+ Table "public.loyalty_programs"
+         Column         |       Type        | Collation | Nullable |                           Default                            
+------------------------+-------------------+-----------+----------+--------------------------------------------------------------
+ loyalty_program_id     | integer           |           | not null | nextval('loyalty_programs_loyalty_program_id_seq'::regclass)
+ loyalty_program_name   | character varying |           |          | 
+ points_valuation_cents | integer           |           |          | 
+ points_portal          | character varying |           |          | 
+ points_expire          | boolean           |           |          | 
+Indexes:
+    "loyalty_programs_pkey" PRIMARY KEY, btree (loyalty_program_id)
+Referenced by:
+    TABLE "bonuses" CONSTRAINT "bonuses_credit_card_id_fkey" FOREIGN KEY (credit_card_id) REFERENCES loyalty_programs(loyalty_program_id)
+    TABLE "credit_cards" CONSTRAINT "credit_cards_loyalty_program_id_fkey" FOREIGN KEY (loyalty_program_id) REFERENCES loyalty_programs(loyalty_program_id)
+    TABLE "user_loyalty_program" CONSTRAINT "user_loyalty_program_loyalty_program_id_fkey" FOREIGN KEY (loyalty_program_id) REFERENCES loyalty_programs(loyalty_program_id)
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+Table "public.bonuses"
+         Column          |  Type   | Collation | Nullable |                  Default                  
+-------------------------+---------+-----------+----------+-------------------------------------------
+ bonus_id                | integer |           | not null | nextval('bonuses_bonus_id_seq'::regclass)
+ signup_bonus            | integer |           |          | 
+ annual_bonus            | integer |           |          | 
+ category_spending_bonus | integer |           |          | 
+ credit_card_id          | integer |           |          | 
+Indexes:
+    "bonuses_pkey" PRIMARY KEY, btree (bonus_id)
+Foreign-key constraints:
+    "bonuses_credit_card_id_fkey" FOREIGN KEY (credit_card_id) REFERENCES loyalty_programs(loyalty_program_id)
+
+
+
