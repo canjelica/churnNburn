@@ -51,7 +51,8 @@ class Bank(db.Model):
                         )
     bank_name = db.Column(db.String)
     approval_rule_num_accounts = db.Column(db.Integer)
-    approval_rule_time_period = db.Column(db.Integer)
+    approval_rule_time_months = db.Column(db.Integer)
+    max_accounts = db.Column(db.Integer)
 
     credit_card = db.relationship('CreditCard')
     # backref relationship to Users uses the same secondary argument 
@@ -92,7 +93,9 @@ class CreditCard(db.Model):
     signup_bonus = db.Column(db.Integer)
     required_spending = db.Column(db.Integer)
     spending_timeframe_months = db.Column(db.Integer)
-    has_annual_fee = db.Column(db.Boolean)
+    annual_fee = db.Column(db.Integer)
+    bonus_value_dollars = db.Column(db.Integer)
+    processor = db.Column(db.String)
 
     bank_id = db.Column(db.Integer,
                         db.ForeignKey('banks.bank_id'),
@@ -123,7 +126,6 @@ class CreditCardAccount(db.Model):
     cc_account_name = db.Column(db.String)
     bonus_received = db.Column(db.Integer)
     date_opened = db.Column(db.DateTime)
-    points_expiration_timeframe_months = db.Column(db.Integer)
     last_owned = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean)
     
@@ -162,6 +164,9 @@ class Transaction(db.Model):
     
     cc_account = db.relationship('CreditCardAccount', backref='transactions')
 
+    def __repr__(self):
+        return f'<Transaction Date transaction_date={self.transaction_date} Amount={self.transaction_amt}>'
+
 
 
 class LoyaltyProgram(db.Model):
@@ -174,20 +179,15 @@ class LoyaltyProgram(db.Model):
                         primary_key=True,
                         )
     loyalty_program_name = db.Column(db.String)
-    points_valuation = db.Column(db.Integer)
+    points_valuation_cents = db.Column(db.Integer)
     points_portal = db.Column(db.String)
-    points_expiration = db.Column(db.Boolean)
+    points_expire = db.Column(db.Boolean)
     credit_card_id = db.column(db.Integer,
                                 db.ForeignKey('credit_card_accounts.cc_account_id'),      
                                 )
 
     credit_card = db.relationship('CreditCard')
     
-    
-    
-    
-    
-
     def __repr__(self):
         return f'<Loyalty Program loyalty_program_id={self.loyalty_program_id} Name loyalty_program_name={self.loyalty_program_name}>'
 
