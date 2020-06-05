@@ -8,7 +8,7 @@ fake = Faker()
 
 
 
-class User:
+class FUser:
     def __init__(self, login_id, first_name, last_name, email, password, credit_score):
         self.login_id = login_id
         self.first_name = first_name
@@ -31,7 +31,7 @@ class User:
 def make_user():
     """Returns a user."""
 
-    user = User(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
+    user = FUser(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
 
     user = user.get_user_attributes()
     
@@ -44,7 +44,7 @@ def make_user_list():
     user_list = []
 
     for i in range(10):
-        user = User(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
+        user = FUser(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
 
         user = user.get_user_attributes()
         user_list.append(user)
@@ -73,7 +73,7 @@ def make_user_dictionaries(user_list):
 #-----------------------------------------------------------------
 #-----------------------------------------------------------------
 
-class CreditCardAccount:
+class FCreditCardAccount:
     def __init__(self, cc_account_name, bonus_received, date_opened, last_owned, is_active):
         self.cc_account_name = cc_account_name
         self.bonus_received = bonus_received
@@ -96,7 +96,7 @@ def make_acct():
 
     cc_names = ["Sapphire Preferred", "Sapphire Reserve", "The Platinum Card","The Gold Card", "British Airways Visa Signature","Marriott Bonvoy Brilliant"]
     
-    cc_account = CreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
+    cc_account = FCreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
 
     cc_account = cc_account.get_acct_attributes()
     
@@ -114,7 +114,7 @@ def make_acct_list():
     cc_account_list = []
 
     for i in range(20):
-        cc_account = CreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
+        cc_account = FCreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
 
         cc_account = cc_account.get_acct_attributes()
         cc_account_list.append(cc_account)
