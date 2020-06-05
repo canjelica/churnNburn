@@ -2,28 +2,28 @@
 
 from model import db, User, Bank, UserBank, CreditCard, CreditCardAccount, LoyaltyProgram, UserLoyaltyProgram, connect_to_db
 
-from fakerdata import User, make_user_list, make_user_dictionaries, CreditCardAccount, make_acct_list, make_acct_dictionaries
+# from fakerdata import User, make_user_list, make_user_dictionaries, CreditCardAccount, make_acct_list, make_acct_dictionaries
 
-import faker
-
-
+# import faker
 
 
-def create_user(login_id, first_name, last_name, email, password, credit_score, bank_id, cc_account_id):
+
+
+def create_user(login_id, first_name, last_name, email, password, credit_score):
    """Create and return a new user."""
-
-    user = User(login_id=login_id, first_name=first_name, last_name=last_name, email=email, password=password, credit_score=credit_score, bank_id=bank_id, cc_account_id=cc_account_id)
-
+    
+    user = User(login_id=login_id, first_name=first_name,    last_name=last_name, email=email, password=password credit_score=credit_score, cc_account_id=cc_account_id)
+    
     db.session.add(user)
     db.session.commit()
 
     return user
 
 
-def create_bank(bank_name, approval_rule_num_accounts,    approval_rule_time_months, max_accounts, credit_card_id, user_id):
+def create_bank(bank_name, approval_rule_num_accounts,    approval_rule_time_months, max_accounts):
     """Create and return a new bank."""
 
-    bank = Bank(bank_name=bank_name, approval_rule_num_accounts=approval_rule_num_accounts, approval_rule_time_months=approval_rule_time_months, max_accounts=max_accounts, credit_card_id=credit_card_id, user_id=user_id)
+    bank = Bank(bank_name=bank_name, approval_rule_num_accounts=approval_rule_num_accounts, approval_rule_time_months=approval_rule_time_months, max_accounts=max_accounts)
 
     db.session.add(bank)
     db.session.commit()
@@ -43,10 +43,10 @@ def create_userbank(user_id, bank_id):
 
 
 
-def create_credit_card(credit_card_name, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, processor, bank_id, loyalty_program_id):
+def create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id, loyalty_program_id):
     """Create and return a new credit card."""
 
-    credit_card = CreditCard(credit_card_name=credit_card_name, signup_bonus=signup_bonus, required_spending=required_spending, spending_timeframe_months=spending_timeframe_months, annual_fee=annual_fee, bonus_value_dollars=bonus_value_dollars, processor=processor, bank_id=bank_id, loyalty_program_id=loyalty_program_id)
+    credit_card = CreditCard(credit_card_name=credit_card_name, processor=processor,signup_bonus=signup_bonus, required_spending=required_spending, spending_timeframe_months=spending_timeframe_months, annual_fee=annual_fee, bonus_value_dollars=bonus_value_dollars,  bank_id=bank_id, loyalty_program_id=loyalty_program_id)
 
     db.session.add(credit_card)
     db.session.commit()
