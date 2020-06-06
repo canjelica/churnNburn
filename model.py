@@ -100,12 +100,11 @@ class CreditCard(db.Model):
                         db.ForeignKey('banks.bank_id'),
                         )
 
-    loyalty_program_id = db.Column(db.Integer,
-                                    db.ForeignKey('loyalty_programs.loyalty_program_id'),
-                                    )
+    # # loyalty_program_id = db.Column(db.Integer,
+    #                         db.ForeignKey('loyalty_programs.loyalty_program_id'))
 
-    bank = db.relationship('Bank')
-    loyalty_program = db.relationship('LoyaltyProgram')
+    bank = db.relationship('Bank', backref='credit_cards')
+    # loyalty_program = db.relationship('LoyaltyProgram')#, uselist=False)
 
     def __repr__(self):
         return f'<Credit Card credit_card_id={self.credit_card_id} Name credit_card_name={self.credit_card_name}>'
@@ -181,11 +180,11 @@ class LoyaltyProgram(db.Model):
     points_valuation_cents = db.Column(db.Integer)
     points_portal = db.Column(db.String)
     points_expire = db.Column(db.Boolean)
-    credit_card_id = db.column(db.Integer,
-                                db.ForeignKey('credit_card_accounts.cc_account_id'),      
-                                )
+    credit_card_id = db.Column(db.Integer,
+                        db.ForeignKey('credit_cards.credit_card_id')
+                        )
 
-    credit_card = db.relationship('CreditCard')
+    credit_card = db.relationship('CreditCard', backref='loyalty_programs')
     
     def __repr__(self):
         return f'<Loyalty Program loyalty_program_id={self.loyalty_program_id} Name loyalty_program_name={self.loyalty_program_name}>'

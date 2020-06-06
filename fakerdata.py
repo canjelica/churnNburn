@@ -81,7 +81,6 @@ class FCreditCardAccount:
         self.last_owned = last_owned
         self.is_active = is_active
 
-    
     def get_acct_attributes(self):
         cc_account_attributes = [self.cc_account_name, self.bonus_received, self.date_opened, self.last_owned, self.is_active]
 
@@ -113,7 +112,7 @@ def make_acct_list():
     
     cc_account_list = []
 
-    for i in range(20):
+    for i in range(10):
         cc_account = FCreditCardAccount(random.choice(cc_names), fake.random_int(min=0, max=150000), fake.date(), fake.date(), True)
 
         cc_account = cc_account.get_acct_attributes()
@@ -137,4 +136,69 @@ def make_acct_dictionaries(account_list):
         all_accts.append(acct_dict)
     
     return all_accts
-   
+
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+
+class FUserBank:
+    def __init__(self, user_id, bank_id):
+        self.user_id = user_id
+        self.bank_id = bank_id
+    
+    def get_userbank_attributes(self):
+        userbank_attributes = [self.user_id, self.bank_id]
+
+        return userbank_attributes
+    
+    def __repr__(self):
+        return f'{self.user_id}, {self.bank_id}'
+        
+
+def make_userbank_list():
+    """Returns list of userbank id tuples."""
+
+    #in reality max=10 would correspond to actual ID or max = num users from users
+    userbank_list = []
+    userbank = []
+    for i in range(10):
+        n = 1
+        userbank = FUserBank(fake.random_int(min=1, max=10), fake.random_int(min=1, max=2))
+        userbank = userbank.get_userbank_attributes()
+        userbank = tuple(userbank)
+        userbank_list.append(userbank)
+
+    return userbank_list
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+
+class FUserLoyaltyProgram:
+    def __init__(self, user_id, loyalty_program_id):
+        self.user_id = user_id
+        self.loyalty_program_id = loyalty_program_id
+    
+    def get_user_loyalty_attributes(self):
+        user_loyalty_attributes = [self.user_id, self.loyalty_program_id]
+
+        return user_loyalty_attributes
+    
+    def __repr__(self):
+        return f'{self.user_id}, {self.loyalty_program_id}'
+        
+
+def make_user_loyalty_list():
+    """Returns list of user loyalty id tuples."""
+
+    #in reality max=10 would correspond to actual ID or max = num users from users
+    user_loyalty_list = []
+    user_loyalty = []
+    for i in range(10):
+        user_loyalty = FUserLoyaltyProgram(fake.random_int(min=1, max=10), fake.random_int(min=1, max=4))
+        user_loyalty = user_loyalty.get_user_loyalty_attributes()
+        user_loyalty = tuple(user_loyalty)
+        user_loyalty_list.append(user_loyalty)
+
+    return user_loyalty_list
+
+

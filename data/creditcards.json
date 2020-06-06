@@ -6,7 +6,9 @@
         "required_spending": 4000,
         "spending_timeframe_months": 3,
         "annual_fee": 95,
-        "bonus_value_dollars": 1200
+        "bonus_value_dollars": 1200,
+        "bank_id": 1,
+        "loyalty_program_id": 1
     },
     {
         "credit_card_name": "Sapphire Reserve",
@@ -15,7 +17,9 @@
         "required_spending": 4000,
         "spending_timeframe_months": 3,
         "annual_fee": 550,
-        "bonus_value_dollars": 1000
+        "bonus_value_dollars": 1000,
+        "bank_id": 1,
+        "loyalty_program_id": 1
     },
     {
         "credit_card_name": "The Platinum Card",
@@ -24,7 +28,9 @@
         "required_spending": 5000,
         "spending_timeframe_months": 3,
         "annual_fee": 550,
-        "bonus_value_dollars": 1200
+        "bonus_value_dollars": 1200,
+        "bank_id": 2,
+        "loyalty_program_id": 1
     },
     {
         "credit_card_name": "The Gold Card",
@@ -33,7 +39,9 @@
         "required_spending": 4000,
         "spending_timeframe_months": 3,
         "annual_fee": 250,
-        "bonus_value_dollars": 700
+        "bonus_value_dollars": 700,
+        "bank_id": 2,
+        "loyalty_program_id": 1
     },
     {
         "credit_card_name": "British Airways Visa Signature",
@@ -42,7 +50,9 @@
         "required_spending": 3000,
         "spending_timeframe_months": 3,
         "annual_fee": 95,
-        "bonus_value_dollars": 1500
+        "bonus_value_dollars": 1500,
+        "bank_id": 1,
+        "loyalty_program_id": 11
     },
     {
         "credit_card_name": "Marriott Bonvoy Brilliant",
@@ -51,6 +61,8 @@
         "required_spending": 3000,
         "spending_timeframe_months": 3,
         "annual_fee": 450,
-        "bonus_value_dollars": 600
+        "bonus_value_dollars": 600,
+        "bank_id": 2,
+        "loyalty_program_id": 1
     }
 ]

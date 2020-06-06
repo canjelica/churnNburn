@@ -13,12 +13,11 @@ import model
 from fakerdata import *
 import server
 
-os.system('dropdb webapp')
+# os.system('dropdb webapp')
 os.system('createdb webapp')
 
 model.connect_to_db(server.app)
 model.db.create_all()
-
 
 
 #Load bank data from JSON file
@@ -37,6 +36,7 @@ for bank in bank_data:
 
     banks_in_db.append(db_bank)
 
+
 # Load credit card data from JSON file
 with open('data/creditcards.json') as f:
     cc_data = json.loads(f.read())
@@ -50,11 +50,10 @@ for cc in cc_data:
     spending_timeframe_months = cc['spending_timeframe_months']
     annual_fee = cc['annual_fee']
     bonus_value_dollars = cc['bonus_value_dollars']
-    # bank_id = cc['bank_id']
+    bank_id = cc['bank_id']
     # loyalty_program_id = cc['loyalty_program_id']
                    
-    db_credit_card = crud.create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars)
-    # , bank_id, loyalty_program_id)
+    db_credit_card = crud.create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id)#, loyalty_program_id)
 
     cc_in_db.append(db_credit_card)
 
@@ -69,13 +68,11 @@ for lp in lp_data:
     points_valuation_cents = lp['points_valuation_cents']
     points_portal = lp['points_portal']
     points_expire = lp['points_expire']
-    # credit_card_id = lp['credit_card_id']
+    credit_card_id = lp['credit_card_id']
                    
-    db_loyalty_program = crud.create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire)
-    # , credit_card_id)
+    db_loyalty_program = crud.create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire, credit_card_id)
 
     lp_in_db.append(db_loyalty_program)
-
 #--------------------------------------------#
 
 #call functions from fakerdata to create list of user dictionaries
@@ -90,9 +87,7 @@ for user in test_dicts:
 
 
 # #call functions from fakerdata to create list of credit card account dictionaries 
-
 cc_accounts_in_db = []
-
 test_cc_accts = make_acct_list()
 test_acct_dicts = make_acct_dictionaries(test_cc_accts)
 
@@ -101,4 +96,31 @@ for acct in test_acct_dicts:
     cc_accounts_in_db.append(db_cc_acct)
 
 
+    # if acct['cc_account_name'] == "Sapphire Preferred" or "Sapphire Reserve" or "British Airways Visa Signature":
+    #     acct['credit_card_id'] = 1
+    # else:
+    #     acct['credit_card_id'] = 2, 
+    # i = 1
+    # acct['user_id'] = i
+    # i = i + 1
+   
 
+
+# add in random assigned id to empty fields in tables######REVISIT LATER TO GET FROM CRUD########
+
+userbank_in_db = []
+test_userbanks = make_userbank_list()
+for userbank in test_userbanks:
+    db_userbank = crud.create_userbank(userbank[0], userbank[1])
+    userbank_in_db.append(db_userbank)
+
+# add in random assigned id to empty fields in tables######REVISIT LATER TO GET FROM CRUD########
+
+user_loyalty_in_db = []
+test_user_loyalty = make_user_loyalty_list()
+for user_loyalty in test_user_loyalty:
+    db_user_loyalty = crud.create_user_loyalty(user_loyalty[0], user_loyalty[1])
+    user_loyalty_in_db.append(db_user_loyalty)
+
+
+#Add ids to credit cards
