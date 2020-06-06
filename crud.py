@@ -74,10 +74,10 @@ def create_cc_account(cc_account_name, bonus_received,date_opened, last_owned, i
     return cc_account
 
 
-def create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire, credit_card_id):
+def create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire):
     """Create and return a new loyalty program."""
 
-    loyalty_program = LoyaltyProgram(loyalty_program_name=loyalty_program_name, points_valuation_cents=points_valuation_cents, points_portal=points_portal, points_expire=points_expire, credit_card_id=credit_card_id)
+    loyalty_program = LoyaltyProgram(loyalty_program_name=loyalty_program_name, points_valuation_cents=points_valuation_cents, points_portal=points_portal, points_expire=points_expire)
 
     db.session.add(loyalty_program)
     db.session.commit()

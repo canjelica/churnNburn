@@ -13,7 +13,7 @@ import model
 from fakerdata import *
 import server
 
-# os.system('dropdb webapp')
+os.system('dropdb webapp')
 os.system('createdb webapp')
 
 model.connect_to_db(server.app)
@@ -68,9 +68,8 @@ for lp in lp_data:
     points_valuation_cents = lp['points_valuation_cents']
     points_portal = lp['points_portal']
     points_expire = lp['points_expire']
-    credit_card_id = lp['credit_card_id']
                    
-    db_loyalty_program = crud.create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire, credit_card_id)
+    db_loyalty_program = crud.create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire)
 
     lp_in_db.append(db_loyalty_program)
 #--------------------------------------------#

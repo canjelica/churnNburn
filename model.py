@@ -100,8 +100,7 @@ class CreditCard(db.Model):
                         db.ForeignKey('banks.bank_id'),
                         )
 
-    # # loyalty_program_id = db.Column(db.Integer,
-    #                         db.ForeignKey('loyalty_programs.loyalty_program_id'))
+    loyalty_program_id = db.Column(db.Integer, db.ForeignKey('loyalty_programs.loyalty_program_id'))
 
     bank = db.relationship('Bank', backref='credit_cards')
     # loyalty_program = db.relationship('LoyaltyProgram')#, uselist=False)
@@ -180,9 +179,6 @@ class LoyaltyProgram(db.Model):
     points_valuation_cents = db.Column(db.Integer)
     points_portal = db.Column(db.String)
     points_expire = db.Column(db.Boolean)
-    credit_card_id = db.Column(db.Integer,
-                        db.ForeignKey('credit_cards.credit_card_id')
-                        )
 
     credit_card = db.relationship('CreditCard', backref='loyalty_programs')
     
