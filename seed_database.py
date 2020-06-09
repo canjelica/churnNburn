@@ -13,7 +13,7 @@ import model
 from fakerdata import *
 import server
 
-os.system('dropdb webapp')
+# os.system('dropdb webapp')
 os.system('createdb webapp')
 
 model.connect_to_db(server.app)
