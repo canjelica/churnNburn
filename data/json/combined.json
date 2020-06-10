@@ -1,0 +1,65 @@
+[
+    {
+        "bank_name": "Chase Bank",
+        "approval_rule_num_accounts": 5,
+        "approval_rule_time_months": 24,
+        "max_accounts": "None"
+    },
+    {   "bank_name": "American Express",
+        "approval_rule_num_accounts": null,
+        "approval_rule_time_months": null,
+        "max_accounts": 6
+    },
+    {
+        "credit_card_name": "The Gold Card",
+        "processor": "American Express",
+        "signup_bonus": 35000,
+        "required_spending": 4000,
+        "spending_timeframe_months": 3,
+        "annual_fee": 250,
+        "bonus_value_dollars": 700
+    },
+    {
+        "credit_card_name": "British Airways Visa Signature",
+        "processor": "Visa",
+        "signup_bonus": 100000,
+        "required_spending": 3000,
+        "spending_timeframe_months": 3,
+        "annual_fee": 95,
+        "bonus_value_dollars": 1500
+    },
+    {
+        "credit_card_name": "Marriott Bonvoy Brilliant",
+        "processor": "American Express",
+        "signup_bonus": 75000,
+        "required_spending": 3000,
+        "spending_timeframe_months": 3,
+        "annual_fee": 450,
+        "bonus_value_dollars": 600
+    },
+    {
+        "loyalty_program_name": "Chase Ultimate Rewards",
+        "points_valuation": 2.0,
+        "points_portal": "https://www.chase.com/personal/credit-cards/ultimate-rewards",
+        "points_expire": true
+    },
+    {
+        "loyalty_program_name": "American Express Membership Rewards",
+        "points_valuation": 2.0,
+        "points_portal": "https://global.americanexpress.com/rewards",
+        "points_expire": true
+    },
+    {
+        "loyalty_program_name": "Avios",
+        "points_valuation": 1.5,
+        "points_portal": "https://www.britishairways.com/travel/home/public/en_gb/",
+        "points_expire": true
+    },
+    {
+        "loyalty_program_name": "Marriott Bonvoy",
+        "points_valuation": 0.8,
+        "points_portal": "https://www.marriott.com/sign-in.mi",
+        "points_expire": true
+    }
+
+]
