@@ -14,9 +14,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, 
                         autoincrement=True, 
                         primary_key=True,
-                        )
-    login_id = db.Column(db.String,
-                        unique=True)                    
+                        )                 
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     email = db.Column(db.String,
@@ -227,7 +225,7 @@ class UserLoyaltyProgram(db.Model):
 
 def connect_to_db(flask_app, db_uri='postgresql:///webapp', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    # flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.app = flask_app

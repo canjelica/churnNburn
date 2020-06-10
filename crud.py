@@ -10,13 +10,13 @@ import random
 from faker import Faker
 fake = Faker()
 
+# --------------------------------------------------------------------------------
+"""Functions for seeding database."""
 
-
-
-def create_user(login_id, first_name, last_name, email, password, credit_score):
+def create_user(first_name, last_name, email, password, credit_score):
    """Create and return a new user."""
    
-   user = User(login_id=login_id, first_name=first_name, last_name=last_name, email=email, password=password, credit_score=credit_score)
+   user = User(first_name=first_name, last_name=last_name, email=email, password=password, credit_score=credit_score)
    
    db.session.add(user)
    db.session.commit()
@@ -25,8 +25,6 @@ def create_user(login_id, first_name, last_name, email, password, credit_score):
 
 # def  create_multiple_users(all_users):
     
-
-
 def create_bank(bank_name, approval_rule_num_accounts,    approval_rule_time_months, max_accounts):
     """Create and return a new bank."""
 
@@ -36,7 +34,6 @@ def create_bank(bank_name, approval_rule_num_accounts,    approval_rule_time_mon
     db.session.commit()
 
     return bank
-
 
 def create_userbank(user_id, bank_id):
     """Create userbank instance."""
@@ -48,18 +45,15 @@ def create_userbank(user_id, bank_id):
 
     return userbank
 
-
-
-def create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id):#, loyalty_program_id):
+def create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id):
     """Create and return a new credit card."""
 
-    credit_card = CreditCard(credit_card_name=credit_card_name, processor=processor,signup_bonus=signup_bonus, required_spending=required_spending, spending_timeframe_months=spending_timeframe_months, annual_fee=annual_fee, bonus_value_dollars=bonus_value_dollars, bank_id=bank_id)#, loyalty_program_id=loyalty_program_id)
+    credit_card = CreditCard(credit_card_name=credit_card_name, processor=processor,signup_bonus=signup_bonus, required_spending=required_spending, spending_timeframe_months=spending_timeframe_months, annual_fee=annual_fee, bonus_value_dollars=bonus_value_dollars, bank_id=bank_id)
 
     db.session.add(credit_card)
     db.session.commit()
 
     return credit_card
-
 
 def create_cc_account(cc_account_name, bonus_received,date_opened, last_owned, is_active):
     #  user_id, credit_card_id):
@@ -73,7 +67,6 @@ def create_cc_account(cc_account_name, bonus_received,date_opened, last_owned, i
 
     return cc_account
 
-
 def create_loyalty_program(loyalty_program_name, points_valuation_cents, points_portal, points_expire):
     """Create and return a new loyalty program."""
 
@@ -83,7 +76,6 @@ def create_loyalty_program(loyalty_program_name, points_valuation_cents, points_
     db.session.commit()
 
     return loyalty_program
-
 
 def create_user_loyalty(user_id, loyalty_program_id):
     """Create a user loyalty program instance."""
@@ -95,7 +87,13 @@ def create_user_loyalty(user_id, loyalty_program_id):
 
     return user_loyalty_program
 
+# ------------------------------------------------------------------------------
+"""Functions for querying database."""
 
+def get_cc_accounts():
+	"""Return all credit card accounts."""
+
+	return 
 
 
 

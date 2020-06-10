@@ -81,7 +81,7 @@ test_users = make_user_list()
 test_dicts = make_user_dictionaries(test_users) 
 
 for user in test_dicts:
-    db_user = crud.create_user(user['login_id'], user['first_name'], user['last_name'], user['email'], user['password'], user['credit_score'])
+    db_user = crud.create_user(user['first_name'], user['last_name'], user['email'], user['password'], user['credit_score'])
     user_in_db.append(db_user)
 
 

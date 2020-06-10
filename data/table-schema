@@ -1,9 +1,7 @@
-
 Table "public.users"
     Column    |       Type        | Collation | Nullable |                Default                 
 --------------+-------------------+-----------+----------+----------------------------------------
  user_id      | integer           |           | not null | nextval('users_user_id_seq'::regclass)
- login_id     | character varying |           |          | 
  first_name   | character varying |           |          | 
  last_name    | character varying |           |          | 
  email        | character varying |           |          | 
@@ -12,11 +10,11 @@ Table "public.users"
 Indexes:
     "users_pkey" PRIMARY KEY, btree (user_id)
     "users_email_key" UNIQUE CONSTRAINT, btree (email)
-    "users_login_id_key" UNIQUE CONSTRAINT, btree (login_id)
 Referenced by:
     TABLE "credit_card_accounts" CONSTRAINT "credit_card_accounts_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
     TABLE "user_loyalty_program" CONSTRAINT "user_loyalty_program_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
     TABLE "userbanks" CONSTRAINT "userbanks_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+
 
 -------------------------------------------------------------
 Table "public.banks"

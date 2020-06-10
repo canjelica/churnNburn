@@ -23,11 +23,24 @@ def add_user():
 
 	first_name = request.form.get("first-name")
 	last_name = request.form.get("last-name")
-	email = request.form.get("femail")
-	username = request.form.get("username")
+	email = request.form.get("email")
 	password = request.form.get("password")
 
+	#ccreate iterable, throw in database
+
 	return "Account created."
+
+@app.route('/login', methods=['POST'])
+def user_login():
+	"""Log in a user."""
+	
+	#look up in database, see if exists, if/else
+	#if exists, respond with success
+	#else respond with error
+
+
+
+
 
 if __name__ == '__main__':
     connect_to_db(app)

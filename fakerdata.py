@@ -9,8 +9,7 @@ fake = Faker()
 
 
 class FUser:
-    def __init__(self, login_id, first_name, last_name, email, password, credit_score):
-        self.login_id = login_id
+    def __init__(self, first_name, last_name, email, password, credit_score):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
@@ -20,18 +19,18 @@ class FUser:
         # self.over_period = over_period
     
     def get_user_attributes(self):
-        user_attributes = [self.login_id, self.first_name, self.last_name, self.email, self.password, self.credit_score]
+        user_attributes = [self.first_name, self.last_name, self.email, self.password, self.credit_score]
 
         return user_attributes
     
     def __repr__(self):
-        return f'{self.login_id}, {self.first_name}, {self.last_name}, {self.email}, {self.password}, {self.credit_score}'
+        return f'{self.first_name}, {self.last_name}, {self.email}, {self.password}, {self.credit_score}'
 
 
 def make_user():
     """Returns a user."""
 
-    user = FUser(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
+    user = FUser(fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
 
     user = user.get_user_attributes()
     
@@ -44,7 +43,7 @@ def make_user_list():
     user_list = []
 
     for i in range(10):
-        user = FUser(fake.user_name(), fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
+        user = FUser(fake.first_name(), fake.last_name(), fake.email(), fake.password(length=10, special_chars=True, upper_case=True, lower_case=True), fake.random_int(min=580, max=850))
 
         user = user.get_user_attributes()
         user_list.append(user)
@@ -59,12 +58,11 @@ def make_user_dictionaries(user_list):
         
     for user in user_list:
         user_dict = {}
-        user_dict['login_id'] = user[0]
-        user_dict['first_name'] = user[1]
-        user_dict['last_name'] = user[2]
-        user_dict['email'] = user[3]
-        user_dict['password'] = user[4]
-        user_dict['credit_score'] = user[5]
+        user_dict['first_name'] = user[0]
+        user_dict['last_name'] = user[1]
+        user_dict['email'] = user[2]
+        user_dict['password'] = user[3]
+        user_dict['credit_score'] = user[4]
         all_users.append(user_dict)
 
     return all_users
