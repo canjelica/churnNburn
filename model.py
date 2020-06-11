@@ -36,7 +36,6 @@ class User(db.Model):
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email} name = {self.first_name} {self.last_name}>'
 
-
     
 class Bank(db.Model):
     """ A bank. """

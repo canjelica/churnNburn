@@ -10,25 +10,21 @@ app.secret_key = "dev"
 
 
 
-#Homepage/index route
-
 @app.route('/')
 def homepage():
     return render_template('index.html')
 
 
-@app.route('/newuser', methods=['POST'])
+@app.route('/api/newuser', methods=['POST'])
 def add_user():
 	"""Add a user to our database."""
 
-	first_name = request.form.get("first-name")
-	last_name = request.form.get("last-name")
-	email = request.form.get("email")
-	password = request.form.get("password")
+	first_name = request.args.get("first-name")
+	last_name = request.args.get("last-name")
+	email = request.args.get("email")
+	password = request.args.get("password")
 
-	#ccreate iterable, throw in database
-
-	return "Account created."
+	return jsonify()
 
 @app.route('/login', methods=['POST'])
 def user_login():

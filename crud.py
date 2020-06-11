@@ -93,7 +93,9 @@ def create_user_loyalty(user_id, loyalty_program_id):
 def get_cc_accounts():
 	"""Return all credit card accounts."""
 
-	return 
+	return CreditCardAccount.query.all()
+
+	 
 
 
 
