@@ -26,11 +26,12 @@ def add_user():
 
 	
 
-@app.route('/api/all-cc-accounts', methods=['POST'])
-def show_cc_accounts():
-	"""Returns all cc accounts in database."""
+@app.route('/api/login', methods=['POST'])
+def log_in_user():
+	"""Logs in a user."""
+	data
 	
-	accounts = crud.get_cc_accounts()
+	
 
 	return jsonify(accounts)
 

@@ -1,9 +1,9 @@
-// const Router = window.ReactRouterDOM.BrowserRouter;
-// const Route =  window.ReactRouterDOM.Route;
-// const Link =  window.ReactRouterDOM.Link;
-// const Prompt =  window.ReactRouterDOM.Prompt;
-// const Switch = window.ReactRouterDOM.Switch;
-// const Redirect = window.ReactRouterDOM.Redirect;
+const Router = window.ReactRouterDOM.BrowserRouter;
+const Route =  window.ReactRouterDOM.Route;
+const Link =  window.ReactRouterDOM.Link;
+const Prompt =  window.ReactRouterDOM.Prompt;
+const Switch = window.ReactRouterDOM.Switch;
+const Redirect = window.ReactRouterDOM.Redirect;
 
 
 class App extends React.Component {
@@ -15,15 +15,25 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Link to={`/dashboard`}>View Dashboard</Link>
-				<Link to="/cc-accounts">View Credit Card Accounts</Link>
-				<Link to="/dashboard">View Dashboard</Link>
 				<Router>
+
+					<Link to="/login">Register/Login</Link>
+					<p></p>
+					<Link to={`/user/dashboard`}>View Dashboard</Link>
+					<p></p>
+					<Link to="/cc-accounts">View Credit Card Accounts</Link>
+					<p></p>
+					<Link to="/myprofile">My Profile</Link>
+					<p></p>
+					<Link to="/update-profile">Update Profile</Link>
+
+				
 					<Switch>
-						<Route path="/home">
-							<Home/>
+					<Route path="/login">
+							<Login/>
+							<Registration/>
 						</Route>
-						<Route path="/dashboard">
+						<Route path="/user/dashboard">
 							<Dashboard/>
 						</Route>
 						<Route path="/cc-accounts">
@@ -32,40 +42,15 @@ class App extends React.Component {
 						<Route path="/myprofile">
 							<UserProfile/>
 						</Route>
-						<Route path="/myprofile/update">
+						<Route path="/update-profile">
 							<UpdateUserProfile/>
-						</Route>
+						</Route>						
 					</Switch>
 				</Router>
 			</div>
 			);
 		}
 	}
-
-
-class Home extends React.Component {
-	render() {
-		return (
-			<div>
-			<Login/>
-			<Registration/>
-			</div>
-			)
-		}
-	}
-
-class Dashboard extends React.Component {
-	render() {
-		return (
-			<div>
-			<LoginStatus/>
-			<CCAccount/>
-			<UserProfile/>
-			</div>
-			)
-		}
-	}	
-
 
 class Login extends React.Component {
 	constructor(props) {
@@ -74,6 +59,7 @@ class Login extends React.Component {
 			email: '',
 			password: ''
 		};
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -83,15 +69,15 @@ class Login extends React.Component {
 			password: this.state.password
 		}
 
-		console.log(data.get("email"));
-		console.log(data.get("password"));
+		// console.log(data.get("email"));
+		// console.log(data.get("password"));
 		
-	// 	fetch('/api/all-cc-accounts', {
-	// 		method: 'POST',
-	// 		body: JSON.stringify(data),
-	// 	})
-	// 	.then(response => response.json())
-  // .then(data => console.log(data));
+		fetch('/api/login', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		})
+		.then(response => response.json())
+  .then(data => console.log(data));
 
   }		
 	//Need a fetch method to gather form input and send to database
@@ -161,7 +147,7 @@ class Registration extends React.Component {
 		}
 
 
-class LoginStatus extends React.Component {
+class Dashboard extends React.Component {
 	constructor() {
 		super()
 		this.state = {
@@ -239,17 +225,16 @@ class UserProfile extends React.Component {
 
 class UpdateUserProfile extends React.Component {
 	constructor() {
-		super()
-		this.state = {}
-		}
+		super();
+	}
 
-		render() {
-			return(
-				<div>
-					<p></p>
-						<h4>
-							Update the form fields below.
-						</h4>
+	render() {
+		return (
+			<div>
+				<p></p>
+					<h4>
+						Update the form fields below.
+					</h4>
 					<form>
 					<label>First Name
 							<input type="text" name="first-name" placeholder="get from db"/>
@@ -268,11 +253,12 @@ class UpdateUserProfile extends React.Component {
 				</div>
 			)
 		}
-		}
+	}
+
 
 
 ReactDOM.render (
-	<Login />,
+	<App />,
 	document.getElementById("root")
 );
 
