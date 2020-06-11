@@ -1,12 +1,9 @@
-"use strict";
-
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+const Router = window.ReactRouterDOM.BrowserRouter;
+const Route =  window.ReactRouterDOM.Route;
+const Link =  window.ReactRouterDOM.Link;
+const Prompt =  window.ReactRouterDOM.Prompt;
+const Switch = window.ReactRouterDOM.Switch;
+const Redirect = window.ReactRouterDOM.Redirect;
 
 
 class App extends React.Component {
@@ -18,9 +15,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Link to="/dashboard">View Dashboard</Link>
+				{/* <Link to="/dashboard">View Dashboard</Link>
 				<Link to="/cc-accounts">View Credit Card Accounts</Link>
-				<Link to="/dashboard">View Dashboard</Link>
+				<Link to="/dashboard">View Dashboard</Link> */}
 				<Router>
 					<Switch>
 						<Route path="/home">
