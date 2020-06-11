@@ -29,9 +29,16 @@ def add_user():
 @app.route('/api/login', methods=['POST'])
 def log_in_user():
 	"""Logs in a user."""
-	data
+
+	data = request.get_json(force=True)
+	print("******************************************"*25)
+	print(data)
+	print("******************************************"*25)
 	
-	
+	email = data['email']
+	password = data['password']
+
+	user = crud.get_user_email(email)
 
 	return jsonify(accounts)
 

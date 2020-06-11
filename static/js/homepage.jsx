@@ -65,23 +65,19 @@ class Login extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 		const data = {
-			email: this.state.email,
+			email: this.target.email,
 			password: this.state.password
 		}
+		console.log(data)
 
-		// console.log(data.get("email"));
-		// console.log(data.get("password"));
-		
 		fetch('/api/login', {
 			method: 'POST',
 			body: JSON.stringify(data),
 		})
 		.then(response => response.json())
   .then(data => console.log(data));
-
-  }		
-	//Need a fetch method to gather form input and send to database
-
+	}		
+	
 	render() {
 		return (
 			<div>
