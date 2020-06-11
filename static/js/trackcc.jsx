@@ -1,3 +1,15 @@
+class App extends React.Component {
+	render() {
+		return (
+			<div>
+				<Login/>
+			</div>
+		)
+	}
+}
+
+
+
 class AddCCAccount extends React.Component {
 	constructor() {
 		super()
@@ -14,12 +26,11 @@ render() {
 				<h6>Select the credit card issuer from below</h6>
 				<img width="250" height="167" id="credit-card-image" src="../static/img/American-Express-Logotype-Stacked.png" ***href="link to change state on click"***/>
 
-				<img width="250" height="167" id="credit-card-image" src="../static/img/chase-bank-logo.png" ***href="link to change state on click"***/>
-		</div>
+				<img width="250" height="167" id="credit-card-image" src="../static/img/chase-bank-logo.png" ***href="link to change state on click" />
+			</div>
 	)
 }
 }
-
 
 ReactDOM.render (
 	<App />,

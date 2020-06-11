@@ -1,9 +1,9 @@
-const Router = window.ReactRouterDOM.BrowserRouter;
-const Route =  window.ReactRouterDOM.Route;
-const Link =  window.ReactRouterDOM.Link;
-const Prompt =  window.ReactRouterDOM.Prompt;
-const Switch = window.ReactRouterDOM.Switch;
-const Redirect = window.ReactRouterDOM.Redirect;
+// const Router = window.ReactRouterDOM.BrowserRouter;
+// const Route =  window.ReactRouterDOM.Route;
+// const Link =  window.ReactRouterDOM.Link;
+// const Prompt =  window.ReactRouterDOM.Prompt;
+// const Switch = window.ReactRouterDOM.Switch;
+// const Redirect = window.ReactRouterDOM.Redirect;
 
 
 class App extends React.Component {
@@ -15,9 +15,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				{/* <Link to="/dashboard">View Dashboard</Link>
+				<Link to={`/dashboard`}>View Dashboard</Link>
 				<Link to="/cc-accounts">View Credit Card Accounts</Link>
-				<Link to="/dashboard">View Dashboard</Link> */}
+				<Link to="/dashboard">View Dashboard</Link>
 				<Router>
 					<Switch>
 						<Route path="/home">
@@ -68,28 +68,32 @@ class Dashboard extends React.Component {
 
 
 class Login extends React.Component {
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		email: '',
-	// 		password: ''
-	// 	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: '',
+			password: ''
+		};
+	}
 
-	// handleSubmit(event) {
-	// 	event.preventDefault();
-	// 	const formData = {
-	// 		email: this.state.email,
-	// 		password: this.state.password
-	// 	}
+	handleSubmit(event) {
+		event.preventDefault();
+		const data = {
+			email: this.state.email,
+			password: this.state.password
+		}
 
-	// 	console.log(data.get("email"));
-	// 	console.log(data.get("password"));
+		console.log(data.get("email"));
+		console.log(data.get("password"));
 		
-	// 	fetch('/api/login', {
+	// 	fetch('/api/all-cc-accounts', {
 	// 		method: 'POST',
-	// 		body: data,
-	// 	});
-  // }		
+	// 		body: JSON.stringify(data),
+	// 	})
+	// 	.then(response => response.json())
+  // .then(data => console.log(data));
+
+  }		
 	//Need a fetch method to gather form input and send to database
 
 	render() {
@@ -268,7 +272,7 @@ class UpdateUserProfile extends React.Component {
 
 
 ReactDOM.render (
-	<App />,
+	<Login />,
 	document.getElementById("root")
 );
 

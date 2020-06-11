@@ -24,11 +24,17 @@ def add_user():
 	email = request.args.get("email")
 	password = request.args.get("password")
 
-	return jsonify()
+	
 
-@app.route('/login', methods=['POST'])
-def user_login():
-	"""Log in a user."""
+@app.route('/api/all-cc-accounts', methods=['POST'])
+def show_cc_accounts():
+	"""Returns all cc accounts in database."""
+	
+	accounts = crud.get_cc_accounts()
+
+	return jsonify(accounts)
+
+
 	
 	#look up in database, see if exists, if/else
 	#if exists, respond with success

@@ -7,8 +7,8 @@ from fakerdata import *
 import json
 import random
 
-from faker import Faker
-fake = Faker()
+# from faker import Faker
+# fake = Faker()
 
 # --------------------------------------------------------------------------------
 """Functions for seeding database."""
