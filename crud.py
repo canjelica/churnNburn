@@ -108,8 +108,14 @@ def get_user_email(email):
 
 def add_user(firstname, lastname, email, password):
 	"""Adds a new user to the database."""
+	
+	new_user = User(first_name=firstname, last_name=lastname, email=email, password=password)
+	
+	db.session.add(new_user)
+	db.session.commit()
+	return new_user
 
-	return User(first_name=firstname, last_name=lastname, email=email, password=password)
+	
 
 
 

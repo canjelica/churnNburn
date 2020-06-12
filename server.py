@@ -53,7 +53,7 @@ def register_user():
 	print(user)
 	if user:
 		status = "You have created your account."
-
+#Not actually adding to database why? Look into crud function to insert into database
 	return jsonify(status)
 
 
