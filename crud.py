@@ -99,7 +99,8 @@ def get_user_email(email):
 	"""Return a user by email."""
 
 	return User.query.filter(User.email == email).first()
-	 
+
+
 
 
 

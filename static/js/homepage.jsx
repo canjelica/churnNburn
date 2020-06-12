@@ -25,7 +25,7 @@ class App extends React.Component {
 					<p></p>
 					<Link to="/myprofile">My Profile</Link>
 					<p></p>
-					<Link to="/update-profile">Update Profile</Link>
+					{/* <Link to="/add-new">Track a new credit card</Link> */}
 
 				
 					<Switch>
@@ -42,9 +42,7 @@ class App extends React.Component {
 						<Route path="/myprofile">
 							<UserProfile/>
 						</Route>
-						<Route path="/update-profile">
-							<UpdateUserProfile/>
-						</Route>						
+											
 					</Switch>
 				</Router>
 			</div>
@@ -60,23 +58,37 @@ class Login extends React.Component {
 			password: ''
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getEmail = this.getEmail.bind(this);
+		this.getPassword = this.getPassword(this);
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
 		const data = {
-			email: this.target.email,
+			email: this.state.email,
 			password: this.state.password
 		}
 		console.log(data)
 
 		fetch('/api/login', {
 			method: 'POST',
-			body: JSON.stringify(data),
+			body: JSON.stringify(data)
 		})
 		.then(response => response.json())
   .then(data => console.log(data));
 	}		
+
+	getEmail(event) {
+		event.preventDefault();
+		this.setState({email: event.target.value,})
+	}
+	
+	getPassword(event) {
+		event.preventDefault();
+		this.setState({password: event.target.value})
+	}
+	
+	
 	
 	render() {
 		return (
@@ -85,11 +97,11 @@ class Login extends React.Component {
 				<p>Login below.</p>
 					<label htmlFor="email">
 						Email:
-						<input name="email" type="text" ref={this.input}/>
+						<input name="email" type="text" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
 					</label>
 					<label htmlFor="password">
 						Password:
-						<input name="password" type="text" ref={this.input}/>
+						<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password} />
 					</label>
 					<button>Login!</button>
 			</form>
@@ -209,9 +221,15 @@ class UserProfile extends React.Component {
 			return(
 				<div>
 					<h4>My Profile</h4>
-					<p>**Display email and password from database**</p>
+					<p>Welcome, **first name last name***! Your account profile is currently up-to-date. If you'd like to make change your password, enter the new password below. </p>
 					<p> Email: **from db**</p>
-					<p> Password: **from db**</p>
+					<form id="password">
+						<label htmlFor="password">
+							Password:
+							<input name="password" type="text"/>
+						</label>
+						<button>Save new</button>
+						</form>
 					<a href="route to pull up form for updating">Edit info</a>
 					<p></p>
 				</div>
@@ -219,37 +237,37 @@ class UserProfile extends React.Component {
 		}
 	}
 
-class UpdateUserProfile extends React.Component {
-	constructor() {
-		super();
-	}
+// class TrackNewAccount extends React.Component {
+// 	constructor() {
+// 		super();
+// 	}
 
-	render() {
-		return (
-			<div>
-				<p></p>
-					<h4>
-						Update the form fields below.
-					</h4>
-					<form>
-					<label>First Name
-							<input type="text" name="first-name" placeholder="get from db"/>
-						</label>
-						<label>Last Name
-							<input type="text" name="last-name" placeholder="get from db"/>
-						</label>
-						<label>Email
-							<input type="text" name="email" placeholder="get from db"/>
-						</label>
-						<label>Password
-							<input type="text" name="password" placeholder="get from db"/>
-						</label>
-						<button>Save</button>
-					</form>
-				</div>
-			)
-		}
-	}
+// 	render() {
+// 		return (
+// 			<div>
+// 				<p></p>
+// 					<h4>
+// 						Update the form fields below.
+// 					</h4>
+// 					<form>
+// 					<label>First Name
+// 							<input type="text" name="first-name" placeholder="get from db"/>
+// 						</label>
+// 						<label>Last Name
+// 							<input type="text" name="last-name" placeholder="get from db"/>
+// 						</label>
+// 						<label>Email
+// 							<input type="text" name="email" placeholder="get from db"/>
+// 						</label>
+// 						<label>Password
+// 							<input type="text" name="password" placeholder="get from db"/>
+// 						</label>
+// 						<button>Save</button>
+// 					</form>
+// 				</div>
+// 			)
+// 		}
+// 	}
 
 
 

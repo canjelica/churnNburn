@@ -1,9 +1,10 @@
 """Server for Hackbright Project app."""
 
 from flask import (Flask, render_template, request, flash, session,
-                   redirect)
+                   redirect, jsonify)
 from model import connect_to_db
 import crud
+
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -19,28 +20,24 @@ def homepage():
 def add_user():
 	"""Add a user to our database."""
 
-	first_name = request.args.get("first-name")
-	last_name = request.args.get("last-name")
-	email = request.args.get("email")
-	password = request.args.get("password")
 
 	
 
 @app.route('/api/login', methods=['POST'])
 def log_in_user():
 	"""Logs in a user."""
-
+	
 	data = request.get_json(force=True)
-	print("******************************************"*25)
-	print(data)
-	print("******************************************"*25)
+	# print("******************************************"*25)
+	# print(data)
+	# print("******************************************"*25)
 	
 	email = data['email']
 	password = data['password']
 
 	user = crud.get_user_email(email)
 
-	return jsonify(accounts)
+	return jsonify(user)
 
 
 	
