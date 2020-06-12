@@ -27,17 +27,24 @@ def add_user():
 def log_in_user():
 	"""Logs in a user."""
 	
-	data = request.get_json(force=True)
-	# print("******************************************"*25)
-	# print(data)
-	# print("******************************************"*25)
-	
+	data = request.get_json(force=True)	
+	print(request)
+	print("*"*200)
 	email = data['email']
 	password = data['password']
+	
+	print(email)
+	print("*"*200)
 
 	user = crud.get_user_email(email)
+	print(user)
 
-	return jsonify(user)
+	if not user:
+		status = "You have not registered an account."
+	else:
+		status = "You are logged in."
+
+	return jsonify(status)
 
 
 	

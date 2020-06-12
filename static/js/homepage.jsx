@@ -9,9 +9,9 @@ const Redirect = window.ReactRouterDOM.Redirect;
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { };
+		this.state = {isLoggedin: false };
 	}
-
+	
 	render() {
 		return (
 			<div>
@@ -59,7 +59,7 @@ class Login extends React.Component {
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.getEmail = this.getEmail.bind(this);
-		this.getPassword = this.getPassword(this);
+		this.getPassword = this.getPassword.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -72,15 +72,16 @@ class Login extends React.Component {
 
 		fetch('/api/login', {
 			method: 'POST',
-			body: JSON.stringify(data)
+			body: JSON.stringify(data),
 		})
 		.then(response => response.json())
-  .then(data => console.log(data));
-	}		
+  	.then(data => console.log(data));
+													
+		}
 
 	getEmail(event) {
 		event.preventDefault();
-		this.setState({email: event.target.value,})
+		this.setState({email: event.target.value})
 	}
 	
 	getPassword(event) {
