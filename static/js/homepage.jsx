@@ -17,7 +17,7 @@ class App extends React.Component {
 			<div>
 				<Router>
 
-					<Link to="/login">Register/Login</Link>
+					<Link to="/">Register/Login</Link>
 					<p></p>
 					<Link to={`/user/dashboard`}>View Dashboard</Link>
 					<p></p>
@@ -29,7 +29,7 @@ class App extends React.Component {
 
 				
 					<Switch>
-					<Route path="/login">
+					<Route path="/">
 							<Login/>
 							<Registration/>
 						</Route>
@@ -75,7 +75,9 @@ class Login extends React.Component {
 			body: JSON.stringify(data),
 		})
 		.then(response => response.json())
-  	.then(data => console.log(data));
+		.then(data => console.log(data));
+		
+		// if data=="You are logged in, render new Dashboard component" withRouter LInk or Conditional reander, switch views
 													
 		}
 
@@ -88,8 +90,7 @@ class Login extends React.Component {
 		event.preventDefault();
 		this.setState({password: event.target.value})
 	}
-	
-	
+
 	
 	render() {
 		return (
@@ -113,39 +114,79 @@ class Login extends React.Component {
 	
 	
 class Registration extends React.Component {
-	// constructor() {
-	// 	super();
-	// 	this.handleSubmit = this.handleSubmit.bind(this);
-	// 	// this.input = React.createRef();
-	// }
+	constructor(props) {
+		super(props);
+		this.state = {
+			firstname: '',
+			lastname: '',
+			email: '',
+			password: ''
+		};
 
-	// handleSubmit = (event) => {
-	// 	event.preventDefault();
-	// 	const data = new FormData(event.target); //Ask mentors what this is doing
-	// 	console.log(data.get("email"), data.get("password"), data.get("first-name"), data.get("last-name"));
-	// }
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getFName = this.getFName.bind(this);
+		this.getLName = this.getLName.bind(this);
+		this.getEmail = this.getEmail.bind(this);
+		this.getPassword = this.getPassword.bind(this);
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+		const data = {
+			firstname: this.state.firstname,
+			lastname: this.state.lastname,
+			email: this.state.email,
+			password: this.state.password
+		}
+		console.log(data)
+
+		fetch('/api/registration', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		})
+		.then(response => response.json())
+		.then(data => console.log(data));													
+		}
+//if created account comes back then conditional render or Router LInk to Dahboard View
+	getFName(event) {
+		event.preventDefault();
+		this.setState({firstname: event.target.value})
+	}
+
+	getLName(event) {
+		event.preventDefault();
+		this.setState({lastname: event.target.value})
+	}
+
+	getEmail(event) {
+		event.preventDefault();
+		this.setState({email: event.target.value})
+	}
+	
+	getPassword(event) {
+		event.preventDefault();
+		this.setState({password: event.target.value})
+	}
 	
 		render() {
-			//this is where I put in functions that loop constantly 
-			//componenddidmount, set up an dlaunch the method at the beginning of the render. Doing an axios call, continues on to whatever it did. Runs immediatley and only once.
 			return (
 				<div>
 					<form onSubmit={this.handleSubmit}>
 						<p>New User? Register Here.</p>
-							<label htmlFor="first-name">
+							<label htmlFor="firstname">
 								First name:
-								<input name="first-name" type="text" ref={this.input}/>
+								<input name="firstname" type="text" ref={this.input} onChange = {this.getFName} value={this.state.firstname}/>
 							</label>
-							<label htmlFor="last-name">
+							<label htmlFor="lastname">
 								Last name:
-								<input name="last-name" type="text" ref={this.input}/>
+								<input name="lastname" type="text" ref={this.input} onChange={this.getLName} value={this.state.lastname}/>
 							</label>
 							<label htmlFor="email">
 								Email address:
-								<input name="email" type="text" ref={this.input}/>
+								<input name="email" type="text" ref={this.input} onChange={this.getEmail} value={this.state.email}/>
 							<label htmlFor="password">
 								Password:
-									<input name="password" type="text" ref={this.input}/>
+									<input name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
 							</label>
 							<button>Login!</button>
 							</label>

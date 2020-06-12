@@ -19,8 +19,6 @@ def homepage():
 @app.route('/api/newuser', methods=['POST'])
 def add_user():
 	"""Add a user to our database."""
-
-
 	
 
 @app.route('/api/login', methods=['POST'])
@@ -28,16 +26,10 @@ def log_in_user():
 	"""Logs in a user."""
 	
 	data = request.get_json(force=True)	
-	print(request)
-	print("*"*200)
 	email = data['email']
 	password = data['password']
 	
-	print(email)
-	print("*"*200)
-
 	user = crud.get_user_email(email)
-	print(user)
 
 	if not user:
 		status = "You have not registered an account."
@@ -47,10 +39,24 @@ def log_in_user():
 	return jsonify(status)
 
 
+@app.route('/api/registration', methods=['POST'])
+def register_user():
+	"""Registers a new user."""
 	
-	#look up in database, see if exists, if/else
-	#if exists, respond with success
-	#else respond with error
+	data = request.get_json(force=True)	
+	first_name = data['firstname']
+	last_name = data['lastname']
+	email = data['email']
+	password = data['password']
+	print(data)
+	user = crud.add_user(first_name, last_name, email, password)
+	print(user)
+	if user:
+		status = "You have created your account."
+
+	return jsonify(status)
+
+
 
 
 

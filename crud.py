@@ -106,6 +106,12 @@ def get_user_email(email):
 	return User.query.filter(User.email == email).first()
 
 
+def add_user(firstname, lastname, email, password):
+	"""Adds a new user to the database."""
+
+	return User(first_name=firstname, last_name=lastname, email=email, password=password)
+
+
 
 
 
