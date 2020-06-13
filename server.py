@@ -13,13 +13,9 @@ app.secret_key = "dev"
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
+  return render_template('index.html')
 
 
-@app.route('/api/newuser', methods=['POST'])
-def add_user():
-	"""Add a user to our database."""
-	
 
 @app.route('/api/login', methods=['POST'])
 def log_in_user():
@@ -34,8 +30,10 @@ def log_in_user():
 	if not user:
 		status = "You have not registered an account."
 	else:
-		status = "You are logged in."
-
+		session['user_logged_in'] = user.user_id 
+		name = f'{user.first_name} {user.last_name}'
+		status = [user.user_id, name]
+	
 	return jsonify(status)
 
 

@@ -8,20 +8,44 @@ const Switch = window.ReactRouterDOM.Switch;
 const Redirect = window.ReactRouterDOM.Redirect;
 
 
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {isLoggedin: false };
+		this.state = {
+			email: '',
+			password: '',
+			userId: '',
+			name: '',
+			isLoggedin: false
+		};
+	}
+
+	userLoggedIn = (loginState) => {
+		console.log("mommy is sad bec her state is", this.state)
+		this.setState({
+			...loginState 
+			//the ... spreads the object data so you don't have to do it separately yourself. So I wouldn't have to do {this.state = {email: loginState.email}} etc.
+		})
+		console.log("mommy happy bc", loginState)
+
 	}
 	
+	// 	sessionStorage.setItem('userId', userId);
+	// 	sessionStorage.setItem('name', name);
+	// 	this.setState({ userId: userId});
+	// 	console.log(data)
+	// }
+
 	render() {
+		const userId = sessionStorage.getItem('userId');
+		console.log(userId)
 		return (
 			<div>
 				<Router>
-
-					<Link to="/">Register/Login</Link>
+					<Link to="/login">Register/Login</Link>
 					<p></p>
-					<Link to={`/user/dashboard`}>View Dashboard</Link>
+					<Link to="/user/dashboard">View Dashboard</Link>
 					<p></p>
 					<Link to="/cc-accounts">View Credit Card Accounts</Link>
 					<p></p>
@@ -30,9 +54,10 @@ class App extends React.Component {
 					{/* <Link to="/add-new">Track a new credit card</Link> */}
 
 				
-					<Switch>
-					<Route path="/">
-							<Login/>
+					<Switch> 
+							<Route path="/login">
+							<Login parentCallback = {this.userLoggedIn} />
+							<p> {this.state.name}</p>
 							<Registration/>
 						</Route>
 						<Route path="/user/dashboard">
@@ -44,7 +69,7 @@ class App extends React.Component {
 						<Route path="/myprofile">
 							<UserProfile/>
 						</Route>
-											
+
 					</Switch>
 				</Router>
 			</div>
@@ -57,8 +82,12 @@ class Login extends React.Component {
 		super(props);
 		this.state = {
 			email: '',
-			password: ''
+			password: '',
+			userId: '',
+			name: '',
+			isLoggedIn: ''
 		};
+
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.getEmail = this.getEmail.bind(this);
 		this.getPassword = this.getPassword.bind(this);
@@ -69,20 +98,23 @@ class Login extends React.Component {
 		const data = {
 			email: this.state.email,
 			password: this.state.password
-		}
-		console.log(data)
-
+		};
+	
 		fetch('/api/login', {
 			method: 'POST',
 			body: JSON.stringify(data),
 		})
 		.then(response => response.json())
-		.then(data => console.log(data));
+		.then(data => {
+			this.setState({
+				userId: data[0],
+				name: data[1]
+			})
+			console.log(this.state)
+			this.sendData()
+		})
+	}
 		
-		// if data=="You are logged in, render new Dashboard component" withRouter LInk or Conditional reander, switch views
-													
-		}
-
 	getEmail(event) {
 		event.preventDefault();
 		this.setState({email: event.target.value})
@@ -93,8 +125,20 @@ class Login extends React.Component {
 		this.setState({password: event.target.value})
 	}
 
+	sendData = () => {
+		// if this.state.name and email, tell parent callback that I'm logged in isLoggedin: true
+		if(this.state.email) {
+			this.setState({isLoggedIn: true})
+		}
+		console.log(this.state)
+		console.log("Sending the data to mommy")
+		this.props.parentCallback(this.state);
+	}
+
+
 	
 	render() {
+
 		return (
 			<div>
 			<form id="LoginForm" onSubmit={this.handleSubmit}>
@@ -203,10 +247,9 @@ class Dashboard extends React.Component {
 	constructor() {
 		super()
 		this.state = {
-			isLoggedIn: true
 		}
 	}
-
+	
 		render() {
 			let wordDisplay
 			if (this.state.isLoggedIn) {
