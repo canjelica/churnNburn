@@ -33,7 +33,6 @@ def log_in_user():
 		session['user_logged_in'] = user.user_id 
 		name = f'{user.first_name} {user.last_name}'
 		status = [user.user_id, name]
-	
 	return jsonify(status)
 
 
@@ -51,11 +50,39 @@ def register_user():
 	print(user)
 	if user:
 		status = "You have created your account."
-#Not actually adding to database why? Look into crud function to insert into database
+
 	return jsonify(status)
 
+@app.route('/api/dashboard', methods=['POST'])
+def show_user_dashboard():
+	"""Shows logged-in user their dashboard."""
+
+	user_id = session['user_logged_in']
+	logged_in_user = crud.get_user_id(user_id)
+	logged_in_user = logged_in_user.user_id
+
+	print("*"*250)
+	print("session user", user_id)
+	print("session user confirmation", logged_in_user)
+	if user_id == logged_in_user:
+		return jsonify(logged_in_user)
+
+@app.route('/api/cc-accounts')
+def get_cc_info():
+	"""Returns specific account attributes."""
+	 #
 
 
+		
+
+
+
+
+# new approute to catch fetch api from dashboard,
+# fetch, pass in session over, if user exists, change is Logged IN data, render whatever needed, click 
+# user_id: session[user_id],
+# isloggedin will always be true when there is a user id session to throw back
+# log out, is logged in, change the flag
 
 
 

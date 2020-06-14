@@ -17,29 +17,44 @@ class App extends React.Component {
 			password: '',
 			userId: '',
 			name: '',
-			isLoggedin: false
+			isLoggedIn: false
 		};
 	}
 
+
+
 	userLoggedIn = (loginState) => {
-		console.log("mommy is sad bec her state is", this.state)
+		console.log("mommy is sad bc her state is", this.state)
 		this.setState({
 			...loginState 
 			//the ... spreads the object data so you don't have to do it separately yourself. So I wouldn't have to do {this.state = {email: loginState.email}} etc.
 		})
 		console.log("mommy happy bc", loginState)
-
 	}
 	
-	// 	sessionStorage.setItem('userId', userId);
-	// 	sessionStorage.setItem('name', name);
-	// 	this.setState({ userId: userId});
-	// 	console.log(data)
-	// }
+	componentDidMount() {
+		this.checkCredentials()
+	}
+		
+	checkCredentials() {
+		if (this.state.userId = '') {
+		fetch('/api/dashboard', {
+			method: 'POST',
+			body: JSON.stringify(this.state),
+		})
+		.then(response => response.json())   //returns user_id
+		.then(data => {
+			this.setState({
+				userId: data,
+				isLoggedIn: true
+			});
+		}
+		)
+	};//help with if/else...still reading fetch request despite else. Maybe ask about moving this to parent state instead?
+}
 
 	render() {
-		const userId = sessionStorage.getItem('userId');
-		console.log(userId)
+	
 		return (
 			<div>
 				<Router>
@@ -52,19 +67,18 @@ class App extends React.Component {
 					<Link to="/myprofile">My Profile</Link>
 					<p></p>
 					{/* <Link to="/add-new">Track a new credit card</Link> */}
-
 				
 					<Switch> 
 							<Route path="/login">
-							<Login parentCallback = {this.userLoggedIn} />
-							<p> {this.state.name}</p>
+							<Login parentCallback = {this.userLoggedIn} /> 
+							<p> Welcome {this.state.name}!</p>
 							<Registration/>
 						</Route>
 						<Route path="/user/dashboard">
-							<Dashboard/>
+							<Dashboard  />
 						</Route>
 						<Route path="/cc-accounts">
-							<CCAccount/>
+							<CCAccount />
 						</Route>
 						<Route path="/myprofile">
 							<UserProfile/>
@@ -106,14 +120,17 @@ class Login extends React.Component {
 		})
 		.then(response => response.json())
 		.then(data => {
-			this.setState({
-				userId: data[0],
-				name: data[1]
+			if (data === "You have not registered an account.") {
+				alert("You have not registered an account.")
+			} else {
+				this.setState({
+					userId: data[0],
+					name: data[1]
+				})
+				console.log(this.state)
+				this.sendData()}
 			})
-			console.log(this.state)
-			this.sendData()
-		})
-	}
+		}
 		
 	getEmail(event) {
 		event.preventDefault();
@@ -126,17 +143,15 @@ class Login extends React.Component {
 	}
 
 	sendData = () => {
-		// if this.state.name and email, tell parent callback that I'm logged in isLoggedin: true
+		// if this.state.name and email, tell parent callback that I'm logged in isLoggedIn: true
 		if(this.state.email) {
 			this.setState({isLoggedIn: true})
 		}
-		console.log(this.state)
-		console.log("Sending the data to mommy")
+		// console.log(this.state)
+		// console.log("Sending the data to mommy")
 		this.props.parentCallback(this.state);
 	}
 
-
-	
 	render() {
 
 		return (
@@ -244,57 +259,83 @@ class Registration extends React.Component {
 
 
 class Dashboard extends React.Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		this.state = {
+			userId: '',
+			isLoggedIn: false,
 		}
-	}
-	
-		render() {
-			let wordDisplay
-			if (this.state.isLoggedIn) {
-				wordDisplay = "in"
-			} else {
-				wordDisplay = "out"
-			};;
+	}	
+
 		
-			return (
-				<div>
-					<h3>You are currently logged {wordDisplay}</h3>
-				</div>
-			)
-		}
+	render() {
+		let wordDisplay
+		if (this.state.isLoggedIn) {
+			wordDisplay = "in";	
+		} else {
+			wordDisplay = "out. You must log in to view this page."
+		};
+		return (
+			<div>
+				<h6>You are currently logged {wordDisplay}</h6>
+			</div>
+		)
 	}
+}
 
 
 class CCAccount extends React.Component {
-	constructor() {
-		super()
-		this.state = {}
+	constructor(props) {
+		super(props)
+		this.state = {
+			userId: '',
+			name: '',
+			isLoggedin: false}
 		}
 
-		render() {
+		// componentDidMount(props) {
+		// 	this.setState({isLoggedIn: props});
+		// 	console.log(this.state)
+		// }
+
+		render(props) {
+			this.setState({isLoggedIn: props});
+			let wordDisplay
+			if (this.state.isLoggedIn = false) {
+				wordDisplay = "out. You must log in to view this page.";
+			return (
+				<div>
+					<h6>You are currently logged {wordDisplay}</h6>
+					<Redirect to="/login"/>
+				</div>
+				)
+
+			} else {
+
 			return(
 				<div>
 					<span>
 						<h4>
-							British Airways Signature Visa
+							British Airways Signature Visa //name of account by user_id
 						</h4>
 						</span>
-					<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" />
+					<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" /> //image of account by user id
 					<span>
 						<p>
-							ALERT: You have **from database** of days to complete **from database** in spending
+							//your name of cc was approved approval date
+							how much have you spent form?
+							you have  x days = (approval date + timeframe, end date minus approval date)
+							to spend total needed spending minus form input
 						</p>
 					</span>
-					<span>Progress toward spending bonus **BAR CHART**</span>
 					<p>
 					<a href="https://www.britishairways.com/">
 						Visit British Airways Avios portal
 					</a>
 					</p>
 				</div>
-			)
+				)
+			}
 		}
 	}
 
