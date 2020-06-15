@@ -1,7 +1,6 @@
 """Server for Hackbright Project app."""
 
-from flask import (Flask, render_template, request, flash, session,
-                   redirect, jsonify)
+from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
 import crud
 
@@ -26,13 +25,17 @@ def log_in_user():
 	password = data['password']
 	
 	user = crud.get_user_email(email)
+	# user_pw = crud.get_user_pw(password)
 
 	if not user:
 		status = "You have not registered an account."
 	else:
-		session['user_logged_in'] = user.user_id 
 		name = f'{user.first_name} {user.last_name}'
-		status = [user.user_id, name]
+		session['user_logged_in'] = user.user_id
+		# session['user_name'] = name
+		# session['user_pw'] = user.password
+	
+		status = [user.user_id, name] #user_pw]
 	return jsonify(status)
 
 
@@ -60,17 +63,21 @@ def show_user_dashboard():
 	user_id = session['user_logged_in']
 	logged_in_user = crud.get_user_id(user_id)
 	logged_in_user = logged_in_user.user_id
+	logged_in = True
 
-	print("*"*250)
-	print("session user", user_id)
-	print("session user confirmation", logged_in_user)
 	if user_id == logged_in_user:
 		return jsonify(logged_in_user)
 
-@app.route('/api/cc-accounts')
+@app.route('/api/cc-accounts', methods=['GET'])
 def get_cc_info():
 	"""Returns specific account attributes."""
-	 #
+	
+	user_id = session['user_logged_in']	
+	cc_acct_info = crud.get_cc_account(user_id)
+	cc_info = crud.get_credit_card(user_id)
+	
+	print('*'*200, cc_acct_info)
+	return (user_id)
 
 
 		

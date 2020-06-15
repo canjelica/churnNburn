@@ -6,7 +6,7 @@ const Link =  window.ReactRouterDOM.Link;
 const Prompt =  window.ReactRouterDOM.Prompt;
 const Switch = window.ReactRouterDOM.Switch;
 const Redirect = window.ReactRouterDOM.Redirect;
-
+const MContext = React.createContext();
 
 
 class App extends React.Component {
@@ -19,48 +19,25 @@ class App extends React.Component {
 			name: '',
 			isLoggedIn: false
 		};
+
+		this.userLoggedIn = this.userLoggedIn.bind(this)
 	}
 
-
-
-	userLoggedIn = (loginState) => {
-		console.log("mommy is sad bc her state is", this.state)
+	userLoggedIn = (userId) => {
 		this.setState({
-			...loginState 
-			//the ... spreads the object data so you don't have to do it separately yourself. So I wouldn't have to do {this.state = {email: loginState.email}} etc.
+			isLoggedIn: userId
 		})
-		console.log("mommy happy bc", loginState)
+		console.log(this.state)
 	}
-	
-	componentDidMount() {
-		this.checkCredentials()
-	}
-		
-	checkCredentials() {
-		if (this.state.userId = '') {
-		fetch('/api/dashboard', {
-			method: 'POST',
-			body: JSON.stringify(this.state),
-		})
-		.then(response => response.json())   //returns user_id
-		.then(data => {
-			this.setState({
-				userId: data,
-				isLoggedIn: true
-			});
-		}
-		)
-	};//help with if/else...still reading fetch request despite else. Maybe ask about moving this to parent state instead?
-}
+ 
 
 	render() {
-	
 		return (
 			<div>
 				<Router>
 					<Link to="/login">Register/Login</Link>
 					<p></p>
-					<Link to="/user/dashboard">View Dashboard</Link>
+					<Link to="/user/dashboard" >View Dashboard</Link>
 					<p></p>
 					<Link to="/cc-accounts">View Credit Card Accounts</Link>
 					<p></p>
@@ -69,27 +46,27 @@ class App extends React.Component {
 					{/* <Link to="/add-new">Track a new credit card</Link> */}
 				
 					<Switch> 
-							<Route path="/login">
-							<Login parentCallback = {this.userLoggedIn} /> 
+							<Route exact path="/login">
+							<Login userLoggedIn = {this.userLoggedIn} /> 
 							<p> Welcome {this.state.name}!</p>
 							<Registration/>
-						</Route>
-						<Route path="/user/dashboard">
-							<Dashboard  />
-						</Route>
-						<Route path="/cc-accounts">
-							<CCAccount />
-						</Route>
-						<Route path="/myprofile">
-							<UserProfile/>
-						</Route>
-
+							</Route>
+							<Route exact path="/user/dashboard">
+								<Dashboard userLoggedIn = {this.userLoggedIn}/>
+							</Route>
+							<Route exact path="/cc-accounts">
+								<CCAccount />
+							</Route>
+							<Route exact path="/myprofile">
+								<UserProfile/>
+							</Route>
 					</Switch>
 				</Router>
 			</div>
 			);
 		}
 	}
+
 
 class Login extends React.Component {
 	constructor(props) {
@@ -113,8 +90,8 @@ class Login extends React.Component {
 			email: this.state.email,
 			password: this.state.password
 		};
-	
-		fetch('/api/login', {
+		
+			fetch('/api/login', {
 			method: 'POST',
 			body: JSON.stringify(data),
 		})
@@ -125,10 +102,11 @@ class Login extends React.Component {
 			} else {
 				this.setState({
 					userId: data[0],
-					name: data[1]
-				})
-				console.log(this.state)
-				this.sendData()}
+					name: data[1],
+					password: data[2]
+				});
+				console.log(this.state);
+				this.props.userLoggedIn(data[0])}
 			})
 		}
 		
@@ -140,16 +118,6 @@ class Login extends React.Component {
 	getPassword(event) {
 		event.preventDefault();
 		this.setState({password: event.target.value})
-	}
-
-	sendData = () => {
-		// if this.state.name and email, tell parent callback that I'm logged in isLoggedIn: true
-		if(this.state.email) {
-			this.setState({isLoggedIn: true})
-		}
-		// console.log(this.state)
-		// console.log("Sending the data to mommy")
-		this.props.parentCallback(this.state);
 	}
 
 	render() {
@@ -166,7 +134,7 @@ class Login extends React.Component {
 						Password:
 						<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password} />
 					</label>
-					<button>Login!</button>
+					<button type="submit">Login!</button>
 			</form>
 		</div>
 				)
@@ -228,6 +196,9 @@ class Registration extends React.Component {
 		event.preventDefault();
 		this.setState({password: event.target.value})
 	}
+
+	clickAlert(event) {
+		event.preventDefault();	}
 	
 		render() {
 			return (
@@ -249,7 +220,7 @@ class Registration extends React.Component {
 								Password:
 									<input name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
 							</label>
-							<button>Login!</button>
+							<button type="submit">Register Me!</button>
 							</label>
 						</form>
 					</div>
@@ -263,18 +234,20 @@ class Dashboard extends React.Component {
 		super(props)
 		this.state = {
 			userId: '',
-			isLoggedIn: false,
+			isLoggedIn: '',
 		}
+		console.log(this.props.getState)
 	}	
 
 		
 	render() {
-		let wordDisplay
-		if (this.state.isLoggedIn) {
-			wordDisplay = "in";	
+		let wordDisplay;
+		if (this.props.isLoggedIn == 13) {
+			wordDisplay = 'in';	
 		} else {
-			wordDisplay = "out. You must log in to view this page."
+			wordDisplay = 'out. You must log in to view this page.'
 		};
+		<Redirect to='/login'/>
 		return (
 			<div>
 				<h6>You are currently logged {wordDisplay}</h6>
@@ -291,27 +264,33 @@ class CCAccount extends React.Component {
 			userId: '',
 			name: '',
 			isLoggedin: false}
+
+		this.showCard = this.showCard.bind(this)
 		}
+	
+	componentDidMount() {
+		this.showCard();
+		console.log(this.state)
+	}
+	
 
-		// componentDidMount(props) {
-		// 	this.setState({isLoggedIn: props});
-		// 	console.log(this.state)
-		// }
+	showCard() {
+	fetch('api/cc-accounts'), {
+		method: 'POST',
+		body: JSON.stringify(this.userId)
+	}
+	.then(response => response.json())
+	.then(data => {
+		this.setState({user_id: data})
+	}
+		)
+	}
+		
+	  //returns cc account info and cc info
+	
 
-		render(props) {
-			this.setState({isLoggedIn: props});
-			let wordDisplay
-			if (this.state.isLoggedIn = false) {
-				wordDisplay = "out. You must log in to view this page.";
-			return (
-				<div>
-					<h6>You are currently logged {wordDisplay}</h6>
-					<Redirect to="/login"/>
-				</div>
-				)
-
-			} else {
-
+	render() {
+		console.log(this.state)
 			return(
 				<div>
 					<span>
@@ -337,7 +316,7 @@ class CCAccount extends React.Component {
 				)
 			}
 		}
-	}
+	
 
 class UserProfile extends React.Component {
 	constructor() {

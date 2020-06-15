@@ -1,0 +1,21 @@
+junkcode
+
+componentDidMount() {
+		this.checkCredentials()
+	}
+		
+	checkCredentials() {
+		if (this.state.userId = '') {
+		fetch('/api/dashboard', {
+			method: 'POST',
+			body: JSON.stringify(this.state),
+		})
+		.then(response => response.json())   //returns user_id
+		.then(data => {
+			this.setState({
+				userId: data,
+				isLoggedIn: true
+			});
+		}
+		)
+	};//help with if/else...still reading fetch request despite else. Maybe ask about moving this to parent state instead?

@@ -105,12 +105,25 @@ def get_user_email(email):
 
 	return User.query.filter(User.email == email).first()
 
+def get_user_pw(password):
+	"""Return a user's password."""
+
+	return User.query.filter(User.password == password).all()
+
 def get_user_id(user_id):
 	"""Return a user's id."""
 
 	return User.query.filter(User.user_id == user_id).first()
 
+def get_cc_account(user_id):
+	"""Return a user's credit card accounts."""
 
+	return CreditCardAccount.query.filter_by(User.user_id == user_id).all()
+
+def get_credit_card(user_id):
+	"""Return credit card attributes."""
+
+	return CreditCard.query.filter_by(User.user_id == user_id).first()
  
 
 
