@@ -4,7 +4,6 @@ from flask import (Flask, render_template, request, flash, session, redirect, js
 from model import connect_to_db
 import crud
 
-
 app = Flask(__name__)
 app.secret_key = "dev"
 
@@ -77,23 +76,39 @@ def get_cc_acct_info():
 	user_id = session['user_logged_in']	
 	
 	cc_acct_data = crud.get_cc_account(user_id)
-	cc_acct_info = {'cc_name':cc_acct_data.cc_account_name,
+	
+	cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name,
 									'approval_date': cc_acct_data.date_opened,
 									'cc_id': cc_acct_data.credit_card_id}
-	cc_acct_id = cc_acct_info['cc_id']
-	cc_acct_id = session['cc_account_id']
+
+	cc_id = cc_acct_info['cc_id']
+	session['cc_acct_name'] = cc_acct_data.cc_account_name
+	session['cc_id'] = cc_id
 
 	return jsonify(cc_acct_info)
 
 
 @app.route('/api/cc-info', methods=['POST'])
-def get_cc_info(cc_id):
+def get_credit_card():
 	"""Returns specific credit card attributes."""
 
 	user_id = session['user_logged_in']	
-	cc_acct_id = session['cc_account_id']
+	cc_acct_name = session['cc_acct_name']
+	cc_id = session['cc_id']
 
+	cc_data = crud.get_credit_card(cc_id)
+	print(cc_id, "8"*800)
+	cc_info = {'cc_name': cc_data.credit_card_name,
+		'req_spending': cc_data.required_spending,
+		'spend_timeframe': cc_data.spending_timeframe_months,
+		'annual_fee': cc_data.annual_fee,
+		'bank_id': cc_data.bank_id,
+		'loyalty_program': cc_data.loyalty_program_id}
 	
+	return jsonify(cc_info)
+
+
+
 
 
 		

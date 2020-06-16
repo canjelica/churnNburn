@@ -262,55 +262,96 @@ class Dashboard extends React.Component {
 
 
 class CCAccount extends React.Component {
+	
 	constructor(props) {
 		super(props)
 		this.state = {
 			userId: '',
 			name: '',
-			isLoggedin: ''}
-
-		this.showCards = this.showCards.bind(this)
+			isLoggedin: '',
+			ccAcctInfo: {},
+			ccInfo: {},
+			spendAmt: '',
 		}
 
-	showCards	() {
+		this.getCCInfo = this.getCCInfo.bind(this);
+		this.getAmt = this.getAmt.bind(this);
+		}
+	
+	getAmt(event) {
 		event.preventDefault();
-		const data = this.props.isLoggedIn;
+		this.setState({spendAmt: event.target.value})
+		};
+
+	getCCInfo() {
+		event.preventDefault();
+		const acctData = this.props.isLoggedIn;
+		const ccData = this.state.ccAcctInfo['cc_acct_name'];
 		
 		fetch('api/cc-accounts', {
 			method: 'POST',
-			body: JSON.stringify(data)}
+			body: JSON.stringify(acctData)}
+			)
+			.then(response => response.json())
+			// .then(response => console.log(response))
+			.then(data => {
+				this.setState({
+					// ...this.state, 
+					ccAcctInfo: data
+				});
+				console.log(this.state.ccAcctInfo['cc_acct_name'])
+			})
+			
+		fetch('api/cc-info', {
+			method: 'POST',
+			body: JSON.stringify(ccData)}
 			)
 			.then(response => response.json())
 			.then(response => console.log(response))
 			.then(data => {
-				if (data) {
-					let ccName = data[3],
-					let ccId = data
-				}}
-				)//I need to variableize what I'm getting back from the server, then use cc acct name to match to the name of the credit card. fetch route to get cc static traits back, render stuff on that view. variablise that, then choose what to render in below
-	} 
-
+				this.setState({
+					ccInfo: data
+				});
+			})
+		}
 		
-	
-
 	render() {
-		// console.log(this.state.isLoggedIn)
-		// console.log(this.props.isLoggedIn)
 			return(
 				<div>
 					<span>
-						<button onClick={this.showCards}>Show my Credit Cards</button>
+						<button 
+						onClick={this.getCCAccts} onClick={this.getCCInfo}>
+							Show my Credit Cards</button>
 						<h4>
-							British Airways Signature Visa //name of account by user_id
+							{this.state.ccAcctInfo['cc_acct_name']}
 						</h4>
 						</span>
-					<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" /> //image of account by user id
+					<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" /> get iamge
 					<span>
 						<p>
-							//your name of cc was approved approval date
-							how much have you spent form?
-							you have  x days = (approval date + timeframe, end date minus approval date)
-							to spend total needed spending minus form input
+							Your {this.state.ccAcctInfo.cc_acct_name} was approved on {this.state.ccAcctInfo.approval_date}.</p>
+							<p>
+							<form id="SpendingForm" onSubmit={this.handleSubmit}>
+								<label htmlFor="spendingAmount">
+								How much have you spent on this card to date?
+								<input name="spending-form" type="text" onChange = {this.getAmt} ref={this.input} value={this.state.spendAmt} />
+								</label>
+								<button type="submit">Submit</button>
+							</form>
+
+							get timeframe from ccInfo
+							timeframe X 30 days
+							* = Add to approval date
+
+							get form input spending
+							ccInfo reqd spending 
+							* = req minus form
+
+							You have * days to spend *.
+
+							for bar chart * spending of reqd timeframe
+							
+
 						</p>
 					</span>
 					<p>

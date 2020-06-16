@@ -13,7 +13,7 @@ import model
 from fakerdata import *
 import server
 
-# os.system('dropdb webapp')
+os.system('dropdb webapp')
 os.system('createdb webapp')
 
 model.connect_to_db(server.app)
@@ -51,9 +51,10 @@ for cc in cc_data:
     annual_fee = cc['annual_fee']
     bonus_value_dollars = cc['bonus_value_dollars']
     bank_id = cc['bank_id']
+	credit_card_image = cc['credit_card_image']
     # loyalty_program_id = cc['loyalty_program_id']
                    
-    db_credit_card = crud.create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id)#, loyalty_program_id)
+    db_credit_card = crud.create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id, credit_card_image)#, loyalty_program_id)
 
     cc_in_db.append(db_credit_card)
 

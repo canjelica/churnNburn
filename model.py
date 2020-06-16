@@ -92,6 +92,7 @@ class CreditCard(db.Model):
     annual_fee = db.Column(db.Integer)
     bonus_value_dollars = db.Column(db.Integer)
     processor = db.Column(db.String)
+	credit_card_image = db.Column(db.String)
 
     bank_id = db.Column(db.Integer,
                         db.ForeignKey('banks.bank_id'),

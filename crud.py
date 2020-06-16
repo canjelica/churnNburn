@@ -45,7 +45,7 @@ def create_userbank(user_id, bank_id):
 
     return userbank
 
-def create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id):
+def create_credit_card(credit_card_name, processor, signup_bonus, required_spending, spending_timeframe_months, annual_fee, bonus_value_dollars, bank_id, credit_card_image):
     """Create and return a new credit card."""
 
     credit_card = CreditCard(credit_card_name=credit_card_name, processor=processor,signup_bonus=signup_bonus, required_spending=required_spending, spending_timeframe_months=spending_timeframe_months, annual_fee=annual_fee, bonus_value_dollars=bonus_value_dollars, bank_id=bank_id)
@@ -124,8 +124,6 @@ def get_credit_card(cc_id):
 	"""Return credit card attributes."""
 
 	return CreditCard.query.filter(CreditCard.credit_card_id == cc_id).first()
- 
-
 
 def add_user(firstname, lastname, email, password):
 	"""Adds a new user to the database."""
