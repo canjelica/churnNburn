@@ -19,17 +19,20 @@ class App extends React.Component {
 			name: '',
 			isLoggedIn: false
 		};
-
+		
 		this.userLoggedIn = this.userLoggedIn.bind(this)
 	}
 
-	userLoggedIn = (userId) => {
+	userLoggedIn = (userId, name, password, email) => {
 		this.setState({
-			isLoggedIn: userId
+			isLoggedIn: userId,
+			name: name,
+			password: password,
+			email: email
 		})
 		console.log(this.state)
 	}
- 
+
 
 	render() {
 		return (
@@ -52,13 +55,13 @@ class App extends React.Component {
 							<Registration/>
 							</Route>
 							<Route exact path="/user/dashboard">
-								<Dashboard userLoggedIn = {this.userLoggedIn}/>
+								<Dashboard isLoggedIn={this.state.isLoggedIn} />
 							</Route>
 							<Route exact path="/cc-accounts">
-								<CCAccount />
+								<CCAccount isLoggedIn={this.state.isLoggedIn} />
 							</Route>
 							<Route exact path="/myprofile">
-								<UserProfile/>
+								<UserProfile isLoggedIn={this.state.isLoggedIn} />
 							</Route>
 					</Switch>
 				</Router>
@@ -106,7 +109,7 @@ class Login extends React.Component {
 					password: data[2]
 				});
 				console.log(this.state);
-				this.props.userLoggedIn(data[0])}
+				this.props.userLoggedIn(data[0], data [1], data[2], data[3])}
 			})
 		}
 		
@@ -236,13 +239,14 @@ class Dashboard extends React.Component {
 			userId: '',
 			isLoggedIn: '',
 		}
-		console.log(this.props.getState)
 	}	
 
+	
 		
-	render() {
+	render() {		
 		let wordDisplay;
-		if (this.props.isLoggedIn == 13) {
+		if (typeof (this.props.isLoggedIn) == 'number') {
+			console.log(this.props.isLoggedIn);
 			wordDisplay = 'in';	
 		} else {
 			wordDisplay = 'out. You must log in to view this page.'
@@ -263,37 +267,34 @@ class CCAccount extends React.Component {
 		this.state = {
 			userId: '',
 			name: '',
-			isLoggedin: false}
+			isLoggedin: ''}
 
-		this.showCard = this.showCard.bind(this)
+		this.showCards = this.showCards.bind(this)
 		}
-	
-	componentDidMount() {
-		this.showCard();
-		console.log(this.state)
-	}
-	
 
-	showCard() {
-	fetch('api/cc-accounts'), {
-		method: 'POST',
-		body: JSON.stringify(this.userId)
-	}
-	.then(response => response.json())
-	.then(data => {
-		this.setState({user_id: data})
-	}
-		)
-	}
+	showCards	() {
+		event.preventDefault();
+		const data = this.props.isLoggedIn;
 		
-	  //returns cc account info and cc info
+		fetch('api/cc-accounts', {
+			method: 'POST',
+			body: JSON.stringify(data)}
+			)
+			.then(response => response.json())
+			.then(response => console.log(response))
+	} 
+
+
+		
 	
 
 	render() {
-		console.log(this.state)
+		// console.log(this.state.isLoggedIn)
+		// console.log(this.props.isLoggedIn)
 			return(
 				<div>
 					<span>
+						<button onClick={this.showCards}>Show my Credit Cards</button>
 						<h4>
 							British Airways Signature Visa //name of account by user_id
 						</h4>
