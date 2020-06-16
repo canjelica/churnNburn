@@ -71,23 +71,29 @@ def show_user_dashboard():
 		return jsonify(logged_in_user)
 
 @app.route('/api/cc-accounts', methods=['POST'])
-def get_cc_info():
+def get_cc_acct_info():
 	"""Returns specific account attributes."""
 	
 	user_id = session['user_logged_in']	
-	print("*"* 250, user_id)
+	
 	cc_acct_data = crud.get_cc_account(user_id)
-
 	cc_acct_info = {'cc_name':cc_acct_data.cc_account_name,
 									'approval_date': cc_acct_data.date_opened,
 									'cc_id': cc_acct_data.credit_card_id}
-	print("*"* 250, cc_acct_info)							
-	
-	cc_id = cc_acct_info['cc_id']
-	print("*"* 250, cc_id)
-	cc_data = crud.get_credit_card(cc_id)
+	cc_acct_id = cc_acct_info['cc_id']
+	cc_acct_id = session['cc_account_id']
 
 	return jsonify(cc_acct_info)
+
+
+@app.route('/api/cc-info', methods=['POST'])
+def get_cc_info(cc_id):
+	"""Returns specific credit card attributes."""
+
+	user_id = session['user_logged_in']	
+	cc_acct_id = session['cc_account_id']
+
+	
 
 
 		

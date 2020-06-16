@@ -282,8 +282,13 @@ class CCAccount extends React.Component {
 			)
 			.then(response => response.json())
 			.then(response => console.log(response))
+			.then(data => {
+				if (data) {
+					let ccName = data[3],
+					let ccId = data
+				}}
+				)//I need to variableize what I'm getting back from the server, then use cc acct name to match to the name of the credit card. fetch route to get cc static traits back, render stuff on that view. variablise that, then choose what to render in below
 	} 
-
 
 		
 	
