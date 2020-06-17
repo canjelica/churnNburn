@@ -278,7 +278,7 @@ class CCAccount extends React.Component {
 			isLoggedin: this.props.isLoggedIn,
 			ccAcctInfo: {},
 			ccInfo: {},
-			spendAmt: '',
+			spentAmt: '',
 		}
 	
 		this.getAcctInfo = this.getAcctInfo.bind(this);
@@ -325,19 +325,16 @@ class CCAccount extends React.Component {
 				let newDate = timeframe + month  //gets month for spending deadline
 				deadline = (months[newDate] + " " + date.getDate() + ", " + 2020) //date.getFullYear());
 				this.setState({ccDeadline: deadline});
+				console.log(this.state)
 		})		
 	}
 	getAmt(event) {
-		this.setState({spendAmt: event.target.value});
-		console.log(this.state.spendAmt)
-
+		this.setState({spentAmt: event.target.value});
 		let reqdSpend = this.state.ccInfo.req_spending;
-		console.log(reqdSpend);
-		let spent = this.state.spendAmt;
-		console.log(spent);
+		let spent = this.state.spentAmt;
 		let remainingSpend = reqdSpend - spent;
-		console.log(remainingSpend);
 		return remainingSpend 
+
 	}
 		
 	handleSubmit(event) {
@@ -362,7 +359,7 @@ class CCAccount extends React.Component {
 						<form id="SpendingForm" onSubmit={this.handleSubmit}>
 							<label htmlFor="spendingAmount">
 							How much have you spent on this card to date?  $
-							<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spendAmt} />
+							<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spentAmt} />
 							</label>
 							<button type="submit">Submit</button>
 						</form>
