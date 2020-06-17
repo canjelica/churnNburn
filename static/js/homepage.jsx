@@ -282,7 +282,7 @@ class CCAccount extends React.Component {
 		}
 	
 		this.getAcctInfo = this.getAcctInfo.bind(this);
-		this.getAmt = this.getAmt.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 		}
 	
 	// componentDidMount() {
@@ -328,19 +328,21 @@ class CCAccount extends React.Component {
 				console.log(this.state)
 		})		
 	}
-	getAmt(event) {
+	
+	getAmt() {
 		this.setState({spentAmt: event.target.value});
+	}
+
+	handleSubmit() {
+		event.preventDefault()
+		this.setState({spentAmt: event.target.value});
+		console.log(this.state.spentAmt)
 		let reqdSpend = this.state.ccInfo.req_spending;
-		let spent = this.state.spentAmt;
-		let remainingSpend = reqdSpend - spent;
-		return remainingSpend 
-
+		let remainingSpend = reqdSpend - this.state.spentAmt;
+		this.setState({toSpend: remainingSpend})
+		console.log(remainingSpend)
 	}
-		
-	handleSubmit(event) {
-		event.preventDefault();
-	}
-
+	
 
 	render() {
 
@@ -359,22 +361,22 @@ class CCAccount extends React.Component {
 						<form id="SpendingForm" onSubmit={this.handleSubmit}>
 							<label htmlFor="spendingAmount">
 							How much have you spent on this card to date?  $
-							<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spentAmt} />
+							<input name="spending-form" type="text" onChange={this.handleSubmit} value={this.state.spentAmt} />
+							<button name="submit">Submit</button>
 							</label>
-							<button type="submit">Submit</button>
 						</form>
 						{/* {() => {
-							if (typeof this.getAmt == 'number') {
-							let spend = this.getAmt
+							if (typeof this.handleSubmit == 'number') {
+							let spend = this.handleSubmit
 						} else {
 							spend = 'some money'
 						}}} */}
-						To get your credit card spending bonus, you must spend by {this.state.ccDeadline}.
+						To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
 				</span>
 				<p>
-				<a href="https://www.britishairways.com/">
+				{/* <a href="https://www.britishairways.com/">
 					Visit British Airways Avios portal
-				</a>
+				</a> */} 
 				</p>
 			</div>
 			)
