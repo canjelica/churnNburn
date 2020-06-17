@@ -284,11 +284,11 @@ class CCAccount extends React.Component {
 		this.getAcctInfo = this.getAcctInfo.bind(this);
 		this.getAmt = this.getAmt.bind(this);
 		}
-
-	getAmt(event) {
-		this.setState({spendAmt: event.target.value})
-		};
-
+	
+	// componentDidMount() {
+	// 	this.getAcctInfo()
+	// }
+	
 	getAcctInfo() {
 		const acctData = this.props.isLoggedIn;
 		
@@ -314,29 +314,36 @@ class CCAccount extends React.Component {
 		})
 
 		.then( () => {
-				console.log(this.state);
+				const months = [ "January", "February", "March", "April", "May", "June", 
+				"July", "August", "September", "October", "November", "December", "January", "February", "March", "April" ]
+
 				let deadline;
 				let timeframe = this.state.ccInfo.spend_timeframe
-				let date = this.state.ccAcctInfo.approval_date
-				deadline = timeframe * 30
-				console.log(date)
-		}
+				let date = new Date(this.state.ccAcctInfo.approval_date) //instantiates Date object
+				let month = date.getMonth() //gets month of date
+				
+				let newDate = timeframe + month  //gets month for spending deadline
+				deadline = (months[newDate] + " " + date.getDate() + ", " + 2020) //date.getFullYear());
+				this.setState({ccDeadline: deadline});
+		})		
+	}
+	getAmt(event) {
+		this.setState({spendAmt: event.target.value});
+		console.log(this.state.spendAmt)
 
-		)
+		let reqdSpend = this.state.ccInfo.req_spending;
+		console.log(reqdSpend);
+		let spent = this.state.spendAmt;
+		console.log(spent);
+		let remainingSpend = reqdSpend - spent;
+		console.log(remainingSpend);
+		return remainingSpend 
+	}
+		
+	handleSubmit(event) {
+		event.preventDefault();
 	}
 
-	
-
-
-	// 	get timeframe from ccInfo
-	// 						timeframe X 30 days
-	// 						* = Add to approval date
-
-	// 						get form input spending
-	// 						ccInfo reqd spending 
-	// 						* = req minus form
-
-	// }
 
 	render() {
 
@@ -347,29 +354,25 @@ class CCAccount extends React.Component {
 						onClick={this.getAcctInfo}>
 						Show my Credit Cards</button>
 					<h4>
-						{this.state.ccAcctInfo['cc_acct_name']}
+						Your {this.state.ccAcctInfo['cc_acct_name']} ending in *0005
 					</h4>
 					</span>
-				<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" /> get iamge
+				<img width="250" height="167" id="credit-card-image" src={this.state.ccInfo.cc_img}/>
 				<span>
-					<p>
-						Your {this.state.ccAcctInfo.cc_acct_name} was approved on {this.state.ccAcctInfo.approval_date}.</p>
-						<p>
 						<form id="SpendingForm" onSubmit={this.handleSubmit}>
 							<label htmlFor="spendingAmount">
-							How much have you spent on this card to date?
-							<input name="spending-form" type="text" onChange = {this.getAmt} ref={this.input} value={this.state.spendAmt} />
+							How much have you spent on this card to date?  $
+							<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spendAmt} />
 							</label>
 							<button type="submit">Submit</button>
 						</form>
-
-						
-						You have * days to spend *.
-
-						for bar chart * spending of reqd timeframe
-						
-
-					</p>
+						{/* {() => {
+							if (typeof this.getAmt == 'number') {
+							let spend = this.getAmt
+						} else {
+							spend = 'some money'
+						}}} */}
+						To get your credit card spending bonus, you must spend by {this.state.ccDeadline}.
 				</span>
 				<p>
 				<a href="https://www.britishairways.com/">

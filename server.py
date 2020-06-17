@@ -18,8 +18,6 @@ def clear_session():
 	session.clear()
 	return jsonify("session cleared")
 
-
-
 @app.route('/api/login', methods=['POST'])
 def log_in_user():
 	"""Logs in a user."""
@@ -38,7 +36,6 @@ def log_in_user():
 		session['user_logged_in'] = user.user_id
 		session['user_name'] = name
 		session['user_pw'] = user.password
-
 	
 		status = [user.user_id, name, user.password, user.email]
 		
@@ -92,7 +89,6 @@ def get_cc_acct_info():
 
 	return jsonify(cc_acct_info)
 
-
 @app.route('/api/cc-info', methods=['POST'])
 def get_credit_card():
 	"""Returns specific credit card attributes."""
@@ -109,9 +105,11 @@ def get_credit_card():
 		'spend_timeframe': cc_data.spending_timeframe_months,
 		'annual_fee': cc_data.annual_fee,
 		'bank_id': cc_data.bank_id,
-		'loyalty_program': cc_data.loyalty_program_id}
+		'loyalty_program': cc_data.loyalty_program_id,
+		'cc_img': cc_data.credit_card_image}
 	
 	return jsonify(cc_info)
+
 
 
 
