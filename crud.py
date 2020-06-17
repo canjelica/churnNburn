@@ -118,7 +118,7 @@ def get_user_id(user_id):
 def get_cc_account(user_id):
 	"""Return a user's credit card accounts."""
 
-	return CreditCardAccount.query.filter(User.user_id == user_id).first()
+	return CreditCardAccount.query.filter(CreditCardAccount.user_id == user_id).first()
 
 def get_credit_card(cc_id):
 	"""Return credit card attributes."""

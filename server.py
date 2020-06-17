@@ -13,6 +13,11 @@ app.secret_key = "dev"
 def homepage():
   return render_template('index.html')
 
+@app.route('/api/clear-session', methods=['POST'])
+def clear_session():
+	session.clear()
+	return jsonify("session cleared")
+
 
 
 @app.route('/api/login', methods=['POST'])
@@ -95,9 +100,10 @@ def get_credit_card():
 	user_id = session['user_logged_in']	
 	cc_acct_name = session['cc_acct_name']
 	cc_id = session['cc_id']
+	print(cc_id, '8'*100)
 
 	cc_data = crud.get_credit_card(cc_id)
-	print(cc_id, "8"*800)
+	
 	cc_info = {'cc_name': cc_data.credit_card_name,
 		'req_spending': cc_data.required_spending,
 		'spend_timeframe': cc_data.spending_timeframe_months,

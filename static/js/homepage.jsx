@@ -33,12 +33,21 @@ class App extends React.Component {
 		console.log(this.state)
 	}
 
+	clearSession() {
+		event.preventDefault();
+		fetch("api/clear-session", {
+		method: 'POST'
+		})
+		.then(response => response.json())
+		.then(response => console.log(response))
+	}
+
 
 	render() {
 		return (
 			<div>
 				<Router>
-					<Link to="/login">Register/Login</Link>
+					<Link to="/login" onClick = {this.clearSession}>Register/Login</Link>
 					<p></p>
 					<Link to="/user/dashboard" >View Dashboard</Link>
 					<p></p>
@@ -240,8 +249,6 @@ class Dashboard extends React.Component {
 			isLoggedIn: '',
 		}
 	}	
-
-	
 		
 	render() {		
 		let wordDisplay;
@@ -268,128 +275,138 @@ class CCAccount extends React.Component {
 		this.state = {
 			userId: '',
 			name: '',
-			isLoggedin: '',
+			isLoggedin: this.props.isLoggedIn,
 			ccAcctInfo: {},
 			ccInfo: {},
 			spendAmt: '',
 		}
-
-		this.getCCInfo = this.getCCInfo.bind(this);
+	
+		this.getAcctInfo = this.getAcctInfo.bind(this);
 		this.getAmt = this.getAmt.bind(this);
 		}
-	
+
 	getAmt(event) {
-		event.preventDefault();
 		this.setState({spendAmt: event.target.value})
 		};
 
-	getCCInfo() {
-		event.preventDefault();
+	getAcctInfo() {
 		const acctData = this.props.isLoggedIn;
-		const ccData = this.state.ccAcctInfo['cc_acct_name'];
 		
-		fetch('api/cc-accounts', {
+		fetch('/api/cc-accounts', {
 			method: 'POST',
-			body: JSON.stringify(acctData)}
-			)
-			.then(response => response.json())
-			// .then(response => console.log(response))
-			.then(data => {
-				this.setState({
-					// ...this.state, 
-					ccAcctInfo: data
-				});
-				console.log(this.state.ccAcctInfo['cc_acct_name'])
-			})
-			
-		fetch('api/cc-info', {
-			method: 'POST',
-			body: JSON.stringify(ccData)}
-			)
-			.then(response => response.json())
-			.then(response => console.log(response))
-			.then(data => {
-				this.setState({
-					ccInfo: data
-				});
-			})
-		}
-		
-	render() {
-			return(
-				<div>
-					<span>
-						<button 
-						onClick={this.getCCAccts} onClick={this.getCCInfo}>
-							Show my Credit Cards</button>
-						<h4>
-							{this.state.ccAcctInfo['cc_acct_name']}
-						</h4>
-						</span>
-					<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" /> get iamge
-					<span>
-						<p>
-							Your {this.state.ccAcctInfo.cc_acct_name} was approved on {this.state.ccAcctInfo.approval_date}.</p>
-							<p>
-							<form id="SpendingForm" onSubmit={this.handleSubmit}>
-								<label htmlFor="spendingAmount">
-								How much have you spent on this card to date?
-								<input name="spending-form" type="text" onChange = {this.getAmt} ref={this.input} value={this.state.spendAmt} />
-								</label>
-								<button type="submit">Submit</button>
-							</form>
-
-							get timeframe from ccInfo
-							timeframe X 30 days
-							* = Add to approval date
-
-							get form input spending
-							ccInfo reqd spending 
-							* = req minus form
-
-							You have * days to spend *.
-
-							for bar chart * spending of reqd timeframe
-							
-
-						</p>
-					</span>
-					<p>
-					<a href="https://www.britishairways.com/">
-						Visit British Airways Avios portal
-					</a>
-					</p>
-				</div>
-				)
+			body: JSON.stringify(acctData)
 			}
+		)
+		.then(response => response.json())
+
+		.then(data => {
+			this.setState({ccAcctInfo: data})
+			}
+		)
+
+		.then( () => fetch('api/cc-info', {method: 'POST'}))
+		.then(response => response.json())
+		.then(data => {
+				this.setState({ccInfo: data})
+				
+			console.log(this.state.ccInfo);
+			console.log(this.state.ccAcctInfo)
+		})
+
+		.then( () => {
+				console.log(this.state);
+				let deadline;
+				let timeframe = this.state.ccInfo.spend_timeframe
+				let date = this.state.ccAcctInfo.approval_date
+				deadline = timeframe * 30
+				console.log(date)
 		}
+
+		)
+	}
+
 	
 
-class UserProfile extends React.Component {
-	constructor() {
-		super()
-		this.state = {}
-		}
 
-		render() {
-			return(
-				<div>
-					<h4>My Profile</h4>
-					<p>Welcome, **first name last name***! Your account profile is currently up-to-date. If you'd like to make change your password, enter the new password below. </p>
-					<p> Email: **from db**</p>
-					<form id="password">
-						<label htmlFor="password">
-							Password:
-							<input name="password" type="text"/>
-						</label>
-						<button>Save new</button>
+	// 	get timeframe from ccInfo
+	// 						timeframe X 30 days
+	// 						* = Add to approval date
+
+	// 						get form input spending
+	// 						ccInfo reqd spending 
+	// 						* = req minus form
+
+	// }
+
+	render() {
+
+		return(
+			<div>
+				<span>
+					<button 
+						onClick={this.getAcctInfo}>
+						Show my Credit Cards</button>
+					<h4>
+						{this.state.ccAcctInfo['cc_acct_name']}
+					</h4>
+					</span>
+				<img width="250" height="167" id="credit-card-image" src="../static/img/british-airways-visa-signature-card.jpeg" /> get iamge
+				<span>
+					<p>
+						Your {this.state.ccAcctInfo.cc_acct_name} was approved on {this.state.ccAcctInfo.approval_date}.</p>
+						<p>
+						<form id="SpendingForm" onSubmit={this.handleSubmit}>
+							<label htmlFor="spendingAmount">
+							How much have you spent on this card to date?
+							<input name="spending-form" type="text" onChange = {this.getAmt} ref={this.input} value={this.state.spendAmt} />
+							</label>
+							<button type="submit">Submit</button>
 						</form>
-					<a href="route to pull up form for updating">Edit info</a>
-					<p></p>
-				</div>
+
+						
+						You have * days to spend *.
+
+						for bar chart * spending of reqd timeframe
+						
+
+					</p>
+				</span>
+				<p>
+				<a href="https://www.britishairways.com/">
+					Visit British Airways Avios portal
+				</a>
+				</p>
+			</div>
 			)
 		}
 	}
+
+
+class UserProfile extends React.Component {
+constructor() {
+	super()
+	this.state = {}
+	}
+
+	render() {
+		return(
+			<div>
+				<h4>My Profile</h4>
+				<p>Welcome, **first name last name***! Your account profile is currently up-to-date. If you'd like to make change your password, enter the new password below. </p>
+				<p> Email: **from db**</p>
+				<form id="password">
+					<label htmlFor="password">
+						Password:
+						<input name="password" type="text"/>
+					</label>
+					<button>Save new</button>
+					</form>
+				<a href="route to pull up form for updating">Edit info</a>
+				<p></p>
+			</div>
+		)
+	}
+}
 
 // class TrackNewAccount extends React.Component {
 // 	constructor() {

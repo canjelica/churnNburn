@@ -1,21 +1,32 @@
-junkcode
+;
+ user_id | first_name  | last_name |               email               |  password  | credit_score 
+---------+-------------+-----------+-----------------------------------+------------+--------------
+       1 | Ruben       | Spears    | adamslori@gmail.com               | 2(x24HLl5p |          777
+       2 | Denise      | Vargas    | armstrongkaren@clark-davis.info   | pUI3YieXO% |          609
+       3 | Ashley      | Brown     | gibsonderek@gmail.com             | _0ijEaKrvH |          588
+       4 | Willie      | Cruz      | kimberlybrown@hotmail.com         | %m27sZYgLM |          595
+       5 | Brandon     | Griffin   | florescindy@hotmail.com           | 7cR1XQ*h@) |          775
+       6 | Christopher | Thomas    | williamscynthia@acosta-brock.info | F@d3O4iteT |          745
+       7 | Eric        | Gomez     | jbridges@yahoo.com                | yrv%Y5Ta$) |          628
+       8 | Heather     | Guerrero  | kfranklin@hotmail.com             | JC1NtQh_I$ |          619
+       9 | John        | Boyd      | keithgates@hotmail.com            | OA76o4Qr(m |          739
+      10 | Randy       | Barnes    | edwardssarah@gmail.com            | _v6QirY&m( |          719
+      11 | Duck        | Duckerson | duck@duck.duck                    | duck       |             
+      12 | Test        | Testerson | test@test.test                    | test       |             
+      13 | Kitty       | McKitty   | kit@kit.kit                       | kit        |             
+(13 rows)
 
-componentDidMount() {
-		this.checkCredentials()
-	}
-		
-	checkCredentials() {
-		if (this.state.userId = '') {
-		fetch('/api/dashboard', {
-			method: 'POST',
-			body: JSON.stringify(this.state),
-		})
-		.then(response => response.json())   //returns user_id
-		.then(data => {
-			this.setState({
-				userId: data,
-				isLoggedIn: true
-			});
-		}
-		)
-	};//help with if/else...still reading fetch request despite else. Maybe ask about moving this to parent state instead?
+
+
+cc_account_id |        cc_account_name         |     date_opened     | credit_card_id | user_id 
+---------------+--------------------------------+---------------------+----------------+---------
+             8 | Sapphire Preferred             | 1984-10-12 00:00:00 |              1 |       8
+             5 | Sapphire Preferred             | 1980-04-03 00:00:00 |              1 |       5
+             9 | Sapphire Reserve               | 2010-08-18 00:00:00 |              2 |       9
+            10 | Sapphire Reserve               | 1981-07-11 00:00:00 |              2 |      10
+             2 | The Platinum Card              | 1973-11-27 00:00:00 |              3 |       2
+             3 | The Platinum Card              | 2007-07-06 00:00:00 |              3 |       3
+             4 | The Platinum Card              | 2013-01-01 00:00:00 |              3 |       4
+             7 | British Airways Visa Signature | 1977-07-24 00:00:00 |              5 |       7
+             1 | Marriott Bonvoy Brilliant      | 1975-02-26 00:00:00 |              6 |       1
+             6 | Sapphire Reserve               | 1983-11-22 00:00:00 |              2 |       6
