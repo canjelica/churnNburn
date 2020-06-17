@@ -21,7 +21,7 @@ def clear_session():
 @app.route('/api/login', methods=['POST'])
 def log_in_user():
 	"""Logs in a user."""
-	
+
 	data = request.get_json(force=True)	
 	email = data['email']
 	password = data['password']
@@ -40,6 +40,27 @@ def log_in_user():
 		status = [user.user_id, name, user.password, user.email]
 		
 	return jsonify(status)
+
+# @app.route('/login', methods=['POST'])
+# def log_in_user():
+	"""Logs in a user."""
+	
+	data = request.get_json()
+	user = crud.get_user_email(data['email'])
+
+	name = user.first_name + user.last_name
+
+	if user:
+		if user.password == data['password'] and user.email == data['email']:
+			session['user_id'] = user.user_id
+			return jsonify({'userId': user.user_id, 'name': name, 'email': user.email})
+
+		else:
+			return jsonify({'error': 'Your email or password is incorrect.'})
+
+	else:
+		return jsonify({'error':'Email is not registered in our system. Please register.'})
+
 
 
 @app.route('/api/registration', methods=['POST'])

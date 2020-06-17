@@ -59,12 +59,12 @@ class App extends React.Component {
 				
 					<Switch> 
 							<Route exact path="/login">
-							<Login userLoggedIn = {this.userLoggedIn} /> 
-							<p> Welcome {this.state.name}!</p>
-							<Registration/>
+								<Login userLoggedIn = {this.userLoggedIn} /> 
+								<p> Welcome {this.state.name}!</p>
+								<Registration/>
 							</Route>
 							<Route exact path="/user/dashboard">
-								<Dashboard isLoggedIn={this.state.isLoggedIn} />
+								<Dashboard LoggedIn={this.state.isLoggedIn} />
 							</Route>
 							<Route exact path="/cc-accounts">
 								<CCAccount isLoggedIn={this.state.isLoggedIn} />
@@ -188,7 +188,7 @@ class Registration extends React.Component {
 		.then(response => response.json())
 		.then(data => console.log(data));													
 		}
-//if created account comes back then conditional render or Router LInk to Dahboard View
+
 	getFName(event) {
 		event.preventDefault();
 		this.setState({firstname: event.target.value})
@@ -263,9 +263,8 @@ class Dashboard extends React.Component {
 			<div>
 				<h6>You are currently logged {wordDisplay}</h6>
 			</div>
-		)
+		)}
 	}
-}
 
 
 class CCAccount extends React.Component {
@@ -284,10 +283,6 @@ class CCAccount extends React.Component {
 		this.getAcctInfo = this.getAcctInfo.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		}
-	
-	// componentDidMount() {
-	// 	this.getAcctInfo()
-	// }
 	
 	getAcctInfo() {
 		const acctData = this.props.isLoggedIn;
@@ -388,14 +383,28 @@ class UserProfile extends React.Component {
 constructor() {
 	super()
 	this.state = {}
+
+	this.changePassword = this.changePassword.bind(this);
 	}
+
+	changePassword() {
+		console.log(this.props)
+
+	}
+
+	componentDidMount() {
+		console.log(this.props.userLoggedIn)
+	}
+
 
 	render() {
 		return(
 			<div>
 				<h4>My Profile</h4>
-				<p>Welcome, **first name last name***! Your account profile is currently up-to-date. If you'd like to make change your password, enter the new password below. </p>
-				<p> Email: **from db**</p>
+					<p>Name: {this.props.name}</p>
+					<p>Email: {this.props.email}</p>
+					<p>Your profile settings are current.</p>
+					<p>If you'd like to  change your password, enter the new password below. </p>
 				<form id="password">
 					<label htmlFor="password">
 						Password:
@@ -448,7 +457,3 @@ ReactDOM.render (
 	<App />,
 	document.getElementById("root")
 );
-
-
-
-//React touter can have paths, what is in the urls of the page we are on. REdirect and link. React router is going ot go ahear and reach into the url and change the url. Lie ot het user. React router not necessary, but nice. COndiditonal rendering. If this path, rout ei s showing in the url, then render what's inside this path. If not, will not render. Different kinds of routing you can do to control . That solves general probalm of showing stuff at different times. COnditional rendering. if statemnts in, return this. 
