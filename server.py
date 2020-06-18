@@ -24,20 +24,18 @@ def log_in_user():
 
 	data = request.get_json(force=True)	
 	email = data['email']
-	password = data['password']
 	
-	user = crud.get_user_email(email)
-	name = user.first_name + user.last_name
+	user = crud.get_user_by_email(email)
 
-	if not user:
-		status = "You have not registered an account."
-	else:
+	if user:
+		name = user.first_name + user.last_name
 		name = f'{user.first_name} {user.last_name}'
 		session['user_logged_in'] = user.user_id
 		session['user_name'] = name
-		session['user_pw'] = user.password
+		status = [user.user_id, name, user.email]
 	
-		status = [user.user_id, name, user.password, user.email]
+	else:
+		status = {'error': 'You have not registered an account.'}
 		
 	return jsonify(status)
 
@@ -46,7 +44,7 @@ def log_in_user():
 	"""Logs in a user."""
 	
 	data = request.get_json()
-	user = crud.get_user_email(data['email'])
+	user = crud.get_user_by_email(data['email'])
 
 	name = user.first_name + user.last_name
 
@@ -60,7 +58,6 @@ def log_in_user():
 
 	else:
 		return jsonify({'error':'Email is not registered in our system. Please register.'})
-
 
 
 @app.route('/api/registration', methods=['POST'])
@@ -85,7 +82,7 @@ def show_user_dashboard():
 	"""Shows logged-in user their dashboard."""
 
 	user_id = session['user_logged_in']
-	logged_in_user = crud.get_user_id(user_id)
+	logged_in_user = crud.get_user_by_id(user_id)
 	logged_in_user = logged_in_user.user_id
 	logged_in = True
 
@@ -98,7 +95,7 @@ def get_cc_acct_info():
 	
 	user_id = session['user_logged_in']	
 	
-	cc_acct_data = crud.get_cc_account(user_id)
+	cc_acct_data = crud.get_cc_accounts(user_id)
 	
 	cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name,
 									'approval_date': cc_acct_data.date_opened,
@@ -117,7 +114,6 @@ def get_credit_card():
 	user_id = session['user_logged_in']	
 	cc_acct_name = session['cc_acct_name']
 	cc_id = session['cc_id']
-	print(cc_id, '8'*100)
 
 	cc_data = crud.get_credit_card(cc_id)
 	
@@ -131,22 +127,31 @@ def get_credit_card():
 	
 	return jsonify(cc_info)
 
+@app.route('/api/update-password', methods=['POST'])
+def update_password(new_password):
+	"""Updates a user's password."""
+
+	data = request.get_json(force=True) #returns list [userid, current pw, new pw]
+	print(data)
+	user_id = data[0]
+	old_pw = data[1]
+	new_pw = data[2]
+
+	current_pw = crud.get_user_by_id(user_id)
+
+	if session['user_logged_in'] == user_id and old_pw == current_pw.password: 
+		updated_pw = crud.update_password(user_id, new_pw)
+		return jsonify(updated_pw)
+	else:
+		return jsonify("Your current password is not correct.")
+
+
 
 
 
 
 
 		
-
-
-
-
-# new approute to catch fetch api from dashboard,
-# fetch, pass in session over, if user exists, change is Logged IN data, render whatever needed, click 
-# user_id: session[user_id],
-# isloggedin will always be true when there is a user id session to throw back
-# log out, is logged in, change the flag
-
 
 
 

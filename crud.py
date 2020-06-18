@@ -2,6 +2,8 @@
 
 from model import db, User, Bank, UserBank, CreditCard, CreditCardAccount, LoyaltyProgram, UserLoyaltyProgram, connect_to_db
 
+from sqlalchemy import update
+
 from fakerdata import *
 
 import json
@@ -90,32 +92,17 @@ def create_user_loyalty(user_id, loyalty_program_id):
 # ------------------------------------------------------------------------------
 """Functions for querying database."""
 
-def get_cc_accounts():
-	"""Return all credit card accounts."""
-
-	return CreditCardAccount.query.all()
-
-def get_user_emails():
-	"""Return a user by email."""
-
-	return User.query.all()
-
-def get_user_email(email):
+def get_user_by_email(email):
 	"""Return a user's email."""
 
 	return User.query.filter(User.email == email).first()
 
-def get_user_pw(password):
-	"""Return a user's password."""
-
-	return User.query.filter(User.password == password).all()
-
-def get_user_id(user_id):
+def get_user_by_id(user_id):
 	"""Return a user's id."""
 
 	return User.query.filter(User.user_id == user_id).first()
 
-def get_cc_account(user_id):
+def get_cc_accounts(user_id):
 	"""Return a user's credit card accounts."""
 
 	return CreditCardAccount.query.filter(CreditCardAccount.user_id == user_id).first()
@@ -133,6 +120,13 @@ def add_user(firstname, lastname, email, password):
 	db.session.add(new_user)
 	db.session.commit()
 	return new_user
+
+def update_password(user_id, new_password):
+    """Updates a user's password."""
+
+    return (update(users).where(users.user_id==user_id).values(password='new_password'))
+
+
 
 	
 

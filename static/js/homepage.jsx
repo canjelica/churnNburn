@@ -9,12 +9,12 @@ const Redirect = window.ReactRouterDOM.Redirect;
 const MContext = React.createContext();
 
 
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			email: '',
-			password: '',
 			userId: '',
 			name: '',
 			isLoggedIn: false
@@ -23,46 +23,45 @@ class App extends React.Component {
 		this.userLoggedIn = this.userLoggedIn.bind(this)
 	}
 
-	userLoggedIn = (userId, name, password, email) => {
+	userLoggedIn = (userId, name, email) => {
 		this.setState({
-			isLoggedIn: userId,
+			isLoggedIn: true,
+			userId: userId,
 			name: name,
-			password: password,
 			email: email
-		})
+		});
+
 		console.log(this.state)
 	}
-
-	clearSession() {
-		event.preventDefault();
-		fetch("api/clear-session", {
-		method: 'POST'
-		})
-		.then(response => response.json())
-		.then(response => console.log(response))
-	}
-
 
 	render() {
 		return (
 			<div>
 				<Router>
-					<Link to="/login" onClick = {this.clearSession}>Register/Login</Link>
+					<Link to="/login">Login</Link>
+					<p></p>
+					<Link to="/register">Register an Account</Link>
 					<p></p>
 					<Link to="/cc-accounts">View Credit Card Accounts</Link>
 					<p></p>
 					<Link to="/myprofile">My Profile</Link>
 					<p></p>
-					{/* <Link to="/add-new">Track a new credit card</Link> */}
+					<Link to="/add-new">Track a new credit card</Link>
 				
 					<Switch> 
 							<Route exact path="/login">
 								<Login userLoggedIn = {this.userLoggedIn} /> 
 								<p> Welcome {this.state.name}!</p>
+								<p>
+								<Logout clearSession = {this.clearSession} />
+								</p>
+							</Route>
+							<Route exact path="/register">
 								<Registration/>
 							</Route>
 							<Route exact path="/cc-accounts">
 								<CCAccount isLoggedIn={this.state.isLoggedIn} />
+								{/* way of creating a cc account component for each acct the user has. Have another parameter that somewhere where I'm getting a list of user accounts. parameter would be the account.  Look at tutorial*/}
 							</Route>
 							<Route exact path="/myprofile">
 								<UserProfile isLoggedIn={this.state.isLoggedIn} />
@@ -74,16 +73,42 @@ class App extends React.Component {
 		}
 	}
 
+class Logout extends React.Component {
+	constructor(props) {
+		super(props);
+
+		localStorage.removeItem('user_id');
+		this.clearSession = this.clearSession.bind(this)
+	}
+
+	clearSession() {
+		event.preventDefault();
+		fetch("api/clear-session", {
+		method: 'POST'
+		})
+		.then(response => response.json())
+		.then(response => console.log(response))
+	}
+
+	render() {
+		return (
+			<div>
+				<button type="submit" name="logout" onClick = {this.clearSession}>Log out</button>
+			</div>
+		)
+	}
+}
+
+
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			email: '',
-			password: '',
 			userId: '',
 			name: '',
-			isLoggedIn: ''
+			isLoggedIn: false
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -103,30 +128,36 @@ class Login extends React.Component {
 			body: JSON.stringify(data),
 		})
 		.then(response => response.json())
+		// .then(data => console.log(data))
 		.then(data => {
-			if (data === "You have not registered an account.") {
-				alert("You have not registered an account.")
+			if ('error' in data) {
+				alert("Your email is not associated with a known account. Please register your account.");
 				console.log(data)
 			} else {
 				this.setState({
 					userId: data[0],
 					name: data[1],
-					password: data[2],
-					email: data[3]
+					email: data[2],
+					isLoggedIn: true
 				});
+				localStorage.setItem('userId', data[0]);
+				localStorage.setItem('name', data[1]);
+				localStorage.setItem('email', data[2]);
 				console.log(this.state);
-				this.props.userLoggedIn(data[0], data [1], data[2], data[3])}
+				this.props.userLoggedIn(data[0], data [1], data[2])}
 			})
 		}
+
+
 		
 	getEmail(event) {
 		event.preventDefault();
-		this.setState({email: event.target.value})
+		this.setState({email: event.target.value});
 	}
 	
 	getPassword(event) {
 		event.preventDefault();
-		this.setState({password: event.target.value})
+		this.setState({password: event.target.value});
 	}
 
 	render() {
@@ -141,7 +172,7 @@ class Login extends React.Component {
 					</label>
 					<label htmlFor="password">
 						Password:
-						<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password} />
+						<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
 					</label>
 					<button type="submit">Login!</button>
 			</form>
@@ -238,36 +269,6 @@ class Registration extends React.Component {
 		}
 
 
-// class Dashboard extends React.Component {
-// 	constructor(props) {
-// 		super(props)
-// 		this.state = {
-// 			userId: '',
-// 			isLoggedIn: '',
-// 		}
-// 	}	
-// 	componentDidMount() {
-// 		this.setState(this.props.state)
-// 	}	
-
-// 	render() {	
-		
-// 		let wordDisplay;
-// 		if (typeof this.props.isLoggedIn == 'number') {
-// 			console.log(this.props.isLoggedIn);
-// 			wordDisplay = 'in';	
-// 		} else {
-// 			wordDisplay = 'out. You must log in to view this page.'
-// 		};
-// 		<Redirect to='/login'/>
-// 		return (
-// 			<div>
-// 				<h6>You are currently logged {wordDisplay}</h6>
-// 			</div>
-// 		)}
-// 	}
-
-
 class CCAccount extends React.Component {
 	
 	constructor(props) {
@@ -284,6 +285,12 @@ class CCAccount extends React.Component {
 		this.getAcctInfo = this.getAcctInfo.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		}
+
+	componentDidMount() {
+		this.setState(this.props.state);
+		console.log(this.state);
+		console.log(this.props.state)
+	}
 	
 	getAcctInfo() {
 		const acctData = this.props.isLoggedIn;
@@ -370,9 +377,9 @@ class CCAccount extends React.Component {
 						To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
 				</span>
 				<p>
-				{/* <a href="https://www.britishairways.com/">
+				<a href="https://www.britishairways.com/">
 					Visit British Airways Avios portal
-				</a> */} 
+				</a> 
 				</p>
 			</div>
 			)
@@ -381,36 +388,61 @@ class CCAccount extends React.Component {
 
 
 class UserProfile extends React.Component {
-constructor() {
-	super()
-	this.state = {}
-
-	this.changePassword = this.changePassword.bind(this);
+constructor(props) {
+	super(props)
+	this.state = {
+		currentPW: '',
+		newPW: ''
 	}
 
-	changePassword() {
-		console.log(this.props)
-
+	this.getNewPassword = this.getNewPassword.bind(this);
+	this.getCurrentPassword = this.getCurrentPassword.bind(this);
 	}
 
-	componentDidMount() {
-		this.setState(this.props.state)
-		console.log(this.state)
+	getCurrentPassword(event) {
+		event.preventDefault();
+		this.setState({currentPW: event.target.value})
+		console.log(this.state.currentPW)
 	}
 
+	getNewPassword(event) {
+		event.preventDefault();
+		this.setState({newPW: event.target.value})
+		console.log(this.state.newPW)
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+		
+		let data = [localStorage.getItem('userId'), this.state.currentPW, this.state.newPW] 
+		
+		fetch('api/update-password', {
+			method: 'POST',
+			body: JSON.stringify(data)
+		})
+	
+		.then(response => response.json())
+		.then(data => console.log(data))
+
+
+	}
 
 	render() {
 		return(
 			<div>
 				<h4>My Profile</h4>
-					<p>Name: {this.props.name}</p>
-					<p>Email: {this.props.email}</p>
+					<p>Name: {localStorage.getItem('name')}</p>
+					<p>Email: {localStorage.getItem('email')}</p>
 					<p>Your profile settings are current.</p>
 					<p>If you'd like to  change your password, enter the new password below. </p>
-				<form id="password">
-					<label htmlFor="password">
-						Password:
-						<input name="password" type="text"/>
+				<form id="current-password" onSubmit={this.handleSubmit}>
+					<label htmlFor="current-password">
+						Current password:
+						<input name="current-password" type="text" onChange = {this.getCurrentPassword} ref={this.input} value={this.state.currentPW} />
+					</label>
+					<label htmlFor="new-password">
+						New password:
+						<input name="new-password" type="text" onChange = {this.getNewPassword} ref={this.input} value={this.state.newPW} />
 					</label>
 					<button>Save new</button>
 					</form>
