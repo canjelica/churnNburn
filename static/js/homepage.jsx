@@ -131,7 +131,7 @@ class Login extends React.Component {
 		// .then(data => console.log(data))
 		.then(data => {
 			if ('error' in data) {
-				alert("Your email is not associated with a known account. Please register your account.");
+				alert(data['error']);
 				console.log(data)
 			} else {
 				this.setState({
@@ -423,8 +423,13 @@ constructor(props) {
 	
 		.then(response => response.json())
 		.then(data => console.log(data))
-
-
+		.then(data => {
+			if (data = localStorage.getItem('userId')) {
+				alert("Your password has been updated.")
+			} else {
+				alert("Your current password is not correct. Please try again.")
+			}
+		})
 	}
 
 	render() {

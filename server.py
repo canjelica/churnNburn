@@ -24,6 +24,7 @@ def log_in_user():
 
 	data = request.get_json(force=True)	
 	email = data['email']
+	password = data['password']
 	
 	user = crud.get_user_by_email(email)
 
@@ -32,32 +33,36 @@ def log_in_user():
 		name = f'{user.first_name} {user.last_name}'
 		session['user_logged_in'] = user.user_id
 		session['user_name'] = name
-		status = [user.user_id, name, user.email]
+		
+		if email == user.email and password == user.password:
+			return jsonify([user.user_id, name, user.email])
+		
+		elif email == user.email and password != user.password:
+			return jsonify({'error': 'Your password is incorrect.'})
 	
 	else:
-		status = {'error': 'You have not registered an account.'}
-		
-	return jsonify(status)
+		return jsonify({'error': 'You have not registered an account.'})
+
 
 # @app.route('/login', methods=['POST'])
-# def log_in_user():
-	"""Logs in a user."""
+# # def log_in_user():
+# 	"""Logs in a user."""
 	
-	data = request.get_json()
-	user = crud.get_user_by_email(data['email'])
+# 	data = request.get_json()
+# 	user = crud.get_user_by_email(data['email'])
 
-	name = user.first_name + user.last_name
+# 	name = user.first_name + user.last_name
 
-	if user:
-		if user.password == data['password'] and user.email == data['email']:
-			session['user_id'] = user.user_id
-			return jsonify({'userId': user.user_id, 'name': name, 'email': user.email})
+# 	if user:
+# 		if user.password == data['password'] and user.email == data['email']:
+# 			session['user_id'] = user.user_id
+# 			return jsonify({'userId': user.user_id, 'name': name, 'email': user.email})
 
-		else:
-			return jsonify({'error': 'Your email or password is incorrect.'})
+# 		else:
+# 			return jsonify({'error': 'Your email or password is incorrect.'})
 
-	else:
-		return jsonify({'error':'Email is not registered in our system. Please register.'})
+# 	else:
+# 		return jsonify({'error':'Email is not registered in our system. Please register.'})
 
 
 @app.route('/api/registration', methods=['POST'])
