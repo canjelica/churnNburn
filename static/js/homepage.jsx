@@ -49,8 +49,6 @@ class App extends React.Component {
 				<Router>
 					<Link to="/login" onClick = {this.clearSession}>Register/Login</Link>
 					<p></p>
-					<Link to="/user/dashboard" >View Dashboard</Link>
-					<p></p>
 					<Link to="/cc-accounts">View Credit Card Accounts</Link>
 					<p></p>
 					<Link to="/myprofile">My Profile</Link>
@@ -62,9 +60,6 @@ class App extends React.Component {
 								<Login userLoggedIn = {this.userLoggedIn} /> 
 								<p> Welcome {this.state.name}!</p>
 								<Registration/>
-							</Route>
-							<Route exact path="/user/dashboard">
-								<Dashboard LoggedIn={this.state.isLoggedIn} />
 							</Route>
 							<Route exact path="/cc-accounts">
 								<CCAccount isLoggedIn={this.state.isLoggedIn} />
@@ -111,11 +106,13 @@ class Login extends React.Component {
 		.then(data => {
 			if (data === "You have not registered an account.") {
 				alert("You have not registered an account.")
+				console.log(data)
 			} else {
 				this.setState({
 					userId: data[0],
 					name: data[1],
-					password: data[2]
+					password: data[2],
+					email: data[3]
 				});
 				console.log(this.state);
 				this.props.userLoggedIn(data[0], data [1], data[2], data[3])}
@@ -241,30 +238,34 @@ class Registration extends React.Component {
 		}
 
 
-class Dashboard extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			userId: '',
-			isLoggedIn: '',
-		}
-	}	
+// class Dashboard extends React.Component {
+// 	constructor(props) {
+// 		super(props)
+// 		this.state = {
+// 			userId: '',
+// 			isLoggedIn: '',
+// 		}
+// 	}	
+// 	componentDidMount() {
+// 		this.setState(this.props.state)
+// 	}	
+
+// 	render() {	
 		
-	render() {		
-		let wordDisplay;
-		if (typeof (this.props.isLoggedIn) == 'number') {
-			console.log(this.props.isLoggedIn);
-			wordDisplay = 'in';	
-		} else {
-			wordDisplay = 'out. You must log in to view this page.'
-		};
-		<Redirect to='/login'/>
-		return (
-			<div>
-				<h6>You are currently logged {wordDisplay}</h6>
-			</div>
-		)}
-	}
+// 		let wordDisplay;
+// 		if (typeof this.props.isLoggedIn == 'number') {
+// 			console.log(this.props.isLoggedIn);
+// 			wordDisplay = 'in';	
+// 		} else {
+// 			wordDisplay = 'out. You must log in to view this page.'
+// 		};
+// 		<Redirect to='/login'/>
+// 		return (
+// 			<div>
+// 				<h6>You are currently logged {wordDisplay}</h6>
+// 			</div>
+// 		)}
+// 	}
 
 
 class CCAccount extends React.Component {
@@ -393,7 +394,8 @@ constructor() {
 	}
 
 	componentDidMount() {
-		console.log(this.props.userLoggedIn)
+		this.setState(this.props.state)
+		console.log(this.state)
 	}
 
 
