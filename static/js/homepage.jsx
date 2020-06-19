@@ -480,32 +480,28 @@ class TrackNewAccount extends React.Component {
 
 
 	renderCC() {
-		const creditCards = this.state.creditCards
+		const creditCards = []
 		console.log(this.state.creditCards)
-
-		for (let i = 0; i < creditCards.length; i++)
-			if (creditCards[i]) { 
-				return (
-			<CCImage 
-				imagePath={this.state.creditCards.cc_img} 
-				ccId={this.state.creditCards.cc_name} 
-				ccName={this.state.creditCards.cc_name} 
-				loyalty={this.state.creditCards.loyalty_program_id}
-				onClick={this.cardClick}/>
-			)}
+		for (let i = 0; i < 6; i++)
+		if (this.state.creditCards[i]) {
+			creditCards.push(
+				<CCImage 
+					image-path={this.state.creditCards.cc_img} 
+					cc-id={this.state.creditCards.cc_id} 
+					cc-name={this.state.creditCards.cc_name} 
+					loyalty={this.state.creditCards.loyalty_program_id}
+					onClick={this.cardClick} />
+			);
+		}
+		return creditCards //currently not setting img src to img...does the render cc merge html tags? replace them? 
 	}
-		
-
 
 	cardClick() {
+		// setState of ccImage value to this.state.cardClicked: e.g., Platinum Card
+		//stop render.cc, render form
 
 	}
 
-
-	onClick(event) {
-		event.preventDefault();
-		this.setState()
-	}
 
 	render() {
 		const creditCards = this.state.creditCards; //a list of dictionaries per card
@@ -520,6 +516,7 @@ class TrackNewAccount extends React.Component {
 				<h3>To track a credit card and add it to your account, select a specific card below.</h3>
 			
 				{this.renderCC()} 
+				<CCForm></CCForm>
 
 			</div>
 			)
@@ -528,25 +525,63 @@ class TrackNewAccount extends React.Component {
 }
 
 
-
-
-
 class CCImage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-		}
 	}
 
-	//
 	render() {
 		return (
-			<button>
-				<img id="credit-card" width="250" height="167" id="credit-card-image" src={this.props.value}/>
-				</button>
+				<img width="250" height="167" onClick={this.props.cardClick}/>
+
 		)
 	}
 }
+
+class CCForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			approvalDate: '',
+			clientStatus: '',
+			ccName: '',
+			ccBank: ''
+		}
+		this.getApprovalDate = this.getApprovalDate.bind(this);
+		this.getClientStatus = this.getClientStatus.bind(this);
+	}
+
+	getApprovalDate(event) {
+		event.preventDefault();
+		this.setState({approvalDate: event.target.value})
+		console.log(this.state)
+	}
+
+	getClientStatus(event) {
+		event.preventDefault();
+		this.setState({clientStatus: event.target.value})
+		console.log(this.state)
+	}
+//seems one step behind on calling these, console logging it out beforehand	
+
+	render() {
+		return (
+			<div>
+				<h3>Please enter the following information about your new {this.state.ccBank} {this.state.ccName} </h3>
+				<form>
+					<label htmlFor="approval-date">
+						When was your card application approved?
+					</label>
+					<input type="date" id="approval-date" name="approval-date" onChange={this.getApprovalDate} value={this.state.approvalDate} ref={this.input}/>
+						<p></p>
+					<label htmlFor="client-status">Check here if you have previously owned this card.</label>
+						<input type="checkbox" id="client-status" value="previous owner" onChange={this.getClientStatus} checked={this.state.clientStatus} ref={this.input}/>
+				</form>
+			</div>
+		)
+	}
+}
+
 
 
 ReactDOM.render (
