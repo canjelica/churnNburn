@@ -126,7 +126,15 @@ def update_password(user_id, new_password):
 
     return (update(users).where(users.user_id==user_id).values(password='new_password'))
 
+def get_banks():
+    """Return bank objects."""
 
+    return Bank.query.all()
+
+def get_all_credit_cards():
+    """Return credit card objects."""
+
+    return CreditCard.query.all()
 
 	
 

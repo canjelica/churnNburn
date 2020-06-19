@@ -66,6 +66,9 @@ class App extends React.Component {
 							<Route exact path="/myprofile">
 								<UserProfile isLoggedIn={this.state.isLoggedIn} />
 							</Route>
+							<Route exact path="/add-new">
+								<TrackNewAccount isLoggedIn={this.state.isLoggedIn}/>
+							</Route>
 					</Switch>
 				</Router>
 			</div>
@@ -99,7 +102,7 @@ class Logout extends React.Component {
 	}
 }
 
-
+{CCAccount}
 
 class Login extends React.Component {
 	constructor(props) {
@@ -413,6 +416,7 @@ constructor(props) {
 
 	handleSubmit(event) {
 		event.preventDefault();
+		console.log(this.state)
 		
 		let data = [localStorage.getItem('userId'), this.state.currentPW, this.state.newPW] 
 		
@@ -451,45 +455,98 @@ constructor(props) {
 					</label>
 					<button>Save new</button>
 					</form>
-				<a href="route to pull up form for updating">Edit info</a>
 				<p></p>
 			</div>
 		)
 	}
 }
 
-// class TrackNewAccount extends React.Component {
-// 	constructor() {
-// 		super();
-// 	}
+class TrackNewAccount extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			creditCards: []  //list of dictionaries
+		}
+	}
+	componentDidMount() {
+			fetch('api/get-cards')
+			.then(response => response.json())
+			.then(
+				(result) => {
+					this.setState({
+						creditCards: result})
+					});
+				}
 
-// 	render() {
-// 		return (
-// 			<div>
-// 				<p></p>
-// 					<h4>
-// 						Update the form fields below.
-// 					</h4>
-// 					<form>
-// 					<label>First Name
-// 							<input type="text" name="first-name" placeholder="get from db"/>
-// 						</label>
-// 						<label>Last Name
-// 							<input type="text" name="last-name" placeholder="get from db"/>
-// 						</label>
-// 						<label>Email
-// 							<input type="text" name="email" placeholder="get from db"/>
-// 						</label>
-// 						<label>Password
-// 							<input type="text" name="password" placeholder="get from db"/>
-// 						</label>
-// 						<button>Save</button>
-// 					</form>
-// 				</div>
-// 			)
-// 		}
-// 	}
 
+	renderCC() {
+		const creditCards = this.state.creditCards
+		console.log(this.state.creditCards)
+
+		for (let i = 0; i < creditCards.length; i++)
+			if (creditCards[i]) { 
+				return (
+			<CCImage 
+				imagePath={this.state.creditCards.cc_img} 
+				ccId={this.state.creditCards.cc_name} 
+				ccName={this.state.creditCards.cc_name} 
+				loyalty={this.state.creditCards.loyalty_program_id}
+				onClick={this.cardClick}/>
+			)}
+	}
+		
+
+
+	cardClick() {
+
+	}
+
+
+	onClick(event) {
+		event.preventDefault();
+		this.setState()
+	}
+
+	render() {
+		const creditCards = this.state.creditCards; //a list of dictionaries per card
+
+		if (creditCards.length < 6) {
+			return (
+			<div>"Credit cards now loading..."</div>)
+		} 
+		else {
+			return (
+			<div>
+				<h3>To track a credit card and add it to your account, select a specific card below.</h3>
+			
+				{this.renderCC()} 
+
+			</div>
+			)
+		}
+	}	
+}
+
+
+
+
+
+class CCImage extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+		}
+	}
+
+	//
+	render() {
+		return (
+			<button>
+				<img id="credit-card" width="250" height="167" id="credit-card-image" src={this.props.value}/>
+				</button>
+		)
+	}
+}
 
 
 ReactDOM.render (

@@ -43,28 +43,6 @@ def log_in_user():
 	else:
 		return jsonify({'error': 'You have not registered an account.'})
 
-
-# @app.route('/login', methods=['POST'])
-# # def log_in_user():
-# 	"""Logs in a user."""
-	
-# 	data = request.get_json()
-# 	user = crud.get_user_by_email(data['email'])
-
-# 	name = user.first_name + user.last_name
-
-# 	if user:
-# 		if user.password == data['password'] and user.email == data['email']:
-# 			session['user_id'] = user.user_id
-# 			return jsonify({'userId': user.user_id, 'name': name, 'email': user.email})
-
-# 		else:
-# 			return jsonify({'error': 'Your email or password is incorrect.'})
-
-# 	else:
-# 		return jsonify({'error':'Email is not registered in our system. Please register.'})
-
-
 @app.route('/api/registration', methods=['POST'])
 def register_user():
 	"""Registers a new user."""
@@ -102,6 +80,7 @@ def get_cc_acct_info():
 	
 	cc_acct_data = crud.get_cc_accounts(user_id)
 	
+
 	cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name,
 									'approval_date': cc_acct_data.date_opened,
 									'cc_id': cc_acct_data.credit_card_id}
@@ -151,6 +130,31 @@ def update_password(new_password):
 		return jsonify("Your current password is not correct.")
 
 
+@app.route('/api/get-cards')
+def get_cards():
+	"""Returns array of credit card attributes."""
+
+	cc_dicts = crud.get_all_credit_cards()
+	all_ccs = []
+	
+	for item in cc_dicts:
+		item_dict = {'cc_img': item.credit_card_image,
+		'cc_name': item.credit_card_name,
+		'cc_id': item.credit_card_id,
+		'loyalty_program_id': item.loyalty_program_id
+		}
+		all_ccs.append(item_dict)
+
+	return jsonify(all_ccs)
+
+# @app.route('/api/getbanks', methods=['POST'])
+# def get_banks():
+	
+# 	banks = crud.get_banks()
+# 	print(banks.name)
+
+# 	return jsonify(banks)
+##Will return to this, for now hardcoded to front end
 
 
 
