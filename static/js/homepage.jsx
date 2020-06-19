@@ -467,6 +467,8 @@ class TrackNewAccount extends React.Component {
 		this.state = {
 			creditCards: []  //list of dictionaries
 		}
+		this.renderCC = this.renderCC.bind(this);
+		this.cardClick = this.cardClick.bind(this);
 	}
 	componentDidMount() {
 			fetch('api/get-cards')
@@ -480,25 +482,32 @@ class TrackNewAccount extends React.Component {
 
 
 	renderCC() {
-		const creditCards = []
+		const creditCardsList = []
 		console.log(this.state.creditCards)
-		for (let i = 0; i < 6; i++)
-		if (this.state.creditCards[i]) {
-			creditCards.push(
+		for (let card of this.state.creditCards) 
+		{creditCardsList.push(
 				<CCImage 
-					image-path={this.state.creditCards.cc_img} 
-					cc-id={this.state.creditCards.cc_id} 
-					cc-name={this.state.creditCards.cc_name} 
-					loyalty={this.state.creditCards.loyalty_program_id}
-					onClick={this.cardClick} />
+					imagePath={card.cc_img} 
+					ccId={card.cc_id} 
+					ccName={card.cc_name} 
+					loyalty={card.loyalty_program_id}
+					onClick={this.cardClick}/>
 			);
+		
 		}
-		return creditCards //currently not setting img src to img...does the render cc merge html tags? replace them? 
+		return creditCardsList //currently not setting img src to img...does the render cc merge html tags? replace them? 
 	}
 
-	cardClick() {
-		// setState of ccImage value to this.state.cardClicked: e.g., Platinum Card
-		//stop render.cc, render form
+	cardClick(ccId) { 
+		this.setState({clickedCard: ccId});
+		
+		
+
+		}
+		
+		// 		setState to render form, or stop cc, render form
+		//  if this, show cc, if this, show form
+		//  if card and ccId, don't show cards, show form
 
 	}
 
@@ -516,7 +525,7 @@ class TrackNewAccount extends React.Component {
 				<h3>To track a credit card and add it to your account, select a specific card below.</h3>
 			
 				{this.renderCC()} 
-				<CCForm></CCForm>
+			
 
 			</div>
 			)
@@ -528,11 +537,12 @@ class TrackNewAccount extends React.Component {
 class CCImage extends React.Component {
 	constructor(props) {
 		super(props);
+		console.log(props)
 	}
 
 	render() {
 		return (
-				<img width="250" height="167" onClick={this.props.cardClick}/>
+				<img width="250" height="167" src={this.props.imagePath} onClick={this.props.cardClick} />
 
 		)
 	}
