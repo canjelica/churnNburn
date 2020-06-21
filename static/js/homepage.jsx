@@ -400,18 +400,24 @@ constructor(props) {
 
 	this.getNewPassword = this.getNewPassword.bind(this);
 	this.getCurrentPassword = this.getCurrentPassword.bind(this);
+	this.handleSubmit = this.handleSubmit.bind(this);
 	}
+
+// componentDidMount() {
+
+// }
 
 	getCurrentPassword(event) {
 		event.preventDefault();
-		this.setState({currentPW: event.target.value})
-		console.log(this.state.currentPW)
-	}
+		this.setState({currentPW: event.target.value});
+		// console.log(this.state)
+	}	
+			 
 
 	getNewPassword(event) {
 		event.preventDefault();
-		this.setState({newPW: event.target.value})
-		console.log(this.state.newPW)
+		this.setState({newPW: event.target.value});
+		// console.log(this.state.newPW)
 	}
 
 	handleSubmit(event) {
@@ -426,7 +432,7 @@ constructor(props) {
 		})
 	
 		.then(response => response.json())
-		.then(data => console.log(data))
+		// .then(data => console.log(data))
 		.then(data => {
 			if (data = localStorage.getItem('userId')) {
 				alert("Your password has been updated.")
@@ -437,6 +443,7 @@ constructor(props) {
 	}
 
 	render() {
+		console.log(this.state)
 		return(
 			<div>
 				<h4>My Profile</h4>
@@ -465,11 +472,13 @@ class TrackNewAccount extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			creditCards: []  //list of dictionaries
+			creditCards: [],
+			cardClicked: ''
 		}
 		this.renderCC = this.renderCC.bind(this);
 		this.cardClick = this.cardClick.bind(this);
 	}
+
 	componentDidMount() {
 			fetch('api/get-cards')
 			.then(response => response.json())
@@ -483,36 +492,39 @@ class TrackNewAccount extends React.Component {
 
 	renderCC() {
 		const creditCardsList = []
-		console.log(this.state.creditCards)
+		console.log(this.state)
 		for (let card of this.state.creditCards) 
 		{creditCardsList.push(
 				<CCImage 
 					imagePath={card.cc_img} 
-					ccId={card.cc_id} 
-					ccName={card.cc_name} 
-					loyalty={card.loyalty_program_id}
-					onClick={this.cardClick}/>
+					ccid={card.cc_id} 
+					ccname={card.cc_name} 
+					loyalty={card.loyalty_program_id} 
+					onClick={() => {this.cardClick(card.cc_id)}}  
+					/>
 			);
 		
 		}
-		return creditCardsList //currently not setting img src to img...does the render cc merge html tags? replace them? 
+		return creditCardsList 
 	}
 
-	cardClick(ccId) { 
-		this.setState({clickedCard: ccId});
-		
+	cardClick(ccid) {
+		this.setState({cardClicked: ccid});  // also could use getAttribute() here instead
+	console.log(this.state.cardClicked)
+		}
 		
 
-		}
+	
+		
 		
 		// 		setState to render form, or stop cc, render form
 		//  if this, show cc, if this, show form
 		//  if card and ccId, don't show cards, show form
 
-	}
-
+	
 
 	render() {
+		console.log(this.state.cardClicked);
 		const creditCards = this.state.creditCards; //a list of dictionaries per card
 
 		if (creditCards.length < 6) {
@@ -542,8 +554,12 @@ class CCImage extends React.Component {
 
 	render() {
 		return (
-				<img width="250" height="167" src={this.props.imagePath} onClick={this.props.cardClick} />
-
+				<img width="250" height="167" 
+				src={this.props.imagePath} 	
+				ccid={this.props.ccid} 
+				ccname={this.props.ccname} 
+				loyalty={this.props.loyalty}
+				onClick={this.props.onClick} />
 		)
 	}
 }
@@ -572,7 +588,6 @@ class CCForm extends React.Component {
 		this.setState({clientStatus: event.target.value})
 		console.log(this.state)
 	}
-//seems one step behind on calling these, console logging it out beforehand	
 
 	render() {
 		return (
