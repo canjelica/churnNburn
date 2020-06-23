@@ -48,8 +48,8 @@ class App extends React.Component {
 					<p></p>
 					<Link to="/add-new">Track a new credit card</Link>
 				
-					<Switch> 
-							<Route exact path="/login">
+			
+					<Switch>
 								<Login userLoggedIn = {this.userLoggedIn} /> 
 								<p> Welcome {this.state.name}!</p>
 								<p>
@@ -78,6 +78,18 @@ class App extends React.Component {
 			);
 		}
 	}
+
+
+class Dashboard extends React.Component {
+	render() {
+		return (
+			<div>
+
+			</div>
+		)
+	}
+}
+
 
 class Logout extends React.Component {
 	constructor(props) {
@@ -203,6 +215,7 @@ class Registration extends React.Component {
 		this.getLName = this.getLName.bind(this);
 		this.getEmail = this.getEmail.bind(this);
 		this.getPassword = this.getPassword.bind(this);
+		this.loginRedirect = this.loginRedirect.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -220,7 +233,7 @@ class Registration extends React.Component {
 			body: JSON.stringify(data),
 		})
 		.then(response => response.json())
-		.then(data => console.log(data));													
+		.then(data => alert(data));												
 		}
 
 	getFName(event) {
@@ -243,8 +256,10 @@ class Registration extends React.Component {
 		this.setState({password: event.target.value})
 	}
 
-	clickAlert(event) {
-		event.preventDefault();	}
+	loginRedirect(event) {
+		event.preventDefault();	
+		return <Redirect to="/login"/>
+	}
 	
 		render() {
 			return (
@@ -266,7 +281,7 @@ class Registration extends React.Component {
 								Password:
 									<input name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
 							</label>
-							<button type="submit">Register Me!</button>
+							<button type="submit" onClick={this.loginRedirect}>Register Me!</button>
 							</label>
 						</form>
 					</div>
@@ -315,11 +330,15 @@ class CCAccount extends React.Component {
 
 		.then( () => fetch('api/cc-info', {method: 'POST'}))
 		.then(response => response.json())
+		.then(data => console.log(data))
 		.then(data => {
-				this.setState({ccInfo: data})
-				
+			if ('error' in data) {
+				alert(data['error'])
+			} else {
+				this.setState({ccInfo: data});
 			console.log(this.state.ccInfo);
 			console.log(this.state.ccAcctInfo)
+			};
 		})
 
 		.then( () => {
@@ -607,7 +626,7 @@ class CCForm extends React.Component {
 			body: JSON.stringify(data)
 		})
 		.then(response => response.json())
-		.then(data => console.log(data))
+		.then(data => alert(data))
 	}
 
 	render() {

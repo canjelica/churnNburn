@@ -56,7 +56,8 @@ def register_user():
 	user = crud.add_user(first_name, last_name, email, password)
 	print(user)
 	if user:
-		status = "You have created your account."
+		clear_session()
+		status = "You have created your account. Please log in."
 
 	return jsonify(status)
 
@@ -79,8 +80,11 @@ def get_cc_acct_info():
 	user_id = session['user_logged_in']	
 	
 	cc_acct_data = crud.get_cc_accounts(user_id)
-	
 
+	# if cc_acct_data == None:
+	# 	return jsonify({'error': 'You do not have any credit cards tied to your account. Please add a credit card to track its status.'})
+	
+	# else: 
 	cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name,
 									'approval_date': cc_acct_data.date_opened,
 									'cc_id': cc_acct_data.credit_card_id}
