@@ -67,7 +67,7 @@ class App extends React.Component {
 								<UserProfile isLoggedIn={this.state.isLoggedIn} />
 							</Route>
 							<Route exact path="/add-new">
-								<TrackNewAccount isLoggedIn={this.state.isLoggedIn}/>
+								<TrackNewAccount isLoggedIn={this.state.isLoggedIn} creditCardId={this.state.creditCards} />
 							</Route>
 							<Route exact path="/add-new/form">
 								
@@ -429,14 +429,14 @@ constructor(props) {
 		})
 	
 		.then(response => response.json())
-		.then(data => console.log(data))
-		// .then(data => {
-		// 	if (data = localStorage.getItem('userId')) {
-		// 		alert("Your password has been updated.")
-		// 	} else {
-		// 		alert("Your current password is not correct. Please try again.")
-		// 	}
-		// })
+		// .then(data => console.log(data))
+		.then(data => {
+			if ('error' in data) {
+				alert("Your current password is not correct. Please try again." )
+			} else {
+				alert("Your password has been updated.")
+			}
+		})
 	}
 
 	render() {
@@ -471,6 +471,7 @@ class TrackNewAccount extends React.Component {
 		this.state = {
 			creditCards: [],
 			cardClicked: '',
+			isLoggedin: this.props.isLoggedIn
 		}
 		this.renderCC = this.renderCC.bind(this);
 		this.cardClick = this.cardClick.bind(this);
@@ -478,14 +479,14 @@ class TrackNewAccount extends React.Component {
 	}
 
 	componentDidMount() {
-			fetch('api/get-cards')
-			.then(response => response.json())
-			.then(
-				(result) => {
-					this.setState({
-						creditCards: result})
-					});
-				}
+		fetch('api/get-cards')
+		.then(response => response.json())
+		.then(
+			(result) => {
+				this.setState({
+					creditCards: result})
+				});
+			}
 
 	renderCC() {
 		const creditCardsList = []
@@ -500,7 +501,6 @@ class TrackNewAccount extends React.Component {
 					onClick={() => {this.cardClick(card.cc_id)}}  
 					/>
 			);
-		
 		}
 		return creditCardsList 
 	}
@@ -515,12 +515,11 @@ class TrackNewAccount extends React.Component {
 	if (typeof this.state.cardClicked === 'number') {
 		return (
 			<div>
-				<CCForm/> 
+				<CCForm cardClicked={this.state.cardClicked}/> 
 			</div>
 		)}
 	}
 	
-
 	render() {
 		console.log(this.state.cardClicked);
 		const creditCards = this.state.creditCards  //a list of dictionaries per card
@@ -541,18 +540,10 @@ class TrackNewAccount extends React.Component {
 				<div>
 					{this.renderCC()}
 				</div>
-				
-				
-				
-			
-				
 			</div>
 			)}
-			
 		}
 	}
-
-
 
 
 
@@ -561,7 +552,6 @@ class CCImage extends React.Component {
 		super(props);
 		console.log(props)
 	}
-
 
 	render() {
 		return (
@@ -581,11 +571,12 @@ class CCForm extends React.Component {
 		this.state = {
 			approvalDate: '',
 			clientStatus: '',
-			last_owned: ''
+			last_owned: '',
+			cardClicked: this.props.cardClicked
 		}
 		this.getApprovalDate = this.getApprovalDate.bind(this);
 		this.getClientStatus = this.getClientStatus.bind(this);
-		// this.addCCAcct = this.addCCAcct.bind(this);
+		this.addCCAcct = this.addCCAcct.bind(this);
 		this.previousOwner = this.previousOwner.bind(this);
 	}
 
@@ -604,19 +595,20 @@ class CCForm extends React.Component {
 		console.log(this.state)
 	}
 
-
-	// addCCAcct() {
-	// 	const data = {
-	// 		date_opened: this.state.approvalDate,
-	// 		last_owned: this.state.clientStatus,
-	// 	};
+	addCCAcct() {
+		const data = {
+			date_opened: this.state.approvalDate,
+			last_owned: this.state.last_owned,
+			credit_card_id: this.state.cardClicked
+		};
 		
-	// 	fetch('/api/add-card', {
-	// 		method: 'POST',
-	// 		body: JSON.stringify(data)
-	// 	})
-	// 	.then
-	// }
+		fetch('/api/add-card', {
+			method: 'POST',
+			body: JSON.stringify(data)
+		})
+		.then(response => response.json())
+		.then(data => console.log(data))
+	}
 
 	render() {
 		if (this.state.clientStatus === "previous owner") {
@@ -625,7 +617,7 @@ class CCForm extends React.Component {
 					<label forHTML="last-owned">When did you last own this card?</label>
 					<input type="date" id="last-owned" name="last-owned" onChange={this.previousOwner} value={this.state.last_owned} ref={this.input} />
 					<p></p>
-					<button id="submit" onClick={this.getCCInfo}> Add card</button>
+					<button id="submit" onClick={this.addCCAcct}> Add card</button>
 				</div>
 				)
 			}
@@ -641,6 +633,8 @@ class CCForm extends React.Component {
 						<p></p>
 					<label htmlFor="client-status">Check here if you have previously owned this card.</label>
 						<input type="checkbox" id="client-status" value="previous owner" onChange={this.getClientStatus} checked={this.state.clientStatus} ref={this.input}/>
+						<p></p>
+					<button id="submit" onClick={this.addCCAcct}> Add card</button>
 				</form>
 			</div>
 		)

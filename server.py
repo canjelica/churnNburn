@@ -122,14 +122,13 @@ def update_password():
 
 	user_info = crud.get_user_by_id(user_id)
 	user_pw = user_info.password
-	print(user_pw)
 	
-	if session['user_logged_in'] == user_id and old_pw == user_pw:
-		updated_pw = crud.update_password(user_id, new_pw)
-		print(updated_pw)
-		return jsonify(updated_pw)
-	# else:
-	# 	return jsonify("Your current password is not correct.")
+	if str(session['user_logged_in']) == str(user_id) and old_pw == user_pw:
+		updated_pw = crud.update_password(user_id, new_pw) #returns None
+		print(user_id)
+		return jsonify({'updated': 'yes'})
+	else:
+		return jsonify({'error': 'Your current password is not correct.'})
 
 @app.route('/api/get-cards')
 def get_cards():
@@ -149,12 +148,33 @@ def get_cards():
 	return jsonify(all_ccs)
 
 
-@app.route('/api/add-card')
+@app.route('/api/add-card', methods=['POST'])
 def add_new_card():
 	"""Adds a user's card to the database."""
 
-	data = request.get_json(force=True)  #returns list [date_approved, last_owned: date last owned]
+	data = request.get_json(force=True)  #returns list [date_approved, last_owned: date last owned, credit card id]
 	user_id = session['user_logged_in']
+	user_id = user_id
+	date_opened = data['date_opened']
+	last_owned = data['last_owned']
+	credit_card_id = data['credit_card_id']
+
+	is_active = True
+	credit_cards = crud.get_all_credit_cards()
+	cc_account_name = credit_cards[credit_card_id - 1].credit_card_name
+
+	added_card = crud.add_credit_card(cc_account_name, date_opened, last_owned, is_active, user_id, credit_card_id)
+
+	return jsonify("Your card has been added to your account.")
+
+	
+
+
+
+
+
+
+
 
 
 

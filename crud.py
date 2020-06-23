@@ -124,13 +124,10 @@ def add_user(firstname, lastname, email, password):
 def update_password(user_id, new_password):
     """Updates a user's password."""
 
-    updated = update(users).where(users.user_id==user_id).values(password=new_password)
+    user = User.query.get(user_id)
+    user.password = new_password
 
-    db.session.add(new_user)
-    db.session.commit()
-
-    return 
-    
+    db.session.commit()    
 
 def get_banks():
     """Return bank objects."""
@@ -142,10 +139,14 @@ def get_all_credit_cards():
 
     return CreditCard.query.all()
 
+def add_credit_card(cc_account_name, date_opened, last_owned, is_active, user_id, credit_card_id):
+    """Adds a new credit card to the database."""
 	
+    new_cc = CreditCardAccount(cc_account_name=cc_account_name, date_opened=date_opened, last_owned=last_owned, is_active=is_active, user_id=user_id, credit_card_id=credit_card_id)
 
-
-
+    db.session.add(new_cc)
+    db.session.commit()
+    return new_cc
 
 
 if __name__ == '__main__':
