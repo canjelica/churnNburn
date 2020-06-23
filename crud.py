@@ -124,7 +124,13 @@ def add_user(firstname, lastname, email, password):
 def update_password(user_id, new_password):
     """Updates a user's password."""
 
-    return (update(users).where(users.user_id==user_id).values(password='new_password'))
+    updated = update(users).where(users.user_id==user_id).values(password=new_password)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return 
+    
 
 def get_banks():
     """Return bank objects."""

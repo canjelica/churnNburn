@@ -112,23 +112,24 @@ def get_credit_card():
 	return jsonify(cc_info)
 
 @app.route('/api/update-password', methods=['POST'])
-def update_password(new_password):
+def update_password():
 	"""Updates a user's password."""
 
 	data = request.get_json(force=True) #returns list [userid, current pw, new pw]
-	print(data)
 	user_id = data[0]
 	old_pw = data[1]
 	new_pw = data[2]
 
-	current_pw = crud.get_user_by_id(user_id)
-
-	if session['user_logged_in'] == user_id and old_pw == current_pw.password: 
+	user_info = crud.get_user_by_id(user_id)
+	user_pw = user_info.password
+	print(user_pw)
+	
+	if session['user_logged_in'] == user_id and old_pw == user_pw:
 		updated_pw = crud.update_password(user_id, new_pw)
+		print(updated_pw)
 		return jsonify(updated_pw)
-	else:
-		return jsonify("Your current password is not correct.")
-
+	# else:
+	# 	return jsonify("Your current password is not correct.")
 
 @app.route('/api/get-cards')
 def get_cards():
@@ -147,14 +148,17 @@ def get_cards():
 
 	return jsonify(all_ccs)
 
-# @app.route('/api/getbanks', methods=['POST'])
-# def get_banks():
-	
-# 	banks = crud.get_banks()
-# 	print(banks.name)
 
-# 	return jsonify(banks)
-##Will return to this, for now hardcoded to front end
+@app.route('/api/add-card')
+def add_new_card():
+	"""Adds a user's card to the database."""
+
+	data = request.get_json(force=True)  #returns list [date_approved, last_owned: date last owned]
+	user_id = session['user_logged_in']
+
+
+
+
 
 
 
