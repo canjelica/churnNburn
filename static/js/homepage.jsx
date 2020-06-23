@@ -30,7 +30,7 @@ class App extends React.Component {
 			name: name,
 			email: email
 		});
-
+		console.log(localStorage.getItem['userId']);
 		console.log(this.state)
 	}
 
@@ -38,7 +38,9 @@ class App extends React.Component {
 		return (
 			<div>
 				<Router>
-					<Link to="/login">Login</Link>
+					<Link to="/">Login</Link>
+					<p></p>
+					<Link to="/dashboard">Dashboard</Link>
 					<p></p>
 					<Link to="/register">Register an Account</Link>
 					<p></p>
@@ -50,28 +52,31 @@ class App extends React.Component {
 				
 			
 					<Switch>
-								<Login userLoggedIn = {this.userLoggedIn} /> 
-								<p> Welcome {this.state.name}!</p>
-								<p>
-								<Logout clearSession = {this.clearSession} />
-								</p>
+						<Route exact path="/">
+							<Login exact path="/" userLoggedIn = {this.userLoggedIn} /> 
+							<p>
+							<Logout clearSession = {this.clearSession} />
+							</p>
 							</Route>
-							<Route exact path="/register">
-								<Registration/>
-							</Route>
-							<Route exact path="/cc-accounts">
-								<CCAccount isLoggedIn={this.state.isLoggedIn} />
-								{/* way of creating a cc account component for each acct the user has. Have another parameter that somewhere where I'm getting a list of user accounts. parameter would be the account.  Look at tutorial*/}
-							</Route>
-							<Route exact path="/myprofile">
-								<UserProfile isLoggedIn={this.state.isLoggedIn} />
-							</Route>
-							<Route exact path="/add-new">
-								<TrackNewAccount isLoggedIn={this.state.isLoggedIn} creditCardId={this.state.creditCards} />
-							</Route>
-							<Route exact path="/add-new/form">
-								
-							</Route>
+						<Route exact path="/register">
+							<Registration/>
+						</Route>
+						<Route exact path="/dashboard">
+							<Dashboard isLoggedIn={this.state.isLoggedIn} />
+						</Route>
+						<Route exact path="/cc-accounts">
+							<CCAccount isLoggedIn={this.state.isLoggedIn} />
+							{/* way of creating a cc account component for each acct the user has. Have another parameter that somewhere where I'm getting a list of user accounts. parameter would be the account.  Look at tutorial*/}
+						</Route>
+						<Route exact path="/myprofile">
+							<UserProfile isLoggedIn={this.state.isLoggedIn} />
+						</Route>
+						<Route exact path="/add-new">
+							<TrackNewAccount isLoggedIn={this.state.isLoggedIn} creditCardId={this.state.creditCards} />
+						</Route>
+						<Route exact path="/add-new/form">
+							
+						</Route>
 					</Switch>
 				</Router>
 			</div>
@@ -81,7 +86,18 @@ class App extends React.Component {
 
 
 class Dashboard extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {isLoggedIn: false}
+	}
+
+	componentDidMount() {
+		this.setState({isLoggedIn: localStorage.getItem['userId']});
+		console.log(this.state)
+	}
+
 	render() {
+		
 		return (
 			<div>
 
@@ -179,6 +195,13 @@ class Login extends React.Component {
 	}
 
 	render() {
+		if(this.state.name) {
+			return (
+				<div>
+					<h3>Welcome {this.state.name}!</h3>
+				</div>
+			)
+		}
 
 		return (
 			<div>
@@ -324,21 +347,20 @@ class CCAccount extends React.Component {
 		.then(response => response.json())
 
 		.then(data => {
-			this.setState({ccAcctInfo: data})
+			if ('error' in data) {
+				alert(data['error'])
+			} else {
+				this.setState({ccAcctInfo: data});
 			}
-		)
-
+		}
+	)
 		.then( () => fetch('api/cc-info', {method: 'POST'}))
 		.then(response => response.json())
 		.then(data => console.log(data))
 		.then(data => {
-			if ('error' in data) {
-				alert(data['error'])
-			} else {
-				this.setState({ccInfo: data});
+			this.setState({ccInfo: data});
 			console.log(this.state.ccInfo);
-			console.log(this.state.ccAcctInfo)
-			};
+			console.log(this.state.ccAcctInfo);
 		})
 
 		.then( () => {

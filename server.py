@@ -81,26 +81,25 @@ def get_cc_acct_info():
 	
 	cc_acct_data = crud.get_cc_accounts(user_id)
 
-	# if cc_acct_data == None:
-	# 	return jsonify({'error': 'You do not have any credit cards tied to your account. Please add a credit card to track its status.'})
+	if cc_acct_data:
+		cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name, 'approval_date': cc_acct_data.date_opened, 'cc_id': cc_acct_data.credit_card_id}
+
+		cc_id = cc_acct_info['cc_id']
+		session['cc_acct_name'] = cc_acct_data.cc_account_name
+		session['cc_id'] = cc_id
+
+		return jsonify(cc_acct_info)
 	
-	# else: 
-	cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name,
-									'approval_date': cc_acct_data.date_opened,
-									'cc_id': cc_acct_data.credit_card_id}
+	else:
+		return jsonify({'error': 'There are no credit cards associated with your account. Please add a credit card to track its status.'})
 
-	cc_id = cc_acct_info['cc_id']
-	session['cc_acct_name'] = cc_acct_data.cc_account_name
-	session['cc_id'] = cc_id
-
-	return jsonify(cc_acct_info)
 
 @app.route('/api/cc-info', methods=['POST'])
 def get_credit_card():
 	"""Returns specific credit card attributes."""
 
 	user_id = session['user_logged_in']	
-	cc_acct_name = session['cc_acct_name']
+	cc_acct_name = session['cc_acct_name']  #dict has method called .get() that gets the value at a key or return , if you don't provide it, get None)
 	cc_id = session['cc_id']
 
 	cc_data = crud.get_credit_card(cc_id)
