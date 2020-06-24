@@ -55,24 +55,24 @@ class App extends React.Component {
 						<Route exact path="/">
 							<Login exact path="/" userLoggedIn = {this.userLoggedIn} /> 
 							<p>
-							<Logout clearSession = {this.clearSession} />
+							<LogoutButton clearSession = {this.clearSession} />
 							</p>
 							</Route>
 						<Route exact path="/register">
 							<Registration/>
 						</Route>
 						<Route exact path="/dashboard">
-							<Dashboard isLoggedIn={this.state.isLoggedIn} />
+							<Dashboard isLoggedIn={this.props.isLoggedIn} />
 						</Route>
 						<Route exact path="/cc-accounts">
-							<CCAccount isLoggedIn={this.state.isLoggedIn} />
+							<CCAccount isLoggedIn={this.props.isLoggedIn} />
 							{/* way of creating a cc account component for each acct the user has. Have another parameter that somewhere where I'm getting a list of user accounts. parameter would be the account.  Look at tutorial*/}
 						</Route>
 						<Route exact path="/myprofile">
-							<UserProfile isLoggedIn={this.state.isLoggedIn} />
+							<UserProfile isLoggedIn={this.props.isLoggedIn} />
 						</Route>
 						<Route exact path="/add-new">
-							<TrackNewAccount isLoggedIn={this.state.isLoggedIn} creditCardId={this.state.creditCards} />
+							<TrackNewAccount isLoggedIn={this.props.isLoggedIn} creditCardId={this.state.creditCards} />
 						</Route>
 						<Route exact path="/add-new/form">
 							
@@ -88,26 +88,42 @@ class App extends React.Component {
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {isLoggedIn: false}
+		this.state = {isLoggedIn: localStorage.getItem('userId')}
 	}
 
-	componentDidMount() {
-		this.setState({isLoggedIn: localStorage.getItem['userId']});
-		console.log(this.state)
-	}
+	// componentDidMount() {
+	// 	this.setState({isLoggedIn: this.props.isLoggedIn});
+	// 	console.log(this.state)
+	// }
 
 	render() {
-		
+		const userId = this.state.isLoggedIn
+		if (userId) {
 		return (
 			<div>
-
+				{/* <NavBar/>
+				<Header/> */}
+				<UserProfile/>
+				<CCAccount/>
+				<TrackNewAccount/>
+				<LogoutButton></LogoutButton>
+				{/* <Footer/> */}
 			</div>
 		)
+	} else {
+		return (
+			<div>
+			<p>
+				You are not logged in. Please return to the login page.
+			</p>
+			</div>
+			)
+		}
 	}
 }
 
 
-class Logout extends React.Component {
+class LogoutButton extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -121,7 +137,8 @@ class Logout extends React.Component {
 		method: 'POST'
 		})
 		.then(response => response.json())
-		.then(response => console.log(response))
+		.then(response => console.log(response));
+		localStorage.clear()
 	}
 
 	render() {
@@ -506,6 +523,7 @@ constructor(props) {
 	}
 }
 
+
 class TrackNewAccount extends React.Component {
 	constructor(props) {
 		super(props);
@@ -605,6 +623,7 @@ class CCImage extends React.Component {
 		)
 	}
 }
+
 
 class CCForm extends React.Component {
 	constructor(props) {
