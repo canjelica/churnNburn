@@ -41,7 +41,7 @@ def log_in_user():
 			return jsonify({'error': 'Your password is incorrect.'})
 	
 	else:
-		return jsonify({'error': 'You have not registered an account.'})
+		return jsonify({'error': 'You have not registered an account. Please register.'})
 
 @app.route('/api/registration', methods=['POST'])
 def register_user():
@@ -80,7 +80,7 @@ def get_cc_acct_info():
 	user_id = session['user_logged_in']	
 	
 	cc_acct_data = crud.get_cc_accounts(user_id)
-
+	
 	if cc_acct_data:
 		cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name, 'approval_date': cc_acct_data.date_opened, 'cc_id': cc_acct_data.credit_card_id}
 
@@ -91,7 +91,7 @@ def get_cc_acct_info():
 		return jsonify(cc_acct_info)
 	
 	else:
-		return jsonify({'error': 'There are no credit cards associated with your account. Please add a credit card to track its status.'})
+		return jsonify("You do not have any cards associated with this account.")
 
 
 @app.route('/api/cc-info', methods=['POST'])
@@ -103,6 +103,7 @@ def get_credit_card():
 	cc_id = session['cc_id']
 
 	cc_data = crud.get_credit_card(cc_id)
+	print(cc_data, '8'*800)
 	
 	cc_info = {'cc_name': cc_data.credit_card_name,
 		'req_spending': cc_data.required_spending,
@@ -150,7 +151,6 @@ def get_cards():
 
 	return jsonify(all_ccs)
 
-
 @app.route('/api/add-card', methods=['POST'])
 def add_new_card():
 	"""Adds a user's card to the database."""
@@ -166,9 +166,23 @@ def add_new_card():
 	credit_cards = crud.get_all_credit_cards()
 	cc_account_name = credit_cards[credit_card_id - 1].credit_card_name
 
-	added_card = crud.add_credit_card(cc_account_name, date_opened, last_owned, is_active, user_id, credit_card_id)
+	added_card = crud.add_credit_card(cc_account_name, date_opened, last_owned, is_active,user_id, credit_card_id)
 
 	return jsonify("Your card has been added to your account.")
+
+@app.route('/api/loyalty-info', methods=['POST'])
+def get_loyalty_info():
+	"""Gets loyalty program information."""
+
+	loyalty_dicts = crud.get_loyalty_info()  #list of dictionaries
+	all_lps = []
+
+	for item in loyalty_dicts:
+		lp_dict = {'program_name': item.loyalty_program_name, 'points_portal': item.points_portal}
+		all_lps.append(lp_dict)
+
+	return jsonify(all_lps)
+
 
 	
 

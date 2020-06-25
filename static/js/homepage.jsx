@@ -19,7 +19,6 @@ class App extends React.Component {
 			name: '',
 			isLoggedIn: false
 		};
-		
 		this.userLoggedIn = this.userLoggedIn.bind(this);
 	}
 
@@ -30,57 +29,36 @@ class App extends React.Component {
 			name: name,
 			email: email
 		});
-		console.log(localStorage.getItem['userId']);
-		console.log(this.state)
 	}
 
 	render() {
-		return (
+		const userId = sessionStorage.getItem('userId');
+		if (userId) {
+			return(
 			<div>
-				<Router>
-					<Link to="/">Login</Link>
-					<p></p>
-					<Link to="/dashboard">Dashboard</Link>
-					<p></p>
-					<Link to="/register">Register an Account</Link>
-					<p></p>
-					<Link to="/cc-accounts">View Credit Card Accounts</Link>
-					<p></p>
-					<Link to="/myprofile">My Profile</Link>
-					<p></p>
-					<Link to="/add-new">Track a new credit card</Link>
-				
+	
+				<Dashboard userLoggedIn={this.props.userLoggedIn} />
 			
-					<Switch>
-						<Route exact path="/">
-							<Login exact path="/" userLoggedIn = {this.userLoggedIn} /> 
-							<p>
-							<LogoutButton clearSession = {this.clearSession} />
-							</p>
-							</Route>
-						<Route exact path="/register">
-							<Registration/>
-						</Route>
-						<Route exact path="/dashboard">
-							<Dashboard isLoggedIn={this.props.isLoggedIn} />
-						</Route>
-						<Route exact path="/cc-accounts">
-							<CCAccount isLoggedIn={this.props.isLoggedIn} />
-							{/* way of creating a cc account component for each acct the user has. Have another parameter that somewhere where I'm getting a list of user accounts. parameter would be the account.  Look at tutorial*/}
-						</Route>
-						<Route exact path="/myprofile">
-							<UserProfile isLoggedIn={this.props.isLoggedIn} />
-						</Route>
-						<Route exact path="/add-new">
-							<TrackNewAccount isLoggedIn={this.props.isLoggedIn} creditCardId={this.state.creditCards} />
-						</Route>
-						<Route exact path="/add-new/form">
-							
-						</Route>
-					</Switch>
-				</Router>
 			</div>
-			);
+			)
+		} else {
+			return (
+				<div>
+					<Router>
+						<Link to="/register" > Sign up for an account </Link>
+						<Switch>
+							<Route exact path="/">
+								{/* {isLoggedIn ? <Redirect to="/dashboard" /> : <Login />} */}
+								<Login exact path="/" userLoggedIn = {this.userLoggedIn} />
+							</Route>
+							<Route exact path="/register">
+								<Registration/> 
+							</Route>
+						</Switch>
+					</Router>
+				</div>
+				)
+			};
 		}
 	}
 
@@ -88,34 +66,44 @@ class App extends React.Component {
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {isLoggedIn: localStorage.getItem('userId')}
+		this.state = {
+			isLoggedIn: sessionStorage.getItem('userId'),
+			name: this.props.name
+		}
 	}
 
-	// componentDidMount() {
-	// 	this.setState({isLoggedIn: this.props.isLoggedIn});
-	// 	console.log(this.state)
-	// }
+	componentDidMount() {
+		this.setState({name: this.props.name});
+		console.log(this.state)
+	}
 
 	render() {
-		const userId = this.state.isLoggedIn
+		
+		const userId = this.state.isLoggedIn;
+		sessionStorage.setItem('userId', userId)
 		if (userId) {
-		return (
-			<div>
-				{/* <NavBar/>
-				<Header/> */}
-				<UserProfile/>
-				<CCAccount/>
-				<TrackNewAccount/>
-				<LogoutButton></LogoutButton>
-				{/* <Footer/> */}
-			</div>
-		)
-	} else {
-		return (
-			<div>
-			<p>
-				You are not logged in. Please return to the login page.
-			</p>
+			return (
+				<div>
+					
+					<NavBar />
+					<p></p>
+					<CCAccount/>
+					<p></p>
+					<LoyaltyPortal/>
+					<p></p>
+					<TrackNewAccount/>
+					<p></p>
+					<UserProfile/>
+					<p></p>
+					<LogoutButton/>
+
+				</div>
+			)
+		} else {
+			return ( 
+			<div> 
+				You are not logged in.
+				<Redirect to="/"/>
 			</div>
 			)
 		}
@@ -123,11 +111,27 @@ class Dashboard extends React.Component {
 }
 
 
+class NavBar extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+			
+	render() {
+		return (
+				<div>
+					This is the Navbar
+				</div>
+		)
+	}
+}
+
+
+
 class LogoutButton extends React.Component {
 	constructor(props) {
 		super(props);
 
-		localStorage.removeItem('user_id');
+		sessionStorage.removeItem('user_id');
 		this.clearSession = this.clearSession.bind(this)
 	}
 
@@ -138,7 +142,7 @@ class LogoutButton extends React.Component {
 		})
 		.then(response => response.json())
 		.then(response => console.log(response));
-		localStorage.clear()
+		sessionStorage.clear()
 	}
 
 	render() {
@@ -150,7 +154,6 @@ class LogoutButton extends React.Component {
 	}
 }
 
-{CCAccount}
 
 class Login extends React.Component {
 	constructor(props) {
@@ -191,9 +194,9 @@ class Login extends React.Component {
 					email: data[2],
 					isLoggedIn: true
 				});
-				localStorage.setItem('userId', data[0]);
-				localStorage.setItem('name', data[1]);
-				localStorage.setItem('email', data[2]);
+				sessionStorage.setItem('userId', data[0]);
+				sessionStorage.setItem('name', data[1]);
+				sessionStorage.setItem('email', data[2]);
 				console.log(this.state);
 				this.props.userLoggedIn(data[0], data [1], data[2])}
 			})
@@ -238,6 +241,7 @@ class Login extends React.Component {
 				)
 			}
 		}
+
 	
 	
 class Registration extends React.Component {
@@ -362,10 +366,10 @@ class CCAccount extends React.Component {
 			}
 		)
 		.then(response => response.json())
-
+		.then(data => console.log(data))
 		.then(data => {
-			if ('error' in data) {
-				alert(data['error'])
+			if (typeof data == 'string') {
+				alert(data)
 			} else {
 				this.setState({ccAcctInfo: data});
 			}
@@ -412,7 +416,6 @@ class CCAccount extends React.Component {
 	
 
 	render() {
-
 		return(
 			<div>
 				<span>
@@ -440,15 +443,56 @@ class CCAccount extends React.Component {
 						}}} */}
 						To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
 				</span>
-				<p>
-				<a href="https://www.britishairways.com/">
-					Visit British Airways Avios portal
-				</a> 
-				</p>
 			</div>
 			)
 		}
 	}
+
+
+class LoyaltyPortal extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			ccAcctInfo: this.props.ccAcctInfo,
+			loyalty_info:''
+		}
+	}
+
+	componentDidMount() {
+		fetch('/api/loyalty-info', {
+			method: 'POST',
+		})
+		.then(response => response.json())
+		.then(data => console.log(data))
+		.then(data => {
+			this.setState({loyalty_info: data});
+		})
+	}
+
+	getPortalLink() {
+		let portal = 0
+		if (this.props.ccAcctInfo.loyalty == 1) {
+			portal = this.state.loyalty_info[0]
+		} else if (this.props.ccAcctInfo.loyalty == 2) {
+			portal = this.state.loyalty_info[1]
+		} else if (this.props.ccAcctInfo.loyalty == 3) {
+			portal = this.state.loyalty_info[2]
+		} else {
+			portal = this.state.loyalty_info[3]
+		}
+	}
+
+
+	render() {
+		return (
+			<div>
+				<a href={portal}>
+					Visit British Airways Avios portal
+				</a> 
+			</div>
+		)
+	}
+}
 
 
 class UserProfile extends React.Component {
@@ -456,7 +500,8 @@ constructor(props) {
 	super(props)
 	this.state = {
 		currentPW: '',
-		newPW: ''
+		newPW: '',
+		isLoggedIn: this.props.isLoggedIn
 	}
 
 	this.getNewPassword = this.getNewPassword.bind(this);
@@ -479,7 +524,7 @@ constructor(props) {
 	handleSubmit(event) {
 		event.preventDefault();
 		
-		let data = [localStorage.getItem('userId'), this.state.currentPW, this.state.newPW] 
+		let data = [sessionStorage.getItem('userId'), this.state.currentPW, this.state.newPW] 
 		
 		fetch('api/update-password', {
 			method: 'POST',
@@ -498,12 +543,11 @@ constructor(props) {
 	}
 
 	render() {
-		console.log(this.state)
 		return(
 			<div>
 				<h4>My Profile</h4>
-					<p>Name: {localStorage.getItem('name')}</p>
-					<p>Email: {localStorage.getItem('email')}</p>
+					<p>Name: {sessionStorage.getItem('name')}</p>
+					<p>Email: {sessionStorage.getItem('email')}</p>
 					<p>Your profile settings are current.</p>
 					<p>If you'd like to  change your password, enter the new password below. </p>
 				<form id="current-password" onSubmit={this.handleSubmit}>
@@ -519,9 +563,9 @@ constructor(props) {
 					</form>
 				<p></p>
 			</div>
-		)
+			)
+		}
 	}
-}
 
 
 class TrackNewAccount extends React.Component {
@@ -704,6 +748,6 @@ class CCForm extends React.Component {
 
 
 ReactDOM.render (
-	<App />,
+		<App />,
 	document.getElementById("root")
 );

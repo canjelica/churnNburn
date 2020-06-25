@@ -148,6 +148,11 @@ def add_credit_card(cc_account_name, date_opened, last_owned, is_active, user_id
     db.session.commit()
     return new_cc
 
+def get_loyalty_info():
+    """Gets loyalty info from the database."""
+
+    return LoyaltyProgram.query.all()
+
 
 if __name__ == '__main__':
     from server import app
