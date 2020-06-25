@@ -51,18 +51,18 @@ class App extends React.Component {
 								<Login exact path="/" userLoggedIn = {this.userLoggedIn} />
 							</Route>
 							<Route exact path="/register">
-								<Registration/> 
+								<Registration exact path="/register"/> 
 							</Route>
-							<Route>
+							<Route exact path="/dashboard">
 								<Dashboard exact path="/dashboard"/>
 							</Route>
-							<Route>
+							<Route exact path="/add-new">
 								<TrackNewAccount exact path="/add-new"/>
 							</Route>
-							<Route>
+							<Route exact path="/myprofile">
 								<UserProfile exact path="/myprofile" />
 							</Route>
-							<Route>
+							<Route exact path="/mycards">
 								<CCAccount exact path="/mycards" />
 							</Route>
 						</Switch>
@@ -100,8 +100,6 @@ class Dashboard extends React.Component {
 					<p></p>
 					<CCAccount/>
 					<p></p>
-					<TrackNewAccount/>
-					<UserProfile/>
 					{/* <LoyaltyPortal/> */}
 					<LogoutButton/>
 					
@@ -151,13 +149,17 @@ class LogoutButton extends React.Component {
 		})
 		.then(response => response.json())
 		.then(response => console.log(response));
-		sessionStorage.clear()
+		sessionStorage.clear();
+		return(
+			<Redirect to='/'/>
+		)
 	}
 
 	render() {
 		return (
 			<div>
 				<button type="submit" name="logout" onClick = {this.clearSession}>Log out</button>
+
 			</div>
 		)
 	}
@@ -269,7 +271,6 @@ class Registration extends React.Component {
 		this.getLName = this.getLName.bind(this);
 		this.getEmail = this.getEmail.bind(this);
 		this.getPassword = this.getPassword.bind(this);
-		this.loginRedirect = this.loginRedirect.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -292,7 +293,8 @@ class Registration extends React.Component {
 
 	getFName(event) {
 		event.preventDefault();
-		this.setState({firstname: event.target.value})
+		this.setState({firstname: event.target.value});
+		console.log(event.target.value)
 	}
 
 	getLName(event) {
@@ -308,11 +310,6 @@ class Registration extends React.Component {
 	getPassword(event) {
 		event.preventDefault();
 		this.setState({password: event.target.value})
-	}
-
-	loginRedirect(event) {
-		event.preventDefault();	
-		return <Redirect to="/login"/>
 	}
 	
 		render() {
@@ -336,7 +333,7 @@ class Registration extends React.Component {
 								Password:
 									<input name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
 							</label>
-							<button type="submit" onClick={this.loginRedirect}>Register Me!</button>
+							<button type="submit">Register Me!</button>
 							</label>
 						</form>
 					</div>
@@ -427,7 +424,7 @@ class CCAccount extends React.Component {
 	
 
 	render() {
-		return(
+		return (
 			<div>
 				<span>
 					<button 
@@ -458,6 +455,7 @@ class CCAccount extends React.Component {
 			)
 		}
 	}
+
 
 
 // class LoyaltyPortal extends React.Component {
