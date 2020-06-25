@@ -53,6 +53,18 @@ class App extends React.Component {
 							<Route exact path="/register">
 								<Registration/> 
 							</Route>
+							<Route>
+								<Dashboard exact path="/dashboard"/>
+							</Route>
+							<Route>
+								<TrackNewAccount exact path="/add-new"/>
+							</Route>
+							<Route>
+								<UserProfile exact path="/myprofile" />
+							</Route>
+							<Route>
+								<CCAccount exact path="/mycards" />
+							</Route>
 						</Switch>
 					</Router>
 				</div>
@@ -88,13 +100,11 @@ class Dashboard extends React.Component {
 					<p></p>
 					<CCAccount/>
 					<p></p>
-					{/* <LoyaltyPortal/> */}
-					<p></p>
 					<TrackNewAccount/>
-					<p></p>
 					<UserProfile/>
-					<p></p>
+					{/* <LoyaltyPortal/> */}
 					<LogoutButton/>
+					
 
 				</div>
 			)
@@ -118,7 +128,7 @@ class NavBar extends React.Component {
 	render() {
 		return (
 				<div>
-					This is the Navbar
+					
 				</div>
 		)
 	}
