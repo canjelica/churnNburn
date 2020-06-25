@@ -45,7 +45,6 @@ class App extends React.Component {
 			return (
 				<div>
 					<Router>
-						<Link to="/register" > Sign up for an account </Link>
 						<Switch>
 							<Route exact path="/">
 								{/* {isLoggedIn ? <Redirect to="/dashboard" /> : <Login />} */}
@@ -89,7 +88,7 @@ class Dashboard extends React.Component {
 					<p></p>
 					<CCAccount/>
 					<p></p>
-					<LoyaltyPortal/>
+					{/* <LoyaltyPortal/> */}
 					<p></p>
 					<TrackNewAccount/>
 					<p></p>
@@ -225,18 +224,19 @@ class Login extends React.Component {
 
 		return (
 			<div>
-			<form id="LoginForm" onSubmit={this.handleSubmit}>
-				<p>Login below.</p>
-					<label htmlFor="email">
-						Email:
-						<input name="email" type="text" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
-					</label>
-					<label htmlFor="password">
-						Password:
-						<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
-					</label>
-					<button type="submit">Login!</button>
-			</form>
+				<Link to="/register" > Sign up for an account </Link>
+				<form id="LoginForm" onSubmit={this.handleSubmit}>
+					<p>Login below.</p>
+						<label htmlFor="email">
+							Email:
+							<input name="email" type="text" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
+						</label>
+						<label htmlFor="password">
+							Password:
+							<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
+						</label>
+						<button type="submit">Login!</button>
+				</form>
 		</div>
 				)
 			}
@@ -308,6 +308,7 @@ class Registration extends React.Component {
 		render() {
 			return (
 				<div>
+					<Link to="/">Back to Login</Link>
 					<form onSubmit={this.handleSubmit}>
 						<p>New User? Register Here.</p>
 							<label htmlFor="firstname">
@@ -449,50 +450,50 @@ class CCAccount extends React.Component {
 	}
 
 
-class LoyaltyPortal extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			ccAcctInfo: this.props.ccAcctInfo,
-			loyalty_info:''
-		}
-	}
+// class LoyaltyPortal extends React.Component {
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {
+// 			ccAcctInfo: this.props.ccAcctInfo,
+// 			loyalty_info:''
+// 		}
+// 	}
 
-	componentDidMount() {
-		fetch('/api/loyalty-info', {
-			method: 'POST',
-		})
-		.then(response => response.json())
-		.then(data => console.log(data))
-		.then(data => {
-			this.setState({loyalty_info: data});
-		})
-	}
+// 	componentDidMount() {
+// 		fetch('/api/loyalty-info', {
+// 			method: 'POST',
+// 		})
+// 		.then(response => response.json())
+// 		.then(data => console.log(data))
+// 		.then(data => {
+// 			this.setState({loyalty_info: data});
+// 		})
+// 	}
 
-	getPortalLink() {
-		let portal = 0
-		if (this.props.ccAcctInfo.loyalty == 1) {
-			portal = this.state.loyalty_info[0]
-		} else if (this.props.ccAcctInfo.loyalty == 2) {
-			portal = this.state.loyalty_info[1]
-		} else if (this.props.ccAcctInfo.loyalty == 3) {
-			portal = this.state.loyalty_info[2]
-		} else {
-			portal = this.state.loyalty_info[3]
-		}
-	}
+// 	getPortalLink() {
+// 		let portal = 0
+// 		if (this.props.ccAcctInfo.loyalty == 1) {
+// 			portal = this.state.loyalty_info[0]
+// 		} else if (this.props.ccAcctInfo.loyalty == 2) {
+// 			portal = this.state.loyalty_info[1]
+// 		} else if (this.props.ccAcctInfo.loyalty == 3) {
+// 			portal = this.state.loyalty_info[2]
+// 		} else {
+// 			portal = this.state.loyalty_info[3]
+// 		}
+// 	}
 
 
-	render() {
-		return (
-			<div>
-				<a href={portal}>
-					Visit British Airways Avios portal
-				</a> 
-			</div>
-		)
-	}
-}
+// 	render() {
+// 		return (
+// 			<div>
+// 				<a href={portal}>
+// 					Visit British Airways Avios portal
+// 				</a> 
+// 			</div>
+// 		)
+// 	}
+// }
 
 
 class UserProfile extends React.Component {

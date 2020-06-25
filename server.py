@@ -41,7 +41,7 @@ def log_in_user():
 			return jsonify({'error': 'Your password is incorrect.'})
 	
 	else:
-		return jsonify({'error': 'You have not registered an account. Please register.'})
+		return jsonify({'error': 'You are not registered in our system. Please sign up for an account.'})
 
 @app.route('/api/registration', methods=['POST'])
 def register_user():
