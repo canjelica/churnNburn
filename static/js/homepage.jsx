@@ -124,11 +124,36 @@ class NavBar extends React.Component {
 	}
 			
 	render() {
+		const userId = sessionStorage.getItem('userId')
+		if (userId) {
 		return (
 				<div>
-					
+					<Router>
+						<Link to="/dashboard">My Dashboard</Link>
+						<br></br>
+						<Link to="/add-new">Track a New Card</Link>
+						<br></br>
+						<Link to="/myprofile">My Profile</Link>
+
+						<Route exact path="/dashboard">
+								<Dashboard exact path="/dashboard"/>
+						</Route>
+						<Route exact path="/add-new">
+							<TrackNewAccount exact path="/add-new"/>
+						</Route>
+						<Route exact path="/myprofile">
+							<UserProfile exact path="/myprofile" />
+						</Route>
+					</Router>
+				</div> 
+			)	
+		} else {
+			return (
+				<div> 
+					<p>You are not logged in. Please log in.</p>
+					<Link to="/"> Back to Login </Link>
 				</div>
-		)
+		)}
 	}
 }
 
@@ -374,18 +399,17 @@ class CCAccount extends React.Component {
 			}
 		)
 		.then(response => response.json())
-		.then(data => console.log(data))
 		.then(data => {
 			if (typeof data == 'string') {
 				alert(data)
 			} else {
 				this.setState({ccAcctInfo: data});
+				console.log(this.state.ccAcctInfo)
 			}
 		}
 	)
 		.then( () => fetch('api/cc-info', {method: 'POST'}))
 		.then(response => response.json())
-		.then(data => console.log(data))
 		.then(data => {
 			this.setState({ccInfo: data});
 			console.log(this.state.ccInfo);
