@@ -13,7 +13,6 @@ app.secret_key = "dev"
 def show_app(path):
 	return render_template('index.html')
 
-
 @app.route('/')
 def homepage():
   return render_template('index.html')
@@ -84,41 +83,52 @@ def get_cc_acct_info():
 	
 	user_id = session['user_logged_in']	
 	
-	cc_acct_data = crud.get_cc_accounts(user_id)
+	cc_acct_data = crud.get_cc_accounts(user_id) #list of dicts
 	
 	if cc_acct_data:
-		cc_acct_info = {'cc_acct_name':cc_acct_data.cc_account_name, 'approval_date': cc_acct_data.date_opened, 'cc_id': cc_acct_data.credit_card_id}
+		session['cc_acct_names'] = []
+		session['cc_ids'] = []
+		cc_ids = []
+		cc_accts = []
+		print(cc_acct_data, '8'*800)
+		for acct in cc_acct_data:
+			cc_acct_info = {'cc_acct_name': acct.cc_account_name, 'approval_date': acct.date_opened, 'cc_id': acct.credit_card_id}
 
-		cc_id = cc_acct_info['cc_id']
-		session['cc_acct_name'] = cc_acct_data.cc_account_name
-		session['cc_id'] = cc_id
+			cc_ids.append(cc_acct_info['cc_id'])
+			cc_accts.append(cc_acct_info)
 
-		return jsonify(cc_acct_info)
+			session['cc_acct_names'].append(acct.cc_account_name) 
+			session['cc_ids'].append(acct.credit_card_id)
+			print(session['cc_ids'], '8'*800)
+
+		return jsonify(cc_accts) #list of dicts
 	
 	else:
-		return jsonify("You do not have any cards associated with this account.")
-
+		return jsonify("You do not have any cards associated with this account. You can add a credit card by clicking 'Track a New Card'")
 
 @app.route('/api/cc-info', methods=['POST'])
 def get_credit_card():
 	"""Returns specific credit card attributes."""
 
 	user_id = session['user_logged_in']	
-	cc_acct_name = session['cc_acct_name']  #dict has method called .get() that gets the value at a key or return , if you don't provide it, get None)
-	cc_id = session['cc_id']
+	cc_acct_names = session['cc_acct_names']  #dict has method called .get() that gets the value at a key or return , if you don't provide it, get None) this returns a list of account names
+	cc_ids = session['cc_ids'] #list of ids
+	
+	card_attributes = []
 
-	cc_data = crud.get_credit_card(cc_id)
-	print(cc_data, '8'*800)
-	
-	cc_info = {'cc_name': cc_data.credit_card_name,
-		'req_spending': cc_data.required_spending,
-		'spend_timeframe': cc_data.spending_timeframe_months,
-		'annual_fee': cc_data.annual_fee,
-		'bank_id': cc_data.bank_id,
-		'loyalty_program': cc_data.loyalty_program_id,
-		'cc_img': cc_data.credit_card_image}
-	
-	return jsonify(cc_info)
+	for cc_id in cc_ids:
+		cc_data = crud.get_credit_card(cc_id)
+		cc_info = {'cc_name': cc_data.credit_card_name,
+			'req_spending': cc_data.required_spending,
+			'spend_timeframe': cc_data.spending_timeframe_months,
+			'annual_fee': cc_data.annual_fee,
+			'bank_id': cc_data.bank_id,
+			'loyalty_program': cc_data.loyalty_program_id,
+			'cc_img': cc_data.credit_card_image}
+		
+		card_attributes.append(cc_info)
+
+	return jsonify(card_attributes)
 
 @app.route('/api/update-password', methods=['POST'])
 def update_password():

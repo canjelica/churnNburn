@@ -105,12 +105,13 @@ def get_user_by_id(user_id):
 def get_cc_accounts(user_id):
 	"""Return a user's credit card accounts."""
 
-	return CreditCardAccount.query.filter(CreditCardAccount.user_id == user_id).first()
+	return CreditCardAccount.query.filter(CreditCardAccount.user_id == user_id).all()
+
 
 def get_credit_card(cc_id):
-	"""Return credit card attributes."""
-
-	return CreditCard.query.filter(CreditCard.credit_card_id == cc_id).first()
+    """Return credit card attributes."""
+        
+    return CreditCard.query.filter(CreditCard.credit_card_id == cc_id).first()
 
 def add_user(firstname, lastname, email, password):
 	"""Adds a new user to the database."""
