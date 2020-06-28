@@ -38,9 +38,26 @@ class App extends React.Component {
 		if (userId) {
 			return(
 			<div>
-	
+
 				<Dashboard userLoggedIn={this.props.userLoggedIn} />
-			
+
+				<Router>
+					<Switch>
+						<Route exact path="/dashboard">
+							<Dashboard exact path="/dashboard"/>
+						</Route>
+						<Route exact path="/add-new">
+							<TrackNewAccount exact path="/add-new"/>
+						</Route>
+						<Route exact path="/myprofile">
+							<UserProfile exact path="/myprofile" />
+						</Route>
+						<Route exact path="/mycards">
+							<CCAccount exact path="/mycards" />
+						</Route>
+					</Switch>
+				</Router>
+
 			</div>
 			)
 		} else {
@@ -54,18 +71,6 @@ class App extends React.Component {
 							</Route>
 							<Route exact path="/register">
 								<Registration exact path="/register"/> 
-							</Route>
-							<Route exact path="/dashboard">
-								<Dashboard exact path="/dashboard"/>
-							</Route>
-							<Route exact path="/add-new">
-								<TrackNewAccount exact path="/add-new"/>
-							</Route>
-							<Route exact path="/myprofile">
-								<UserProfile exact path="/myprofile" />
-							</Route>
-							<Route exact path="/mycards">
-								<CCAccount exact path="/mycards" />
 							</Route>
 						</Switch>
 					</Router>
@@ -146,10 +151,12 @@ class NavBar extends React.Component {
 		return (
 				<div>
 					<Router>
-	
+						<Link to="dashboard">Dashboard</Link>
+						<br></br>
 						<Link to="/add-new">Track a New Card</Link>
 						<br></br>
 						<Link to="/myprofile">My Profile</Link>
+						<br></br>
 
 						<Route exact path="/dashboard">
 								<Dashboard exact path="/dashboard"/>
@@ -390,8 +397,7 @@ class CCAccount extends React.Component {
 			ccInfo: [],
 			spentAmt: '',
 		}
-		this.renderAcctCC = this.renderAcctCC.bind(this);
-		// this.renderAcctForm = this.renderAcctForm.bind(this);
+		this.showAcctCC = this.showAcctCC.bind(this);
 		}
 
 	componentDidMount() {
@@ -420,38 +426,42 @@ class CCAccount extends React.Component {
 		})
 	}
 
-	renderAcctCC() {
+	showAcctCC() {
 		const accountList = []
-		console.log(this.state.CCInfo);
+		console.log(this.state.ccInfo);
 		for (let card of this.state.ccInfo) {
 			accountList.push(
 				<CCInfo
 				imagePath={card.cc_img}
 				name={card.cc_name}
+				bank-id={card.bank_id}
+				loyalty={card.loyalty_program_id}
+				card={card}
 				/>
 			);
 		}
 		return accountList
 	}
 
-	// renderAcctForm() {
-	// 	const accountList = []
-	// 	for ()
-	// }
+	showAcctForm() {
+		const allCCs = []
+		console.log(this.state.ccInfo)
+		for (let i = 0; i < this.state.ccAcctInfo.length; i++) {
+			allCCs.push(
+				<SpendingForm acct={this.state.ccAcctInfo[i]} card={this.state.ccInfo[i]} />
+			)
+		}
+		return allCCs
+	}
 
 	render() {
-		// const accountList = this.state.ccAcctInfo //a list of dicts per card
-		// if (accountList == 0) {
-		// 	return (
-		// 		<div>Loading Dashboard information...</div>)
-		// 	} else {
 				return (
 				<div>
 					<div>
-						{this.renderAcctCC()}
+						{this.showAcctCC()}
 					</div>
 					<div>
-						{this.renderAcctForm}
+						{this.showAcctForm()}
 					</div>	
 				</div>
 			)}
@@ -461,6 +471,15 @@ class CCAccount extends React.Component {
 class CCInfo extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {}
+	}
+
+	componentDidMount(){
+		if (this.props.bank_id == 1) {
+			this.setState({bank: "Chase Bank"})
+		} else {
+			this.setState({bank: "American Express"})
+		}
 	}
 
 	render() {
@@ -468,82 +487,78 @@ class CCInfo extends React.Component {
 			<div>
 				<span>
 					<h4>
-						Your {this.props.name} ending in *0804
+						Your {this.state.bank} {this.props.name} ending in *0804
 					</h4>
 					</span>
-				<img width="250" height="167" id="credit-card-image" src={this.props.imagePath}/>
+				<img width="250" height="167" id="credit-card-image" 
+				src={this.props.imagePath}
+				onClick={this.props.onClick}/>
 			</div>
 		)
 	}
 }
 
-// class SpendingForm extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			userId: '',
-// 			name: '',
-// 			isLoggedin: this.props.isLoggedIn,
-// 			ccAcctInfo: {},
-// 			ccInfo: {},
-// 			spentAmt: '',
-// 		}
-// 		this.handleSubmit = this.handleSubmit.bind(this);
-// 	}
+class SpendingForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			spentAmt: '',
+		}
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getAmt = this.getAmt.bind(this);
+		this.calculateSpending = this.calculateSpending.bind(this);
+	}
 
-// 	componentDidMount() {
-// 		this.setState(this.props.setState)
-// 	}
+	getAmt(event) {
+		this.setState({spentAmt: event.target.value});
+	}
 
-// 	getAmt() {
-// 		this.setState({spentAmt: event.target.value});
-// 	}
+	handleSubmit(event) {
+		event.preventDefault()
+		console.log(this.state.spentAmt)
+		let reqdSpend = this.props.card.req_spending;
+		let remainingSpend = reqdSpend - this.state.spentAmt;
+		this.setState({toSpend: remainingSpend})
+		console.log(remainingSpend)
+	} //access info through props directly, not state
 
-// 	handleSubmit() {
-// 		event.preventDefault()
-// 		this.setState({spentAmt: event.target.value});
-// 		console.log(this.state.spentAmt)
-// 		let reqdSpend = this.state.ccInfo.req_spending;
-// 		let remainingSpend = reqdSpend - this.state.spentAmt;
-// 		this.setState({toSpend: remainingSpend})
-// 		console.log(remainingSpend)
-// 	}
+	calculateSpending() {
+		const months = [ "January", "February", "March", "April", "May", "June", 
+		"July", "August", "September", "October", "November", "December", "January", "February", "March", "April" ]
 
-// 	calculateSpending() {
-// 		const months = [ "January", "February", "March", "April", "May", "June", 
-// 		"July", "August", "September", "October", "November", "December", "January", "February", "March", "April" ]
-
-// 		for(let card of this.state.ccAcctInfo)
-// 		console.log(this.state.ccAcctInfo)
-// 		{
-// 		let deadline;
-// 		let timeframe = this.state.ccInfo.spend_timeframe
-// 		let date = new Date(this.state.ccAcctInfo.approval_date) //instantiates Date object
-// 		let month = date.getMonth() //gets month of date
+		for(let card of this.state.ccAcctInfo)
+		console.log(this.state.ccAcctInfo)
+		{
+		let deadline;
+		let timeframe = this.state.ccInfo.spend_timeframe
+		let date = new Date(this.state.ccAcctInfo.approval_date) //instantiates Date object
+		let month = date.getMonth() //gets month of date
 		
-// 		let newDate = timeframe + month  //gets month for spending deadline
-// 		deadline = (months[newDate] + " " + date.getDate() + ", " + 2020) //date.getFullYear());
-// 		this.setState({ccDeadline: deadline});
-// 		console.log(this.state.ccDeadline)
-// 		}}		
+		let newDate = timeframe + month  //gets month for spending deadline
+		deadline = (months[newDate] + " " + date.getDate() + ", " + 2020) //date.getFullYear());
+		this.setState({ccDeadline: deadline});
+		console.log(this.state.ccDeadline)
+		}}		
 
-// render() {
-// 	return (
-// 		<div>
-// 			<span>
-// 				<form id="SpendingForm" onSubmit={this.handleSubmit}>
-// 					<label htmlFor="spendingAmount">
-// 					How much have you spent on this card to date?  $
-// 					<input name="spending-form" type="text" onChange={this.handleSubmit} value={this.state.spentAmt} />
-// 					<button name="submit">Submit</button>
-// 					</label>
-// 				</form>
-// 				To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
-// 			</span>
-// 		</div>
+render() {
+	console.log(this.props)  //not put on stae, bc undefined on first render, the rerender 
+	return (
+		<div>
+			<span>
+				<form id="SpendingForm" onSubmit={this.handleSubmit}>
+					<label htmlFor="spendingAmount">
+					How much have you spent on this card to date?  $
+					<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spentAmt} />
+					<button name="submit">Submit</button>
+					</label>
+				</form>
+				To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
+			</span>
+		</div>
 
-// 	)
-// }
+	)
+}
+}
 
 
 
@@ -553,7 +568,7 @@ class CCInfo extends React.Component {
 // 		this.state = {
 // 			ccAcctInfo: this.props.ccAcctInfo,
 // 			loyalty_info:''
-// 	
+	
 // 	}
 
 // 	componentDidMount() {

@@ -90,7 +90,7 @@ def get_cc_acct_info():
 		session['cc_ids'] = []
 		cc_ids = []
 		cc_accts = []
-		print(cc_acct_data, '8'*800)
+
 		for acct in cc_acct_data:
 			cc_acct_info = {'cc_acct_name': acct.cc_account_name, 'approval_date': acct.date_opened, 'cc_id': acct.credit_card_id}
 
@@ -99,7 +99,6 @@ def get_cc_acct_info():
 
 			session['cc_acct_names'].append(acct.cc_account_name) 
 			session['cc_ids'].append(acct.credit_card_id)
-			print(session['cc_ids'], '8'*800)
 
 		return jsonify(cc_accts) #list of dicts
 	
@@ -127,6 +126,7 @@ def get_credit_card():
 			'cc_img': cc_data.credit_card_image}
 		
 		card_attributes.append(cc_info)
+		print(card_attributes, '8'*800)
 
 	return jsonify(card_attributes)
 
@@ -180,6 +180,9 @@ def add_new_card():
 	is_active = True
 	credit_cards = crud.get_all_credit_cards()
 	cc_account_name = credit_cards[credit_card_id - 1].credit_card_name
+
+	if not last_owned:
+		last_owned = "null"
 
 	added_card = crud.add_credit_card(cc_account_name, date_opened, last_owned, is_active,user_id, credit_card_id)
 

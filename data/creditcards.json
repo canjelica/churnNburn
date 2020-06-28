@@ -24,7 +24,7 @@
 				"credit_card_image": "../static/img/sapphire_reserve_card.png"
     },
     {
-        "credit_card_name": "The Platinum Card",
+        "credit_card_name": "Platinum Card",
         "processor": "American Express",
         "signup_bonus": 60000,
         "required_spending": 5000,
@@ -36,7 +36,7 @@
 				"credit_card_image": "../static/img/amex-platinum-card.jpg"
     },
     {
-        "credit_card_name": "The Gold Card",
+        "credit_card_name": "Gold Card",
         "processor": "American Express",
         "signup_bonus": 35000,
         "required_spending": 4000,
