@@ -12,6 +12,7 @@ const MContext = React.createContext();
 
 
 
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -89,7 +90,7 @@ class Homepage extends React.Component {
 	render() {
 		return (
 			<div>
-				Travelhacker? Working on your next credit card bonus? Look no further.
+				Welcome travelhacker!
 			</div>
 		)
 	}
@@ -122,7 +123,6 @@ class Dashboard extends React.Component {
 					<p></p>
 					<CCAccount/>
 					<p></p>
-					{/* <LoyaltyPortal/> */}
 					<LogoutButton/>
 					
 
@@ -187,7 +187,7 @@ class LogoutButton extends React.Component {
 		super(props);
 
 		sessionStorage.removeItem('user_id');
-		this.clearSession = this.clearSession.bind(this)
+		this.clearSession = this.clearSession.bind(this);
 	}
 
 	clearSession() {
@@ -196,16 +196,18 @@ class LogoutButton extends React.Component {
 		method: 'POST'
 		})
 		.then(response => response.json())
-		.then(sessionStorage.clear());
-		return(
-			<Redirect to='/'/>
-		)
+		.then(sessionStorage.clear());	
 	}
 
 	render() {
 		return (
 			<div>
-				<button type="submit" name="logout" onClick = {this.clearSession}>Log out</button>
+				<button 
+					type="submit" 
+					name="logout" 
+					onClick={this.clearSession}>
+					Log out
+					</button>
 			</div>
 		)
 	}
@@ -398,6 +400,8 @@ class CCAccount extends React.Component {
 			spentAmt: '',
 		}
 		this.showAcctCC = this.showAcctCC.bind(this);
+		this.showAcctForm = this. showAcctForm.bind(this);
+		this.showLoyaltyPortal = this.showLoyaltyPortal.bind(this);
 		}
 
 	componentDidMount() {
@@ -424,11 +428,17 @@ class CCAccount extends React.Component {
 			console.log(this.state.ccInfo);
 			console.log(this.state.ccAcctInfo);
 		})
+		.then( () => fetch('api/loyalty-info', {method: 'POST'}))
+		.then(response => response.json())
+		.then(data => {
+			this.setState({loyalty: data});
+			console.log(this.state.loyalty)
+		})
 	}
 
 	showAcctCC() {
 		const accountList = []
-		console.log(this.state.ccInfo);
+		// console.log(this.state.ccInfo);
 		for (let card of this.state.ccInfo) {
 			accountList.push(
 				<CCInfo
@@ -436,7 +446,7 @@ class CCAccount extends React.Component {
 				name={card.cc_name}
 				bank-id={card.bank_id}
 				loyalty={card.loyalty_program_id}
-				card={card}
+				card={card} //this allows passing of the card as a single array instead of as a list of dicts
 				/>
 			);
 		}
@@ -445,13 +455,24 @@ class CCAccount extends React.Component {
 
 	showAcctForm() {
 		const allCCs = []
-		console.log(this.state.ccInfo)
+		// console.log(this.state.ccInfo)
 		for (let i = 0; i < this.state.ccAcctInfo.length; i++) {
 			allCCs.push(
-				<SpendingForm acct={this.state.ccAcctInfo[i]} card={this.state.ccInfo[i]} />
+				<SpendingForm acct={this.state.ccAcctInfo[i]} card={this.state.ccInfo[i]} />  //use a for loop here with i because both arrays will always coincide at index
 			)
 		}
 		return allCCs
+	}
+
+	showLoyaltyPortal() {
+		console.log(this.state.loyalty);
+		const loyaltyPortal = []
+		for (let card of this.state.ccInfo)
+			{loyaltyPortal.push(
+				<LoyaltyPortal lpID={card.loyalty_program} lpPrograms={this.state.loyalty} />
+			)
+		}
+		return loyaltyPortal
 	}
 
 	render() {
@@ -463,6 +484,9 @@ class CCAccount extends React.Component {
 					<div>
 						{this.showAcctForm()}
 					</div>	
+					<div>
+						{this.showLoyaltyPortal()}
+					</div>
 				</div>
 			)}
 	}
@@ -526,22 +550,26 @@ class SpendingForm extends React.Component {
 		const months = [ "January", "February", "March", "April", "May", "June", 
 		"July", "August", "September", "October", "November", "December", "January", "February", "March", "April" ]
 
-		for(let card of this.state.ccAcctInfo)
-		console.log(this.state.ccAcctInfo)
-		{
+		// for(let card of this.state.ccAcctInfo)
+		// {
 		let deadline;
-		let timeframe = this.state.ccInfo.spend_timeframe
-		let date = new Date(this.state.ccAcctInfo.approval_date) //instantiates Date object
+		let timeframe = this.props.card.spend_timeframe
+		console.log(timeframe)
+		let date = new Date(this.props.acct.approval_date) //instantiates Date object
+		console.log(date)
 		let month = date.getMonth() //gets month of date
+		console.log(month)
 		
 		let newDate = timeframe + month  //gets month for spending deadline
+		console.log(newDate)
 		deadline = (months[newDate] + " " + date.getDate() + ", " + 2020) //date.getFullYear());
+		console.log(deadline)
 		this.setState({ccDeadline: deadline});
 		console.log(this.state.ccDeadline)
-		}}		
+		}
 
 render() {
-	console.log(this.props)  //not put on stae, bc undefined on first render, the rerender 
+	console.log(this.props)  //not put on state, bc undefined on first render, the rerender 
 	return (
 		<div>
 			<span>
@@ -549,7 +577,7 @@ render() {
 					<label htmlFor="spendingAmount">
 					How much have you spent on this card to date?  $
 					<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spentAmt} />
-					<button name="submit">Submit</button>
+					<button name="submit" onClick={this.calculateSpending}>Submit</button>
 					</label>
 				</form>
 				To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
@@ -560,52 +588,22 @@ render() {
 }
 }
 
+class LoyaltyPortal extends React.Component {
+	constructor(props) {
+		console.log(props)
+		super(props);
+	}
 
-
-// class LoyaltyPortal extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			ccAcctInfo: this.props.ccAcctInfo,
-// 			loyalty_info:''
-	
-// 	}
-
-// 	componentDidMount() {
-// 		fetch('/api/loyalty-info', {
-// 			method: 'POST',
-// 		})
-// 		.then(response => response.json())
-// 		.then(data => console.log(data))
-// 		.then(data => {
-// 			this.setState({loyalty_info: data});
-// 		})
-// 	}
-
-// 	getPortalLink() {
-// 		let portal = 0
-// 		if (this.props.ccAcctInfo.loyalty == 1) {
-// 			portal = this.state.loyalty_info[0]
-// 		} else if (this.props.ccAcctInfo.loyalty == 2) {
-// 			portal = this.state.loyalty_info[1]
-// 		} else if (this.props.ccAcctInfo.loyalty == 3) {
-// 			portal = this.state.loyalty_info[2]
-// 		} else {
-// 			portal = this.state.loyalty_info[3]
-// 		}
-// 	}
-
-
-// 	render() {
-// 		return (
-// 			<div>
-// 				<a href={portal}>
-// 					Visit British Airways Avios portal
-// 				</a> 
-// 			</div>
-// 		)
-// 	}
-// }
+	render() {
+		return (
+			<div>
+				<a href={this.props.loyalty_program}>
+					Visit British Airways Avios portal
+				</a> 
+			</div>
+		)
+	}
+}
 
 
 class UserProfile extends React.Component {
