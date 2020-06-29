@@ -83,14 +83,29 @@ class App extends React.Component {
 
 
 class Homepage extends React.Component {
-	constructor(props) {
+	constructor() {
 		super();
 	}
 
 	render() {
 		return (
-			<div>
-				Welcome travelhacker!
+			<div className="container-fluid">
+				<span>
+					<img id="homepage-logo" className="rounded mx-auto d-block" src="../static/img/Logo-text.gif" />
+				</span>
+					
+				<div className="headline">
+					
+					<p id="headline" >Welcome travelhacker! </p>
+
+					C&B is simple tool which tracks your credit card spending from approval to spending deadline, and allows you to see which card bonuses you're working on. 
+					<p></p>
+					Never miss out on a points bonus again.
+				</div>
+					
+				<div className="byline">
+					Churn it. Burn it. Move on.
+				</div>
 			</div>
 		)
 	}
@@ -282,20 +297,28 @@ class Login extends React.Component {
 
 		return (
 			<div>
-				<Link to="/register" > Sign up for an account </Link>
-				<form id="LoginForm" onSubmit={this.handleSubmit}>
-					<p>Login below.</p>
+				<div className="form">
+				<Link className="link" to="/register" > Sign up for an account </Link>
+				<p></p>
+					<form id="LoginForm" onSubmit={this.handleSubmit}>
+					<div className="form-group col-md-6">
 						<label htmlFor="email">
 							Email:
-							<input name="email" type="text" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
+							<br></br>
+							<input className="form-control" name="email" type="email" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
 						</label>
-						<label htmlFor="password">
+						<br></br>
+						<label className="form-check-label" htmlFor="password">
 							Password:
-							<input name="password" type="text" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
+							<br></br>
+							<input className="form-group" name="password" type="password" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
 						</label>
-						<button type="submit">Login!</button>
+						<br></br>
+						<button className="btn btn-primary" id="button" type="submit">Login!</button>
+					</div>
 				</form>
-		</div>
+				</div>
+			</div>
 				)
 			}
 		}
@@ -360,27 +383,29 @@ class Registration extends React.Component {
 		render() {
 			return (
 				<div>
-					<Link to="/">Back to Login</Link>
+					<Link className="link" to="/">Back to Login</Link>
+					<div className="form"> 
 					<form onSubmit={this.handleSubmit}>
 						<p>New User? Register Here.</p>
 							<label htmlFor="firstname">
 								First name:
-								<input name="firstname" type="text" ref={this.input} onChange = {this.getFName} value={this.state.firstname}/>
+								<input className="form-group" name="firstname" type="text" ref={this.input} onChange = {this.getFName} value={this.state.firstname}/>
 							</label>
 							<label htmlFor="lastname">
 								Last name:
-								<input name="lastname" type="text" ref={this.input} onChange={this.getLName} value={this.state.lastname}/>
+								<input className="form-group" name="lastname" type="text" ref={this.input} onChange={this.getLName} value={this.state.lastname}/>
 							</label>
 							<label htmlFor="email">
 								Email address:
-								<input name="email" type="text" ref={this.input} onChange={this.getEmail} value={this.state.email}/>
+								<input className="form-group" name="email" type="text" ref={this.input} onChange={this.getEmail} value={this.state.email}/>
 							<label htmlFor="password">
 								Password:
-									<input name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
+									<input className="form-group" name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
 							</label>
-							<button type="submit">Register Me!</button>
+							<button className="btn btn-primary" type="submit">Register Me!</button>
 							</label>
 						</form>
+						</div>
 					</div>
 				)
 			}
