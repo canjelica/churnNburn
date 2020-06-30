@@ -1,0 +1,81 @@
+html, body, #parallax {
+	height: 100px;
+	width: 100%;
+	background-image: url(https://images.unsplash.com/photo-1566041510639-8d95a2490bfb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3026&q=80);
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.headline {
+	text-emphasis: bold;
+	text-align: center;
+	font-family: Montserrat;
+	font-size: 18px;
+	padding: 20px
+}
+
+#headline {
+	font-weight: bold;
+	font-size: 24px;
+}
+
+.byline {
+	text-emphasis: bold;
+	text-align: center;
+	font-weight: bold;
+	font-size: 36px;
+	font-family: Montserrat;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+#paragraph {
+	padding: 10px;
+	font-family: Raleway;
+	font-size: 16px;
+	font-weight: normal;
+	text-align: center;
+	margin-right: 10em;
+	margin-left: 10em;
+}
+
+.form {
+	text-align: center;
+	font-family: Montserrat;
+	margin: 10px;
+}
+
+.form-control {
+	font-family: Montserrat;
+}
+
+.link {
+	color: #f82986;
+	font-weight: bold;
+	font-family: Raleway;
+	margin: 20px;
+}
+
+#button {
+	background-color:#45BDB5;
+	border: black;
+	font-family: Montserrat;
+}
+
+#login {
+	width: 300px;
+	height: 500px;
+	border: 1px solid black;
+	background-color: white;
+}
+
+#emailHelp {
+	font-family: Montserrat;
+}
+
+.img-fluid {
+	max-width: 60%;
+	height: auto;
+}

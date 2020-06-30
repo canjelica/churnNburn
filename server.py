@@ -188,7 +188,7 @@ def add_new_card():
 
 	return jsonify("Your card has been added to your account.")
 
-@app.route('/api/loyalty-info', methods=['POST'])
+@app.route('/api/loyalty-info', methods=['GET'])
 def get_loyalty_info():
 	"""Gets loyalty program information."""
 
