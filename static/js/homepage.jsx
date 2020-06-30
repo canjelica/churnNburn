@@ -45,10 +45,6 @@ class App extends React.Component {
 
 				<Router>
 					<Switch>
-						<Route>
-							<Homepage exact path="/" />
-							<Login exact path="/" userLoggedIn = {this.userLoggedIn} />
-						</Route>
 						<Route exact path="/dashboard">
 							<Dashboard exact path="/dashboard"/>
 						</Route>
@@ -65,6 +61,22 @@ class App extends React.Component {
 				</Router>
 
 			</div>
+			)
+		} else {
+			return (
+				<div>
+					<Router>
+						<Switch>
+							<Route exact path="/">
+								<Homepage exact path="/" />
+								<Login exact path="/login" userLoggedIn = {this.userLoggedIn} />
+							</Route>
+							<Route exact path="/register">
+								<Registration exact path="/register"/> 
+							</Route>
+						</Switch>
+					</Router>
+				</div>
 				)
 			};
 		}
@@ -151,8 +163,15 @@ class Dashboard extends React.Component {
 					<p></p>
 					<LogoutButton/>
 					
-				</div>
 
+				</div>
+			)
+		} else {
+			return ( 
+			<div> 
+				You are not logged in.
+				<Redirect to="/"/>
+			</div>
 			)
 		}
 	}
@@ -169,16 +188,24 @@ class NavBar extends React.Component {
 		if (userId) {
 		return (
 				<div>
-					
+					<Router>
 						<Link to="dashboard">Dashboard</Link>
 						<br></br>
 						<Link to="/add-new">Track a New Card</Link>
 						<br></br>
 						<Link to="/myprofile">My Profile</Link>
 						<br></br>
-						<Link to="/cc-accounts">Current Credit Cards</Link>
-						<br></br>
-				
+
+						<Route exact path="/dashboard">
+								<Dashboard exact path="/dashboard"/>
+						</Route>
+						<Route exact path="/add-new">
+							<TrackNewAccount exact path="/add-new"/>
+						</Route>
+						<Route exact path="/myprofile">
+							<UserProfile exact path="/myprofile" />
+						</Route>
+					</Router>
 				</div> 
 			)	
 		} else {
