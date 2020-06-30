@@ -59,3 +59,6 @@ cc_account_id |        cc_account_name         |     date_opened     | credit_ca
 	// 	}
 	// 	return allCCs
 	// }
+
+
+      {/* Router should have all of the links, homepage component, user clicks sign up, link is a Router link. Everywhere else in code, Router links.  */}

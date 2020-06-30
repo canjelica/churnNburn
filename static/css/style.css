@@ -1,3 +1,4 @@
+
 html, body, #parallax {
 	height: 100px;
 	width: 100%;
@@ -8,17 +9,12 @@ html, body, #parallax {
 	background-size: cover;
 }
 
-.headline {
-	text-emphasis: bold;
-	text-align: center;
-	font-family: Montserrat;
-	font-size: 18px;
-	padding: 20px
-}
-
 #headline {
 	font-weight: bold;
+	text-align: center;
+	font-family: Montserrat;
 	font-size: 24px;
+	padding: 20px
 }
 
 .byline {
@@ -51,7 +47,7 @@ html, body, #parallax {
 	font-family: Montserrat;
 }
 
-.link {
+#link {
 	color: #f82986;
 	font-weight: bold;
 	font-family: Raleway;
@@ -76,6 +72,61 @@ html, body, #parallax {
 }
 
 .img-fluid {
-	max-width: 60%;
+	max-width: 65%;
 	height: auto;
 }
+
+.card {
+	width: 22rem;
+	font-family: Montserrat;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+
+}
+
+#scrolling-card {
+	margin-bottom: 20em;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* #footer-img {
+	margin-top: 10em;
+	max-height: 10%;
+	max-width: 10%
+}
+
+.footer-link {
+	font-size: 10px;
+
+}
+
+#footer {
+	background-color: white;
+}
+
+.footer-text {
+	font-size: 12px;
+} */

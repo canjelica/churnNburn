@@ -13,6 +13,7 @@ const MContext = React.createContext();
 
 
 
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -44,6 +45,10 @@ class App extends React.Component {
 
 				<Router>
 					<Switch>
+						<Route>
+							<Homepage exact path="/" />
+							<Login exact path="/" userLoggedIn = {this.userLoggedIn} />
+						</Route>
 						<Route exact path="/dashboard">
 							<Dashboard exact path="/dashboard"/>
 						</Route>
@@ -60,22 +65,6 @@ class App extends React.Component {
 				</Router>
 
 			</div>
-			)
-		} else {
-			return (
-				<div>
-					<Router>
-						<Switch>
-							<Route exact path="/">
-								<Homepage exact path="/" />
-								<Login exact path="/login" userLoggedIn = {this.userLoggedIn} />
-							</Route>
-							<Route exact path="/register">
-								<Registration exact path="/register"/> 
-							</Route>
-						</Switch>
-					</Router>
-				</div>
 				)
 			};
 		}
@@ -89,28 +78,50 @@ class Homepage extends React.Component {
 
 	render() {
 		return (
-			<div className="container-fluid">
-				<span>
-					<img id="homepage-logo" className="rounded mx-auto d-block" src="../static/img/Logo-text.gif" />
-				</span>
-					
-				<div className="headline">
-					
+			<div>
+				<div >
+					<span>
+						<img className="img-fluid rounded mx-auto d-block" src="../static/img/Logo-text.gif" />
+					</span>
 					<p id="headline" >Welcome travelhacker! </p>
-
-					C&B is simple tool which tracks your credit card spending from approval to spending deadline, and allows you to see which card bonuses you're working on. 
-					<p></p>
-					Never miss out on a points bonus again.
-				</div>
-					
-				<div className="byline">
-					Churn it. Burn it. Move on.
+					<p id="paragraph">
+						C&B is simple tool which tracks your credit cards in their promotional spending period. It calculates how much spending is required by the promotional deadline so you never have to miss out on a points bonus again.
+					</p>
+					<div className="byline">
+						Churn it. Burn it. Move on.
+					</div>
 				</div>
 			</div>
 		)
 	}
 
 }	
+
+// class Footer extends React.Component {
+// 	render() {
+// 	return (
+// 		<div>
+			
+// 				<div  className="container-fluid" id="footer">
+// 					<img src="../static/img/logo-pink.gif" id="footer-img" />
+// 						<h5 className="title">Churn & Burn</h5>
+// 						<small id="emailHelp" class="form-text text-muted">
+// 							Churn & Burn in no way advocates or supports arson, or irresponsible credit card spending activity.
+// 						</small>
+// 						<h5 className="footer-text">About C&B</h5>
+// 						<ul>
+// 							<li>
+// 								<a id="link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="footer-link">Creative Team</a>
+// 							</li>
+// 							<li id="link" className="footer-link">
+// 								<a href="https://coppermind.net/wiki/Hoid">WorldHoppers</a>
+// 							</li>
+// 						</ul>
+// 				</div>
+			
+// 		</div>
+//   )}
+// }
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -140,15 +151,8 @@ class Dashboard extends React.Component {
 					<p></p>
 					<LogoutButton/>
 					
-
 				</div>
-			)
-		} else {
-			return ( 
-			<div> 
-				You are not logged in.
-				<Redirect to="/"/>
-			</div>
+
 			)
 		}
 	}
@@ -165,24 +169,16 @@ class NavBar extends React.Component {
 		if (userId) {
 		return (
 				<div>
-					<Router>
+					
 						<Link to="dashboard">Dashboard</Link>
 						<br></br>
 						<Link to="/add-new">Track a New Card</Link>
 						<br></br>
 						<Link to="/myprofile">My Profile</Link>
 						<br></br>
-
-						<Route exact path="/dashboard">
-								<Dashboard exact path="/dashboard"/>
-						</Route>
-						<Route exact path="/add-new">
-							<TrackNewAccount exact path="/add-new"/>
-						</Route>
-						<Route exact path="/myprofile">
-							<UserProfile exact path="/myprofile" />
-						</Route>
-					</Router>
+						<Link to="/cc-accounts">Current Credit Cards</Link>
+						<br></br>
+				
 				</div> 
 			)	
 		} else {
@@ -296,32 +292,35 @@ class Login extends React.Component {
 		}
 
 		return (
-			<div>
-				<div className="form">
-				<Link className="link" to="/register" > Sign up for an account </Link>
-				<p></p>
-					<form id="LoginForm" onSubmit={this.handleSubmit}>
-					<div className="form-group col-md-6">
-						<label htmlFor="email">
-							Email:
-							<br></br>
-							<input className="form-control" name="email" type="email" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
-						</label>
-						<br></br>
-						<label className="form-check-label" htmlFor="password">
-							Password:
-							<br></br>
-							<input className="form-group" name="password" type="password" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
-						</label>
-						<br></br>
-						<button className="btn btn-primary" id="button" type="submit">Login!</button>
+			<div class="row">
+				<div className="card mw-100 h-100">
+					<div className="card-body">
+						<Link className="card-text" id="link" to="/register" > Sign up for an account </Link>
+						<p></p>
+							<form onSubmit={this.handleSubmit}>
+								<div className="form-group">
+									<label htmlFor="email">
+										Email:
+										<br></br>
+										<input className="form-control" name="email" type="email" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
+										<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+									</label>
+								</div>
+								<div class="form-group">
+									<label htmlFor="password">
+										Password:
+										<br></br>
+										<input className="form-control" name="password" type="password" onChange = {this.getPassword} ref={this.input} value={this.state.password}/>
+									</label>
+								</div>
+								<button className="btn btn-primary" id="button" type="submit">Login!</button>
+							</form>
 					</div>
-				</form>
 				</div>
 			</div>
-				)
-			}
-		}
+		)
+	}
+}
 
 	
 class Registration extends React.Component {
@@ -383,33 +382,51 @@ class Registration extends React.Component {
 		render() {
 			return (
 				<div>
-					<Link className="link" to="/">Back to Login</Link>
-					<div className="form"> 
-					<form onSubmit={this.handleSubmit}>
-						<p>New User? Register Here.</p>
-							<label htmlFor="firstname">
-								First name:
-								<input className="form-group" name="firstname" type="text" ref={this.input} onChange = {this.getFName} value={this.state.firstname}/>
-							</label>
-							<label htmlFor="lastname">
-								Last name:
-								<input className="form-group" name="lastname" type="text" ref={this.input} onChange={this.getLName} value={this.state.lastname}/>
-							</label>
-							<label htmlFor="email">
-								Email address:
-								<input className="form-group" name="email" type="text" ref={this.input} onChange={this.getEmail} value={this.state.email}/>
-							<label htmlFor="password">
-								Password:
-									<input className="form-group" name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
-							</label>
-							<button className="btn btn-primary" type="submit">Register Me!</button>
-							</label>
-						</form>
+				<Homepage/>
+				<div class="row" id="scrolling-card">
+					<div className="card mw-100 h-100">
+						<div className="card-body">
+							<Link id="link" to="/">Back to Login</Link>
+							<p></p>
+						<form onSubmit={this.handleSubmit}>
+							<p>New User? Register Here.</p>
+								<div className="form-group"> 
+									<label htmlFor="firstname">
+										First name:
+										<br></br>
+										<input className="form-control" name="firstname" type="text" ref={this.input} onChange = {this.getFName} value={this.state.firstname}/>
+									</label>
+								</div>
+								<div class="form-group">
+									<label htmlFor="lastname">
+										Last name:
+										<br></br>
+										<input className="form-control" name="lastname" type="text" ref={this.input} onChange={this.getLName} value={this.state.lastname}/>
+									</label>
+								</div>
+								<div class="form-group">
+									<label htmlFor="email">
+										Email address:
+										<br></br>
+										<input className="form-control" name="email" type="text" ref={this.input} onChange={this.getEmail} value={this.state.email}/>
+									</label>
+								</div>
+								<div class="form-group">
+									<label htmlFor="password">
+										Password:
+										<br></br>
+											<input className="form-control" name="password" type="text" ref={this.input} onChange={this.getPassword} value={this.state.value}/>
+									</label>
+								</div>
+									<button className="btn btn-primary" id="button" type="submit">Register My Account!</button>
+								</form>
 						</div>
 					</div>
-				)
-			}
+				</div>	
+				</div>
+			)
 		}
+	}
 
 
 class CCAccount extends React.Component {
@@ -424,8 +441,7 @@ class CCAccount extends React.Component {
 			ccInfo: [],
 			spentAmt: '',
 		}
-		this.showAcctCC = this.showAcctCC.bind(this);
-		this.showAcctForm = this. showAcctForm.bind(this);
+		this.showCardInfo = this. showCardInfo.bind(this);
 		this.showLoyaltyPortal = this.showLoyaltyPortal.bind(this);
 		}
 
@@ -453,7 +469,7 @@ class CCAccount extends React.Component {
 			console.log(this.state.ccInfo);
 			console.log(this.state.ccAcctInfo);
 		})
-		.then( () => fetch('api/loyalty-info', {method: 'POST'}))
+		.then( () => fetch('api/loyalty-info', {method: 'GET'}))
 		.then(response => response.json())
 		.then(data => {
 			this.setState({loyalty: data});
@@ -461,32 +477,31 @@ class CCAccount extends React.Component {
 		})
 	}
 
-	showAcctCC() {
-		const accountList = []
-		// console.log(this.state.ccInfo);
-		for (let card of this.state.ccInfo) {
-			accountList.push(
-				<CCInfo
-				imagePath={card.cc_img}
-				name={card.cc_name}
-				bank-id={card.bank_id}
-				loyalty={card.loyalty_program_id}
-				card={card} //this allows passing of the card as a single array instead of as a list of dicts
-				/>
-			);
+	showCardInfo() {
+		const allCards = []
+		if (this.state.ccInfo && this.state.ccAcctInfo && this.state.loyalty) {
+			for (let i = 0; i < this.state.ccAcctInfo.length; i++) {
+				let cardInfo = this.state.ccInfo[i]
+				let acctInfo = this.state.ccAcctInfo[i]
+				let loyaltyPortal = this.state.loyalty
+				// console.log(acctInfo, cardInfo)
+				allCards.push(
+					<div>
+						<CCInfo
+							imagePath={cardInfo.cc_img}
+							name={cardInfo.cc_name}
+							bankId={cardInfo.bank_id}
+							loyalty={cardInfo.loyalty_program_id}
+							spendTimeframe={cardInfo.spend_timeframe}
+						/>
+					
+					<SpendingForm approvalDate={acctInfo.approval_date} /> 
+					<p></p> 
+					</div>
+				)
+			}
 		}
-		return accountList
-	}
-
-	showAcctForm() {
-		const allCCs = []
-		// console.log(this.state.ccInfo)
-		for (let i = 0; i < this.state.ccAcctInfo.length; i++) {
-			allCCs.push(
-				<SpendingForm acct={this.state.ccAcctInfo[i]} card={this.state.ccInfo[i]} />  //use a for loop here with i because both arrays will always coincide at index
-			)
-		}
-		return allCCs
+		return allCards
 	}
 
 	showLoyaltyPortal() {
@@ -504,14 +519,9 @@ class CCAccount extends React.Component {
 				return (
 				<div>
 					<div>
-						{this.showAcctCC()}
-					</div>
-					<div>
-						{this.showAcctForm()}
-					</div>	
-					<div>
+						{this.showCardInfo()}
 						{this.showLoyaltyPortal()}
-					</div>
+					</div>	
 				</div>
 			)}
 	}
