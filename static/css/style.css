@@ -1,4 +1,6 @@
 
+
+
 html, body, #parallax {
 	height: 100px;
 	width: 100%;
@@ -58,7 +60,19 @@ html, body, #parallax {
 	background-color:#45BDB5;
 	border: black;
 	font-family: Montserrat;
+	color: white;
 }
+
+
+#logout-button {
+	background-color:#45BDB5;
+	border: black;
+	font-family: Montserrat;
+	color: white;
+	width: 80px;
+	height: 40px;
+}
+
 
 #login {
 	width: 300px;
@@ -82,6 +96,7 @@ html, body, #parallax {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
+	background-color: transparent;
 
 }
 
@@ -90,10 +105,15 @@ html, body, #parallax {
 
 }
 
+.mini-logo {
+	margin-right: 25px;
+}
 
-
-
-
+.active {
+	font-family: Montserrat;
+	font-weight: 900;
+	
+}
 
 
 

@@ -9,7 +9,7 @@
         "bonus_value_dollars": 1200,
         "bank_id": 1,
 				"loyalty_program_id": 1,
-				"credit_card_image": "../static/img/sapphire_preferred_card.png"
+				"credit_card_image": "../static/img/sapphire_preferred_card.gif"
     },
     {
         "credit_card_name": "Sapphire Reserve",
@@ -21,7 +21,7 @@
         "bonus_value_dollars": 1000,
         "bank_id": 1,
         "loyalty_program_id": 1,
-				"credit_card_image": "../static/img/sapphire_reserve_card.png"
+				"credit_card_image": "../static/img/sapphire_reserve_card.gif"
     },
     {
         "credit_card_name": "Platinum Card",
@@ -33,7 +33,7 @@
         "bonus_value_dollars": 1200,
         "bank_id": 2,
         "loyalty_program_id": 1,
-				"credit_card_image": "../static/img/amex-platinum-card.jpg"
+				"credit_card_image": "../static/img/amex-platinum-card.gif"
     },
     {
         "credit_card_name": "Gold Card",
@@ -45,7 +45,7 @@
         "bonus_value_dollars": 700,
         "bank_id": 2,
         "loyalty_program_id": 1,
-				"credit_card_image": "../static/img/amex-gold-card.jpg"
+				"credit_card_image": "../static/img/amex-gold-card.gif"
     },
     {
         "credit_card_name": "British Airways Visa Signature",
@@ -57,7 +57,7 @@
         "bonus_value_dollars": 1500,
         "bank_id": 1,
         "loyalty_program_id": 11,
-				"credit_card_image": "../static/img/british-airways-visa-signature-card.jpeg"
+				"credit_card_image": "../static/img/british-airways-visa-signature-card.gif"
     },
     {
         "credit_card_name": "Marriott Bonvoy Brilliant",
@@ -69,6 +69,6 @@
         "bonus_value_dollars": 600,
         "bank_id": 2,
         "loyalty_program_id": 1,
-				"credit_card_image": "../static/img/amex-marriott-bonvoy.jpg"
+				"credit_card_image": "../static/img/amex-marriott-bonvoy.gif"
     }
 ]

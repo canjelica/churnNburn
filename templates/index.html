@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Montserrat">
-          <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Raleway">
-  <link rel="stylesheet" href="../static/css/style.css"
 <head>
   <title>{% block title %}{% endblock %}</title>
     <!-- Required meta tags -->
@@ -27,13 +21,19 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router/6.0.0-alpha.5/react-router.development.min.js"></script>
   <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
 
-  <!--Loading React Bootstrap-->
-  <!-- <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+  <!-- Loading React Bootstrap
+  <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
   <script>var Alert = ReactBootstrap.Alert;</script> -->
 
   <!--Insert my own fonts here for CSS-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Montserrat">
+ <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="../static/css/style.css"
 
  <!-- Include any page-specific Javascript using this block. -->
 	{% block js %}

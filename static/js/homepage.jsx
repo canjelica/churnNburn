@@ -69,7 +69,7 @@ class App extends React.Component {
 						<Switch>
 							<Route exact path="/">
 								<Homepage exact path="/" />
-								<Login exact path="/login" userLoggedIn = {this.userLoggedIn} />
+								<Login exact path="/" userLoggedIn = {this.userLoggedIn} />
 							</Route>
 							<Route exact path="/register">
 								<Registration exact path="/register"/> 
@@ -91,7 +91,7 @@ class Homepage extends React.Component {
 	render() {
 		return (
 			<div>
-				<div >
+				<div>
 					<span>
 						<img className="img-fluid rounded mx-auto d-block" src="../static/img/Logo-text.gif" />
 					</span>
@@ -158,18 +158,18 @@ class Dashboard extends React.Component {
 				<div>
 					
 					<NavBar />
-					<p></p>
-					<CCAccount/>
-					<p></p>
-					<LogoutButton/>
-					
+					<p id="paragraph"> 
+					Here is a bunch of filler text for the Dashboard page. Welcome to your Dashboard Page! Here you can navigate to your User Profile, add a new credit card to track, and see what cards you're currently tracking. If you enter in the amount you've currently spent, our handly calculator will tell you when you have to complete your spending bonus.
+					</p>
+			
 
 				</div>
 			)
 		} else {
 			return ( 
-			<div> 
+			<div className="headline"> 
 				You are not logged in.
+				<Link to="/">Back to Homepage</Link>
 				<Redirect to="/"/>
 			</div>
 			)
@@ -187,36 +187,41 @@ class NavBar extends React.Component {
 		const userId = sessionStorage.getItem('userId')
 		if (userId) {
 		return (
-				<div>
-					<Router>
-						<Link to="dashboard">Dashboard</Link>
-						<br></br>
-						<Link to="/add-new">Track a New Card</Link>
-						<br></br>
-						<Link to="/myprofile">My Profile</Link>
-						<br></br>
+			<div>
 
-						<Route exact path="/dashboard">
-								<Dashboard exact path="/dashboard"/>
-						</Route>
-						<Route exact path="/add-new">
-							<TrackNewAccount exact path="/add-new"/>
-						</Route>
-						<Route exact path="/myprofile">
-							<UserProfile exact path="/myprofile" />
-						</Route>
-					</Router>
-				</div> 
-			)	
-		} else {
-			return (
-				<div> 
-					<p>You are not logged in. Please log in.</p>
-					<Link to="/"> Back to Login </Link>
-				</div>
-		)}
-	}
-}
+				<nav className="navbar navbar-expand-lg navbar-light bg-light">
+					<img className="mini-logo" src="../static/img/Logo-pink.gif" width="75" height="50"></img>
+					<a className="navbar-brand" id="headline" href="/"> Dashboard </a>
+					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span className="navbar-toggler-icon"></span>
+					</button>
+
+					<div className="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul className="navbar-nav mr-auto">
+							<li className="nav-item active">
+								<a className="nav-link" href="/mycards">My Credit Cards<span class="sr-only">(current)</span></a>
+							</li>
+							<li className="nav-item active">
+								<a className="nav-link" href="/add-new">Add a New Card</a>
+							</li>
+							<li className="nav-item active">
+								<a className="nav-link" href="/myprofile">My Profile</a>
+							</li>
+						</ul>
+						<LogoutButton/>
+
+					</div>
+				</nav>
+			</div>)}}}
+// 		} else {
+// 			return (
+// 				<div> 
+// 					<p>You are not logged in. Please log in.</p>
+// 					<Link to="/"> Back to Login </Link>
+// 				</div>
+// 		)}
+// 	}
+// }
 
 
 
@@ -240,7 +245,8 @@ class LogoutButton extends React.Component {
 	render() {
 		return (
 			<div>
-				<button 
+				<button
+					id="logout-button" 
 					type="submit" 
 					name="logout" 
 					onClick={this.clearSession}>
@@ -319,10 +325,10 @@ class Login extends React.Component {
 		}
 
 		return (
-			<div class="row">
+			<div className="row">
 				<div className="card mw-100 h-100">
 					<div className="card-body">
-						<Link className="card-text" id="link" to="/register" > Sign up for an account </Link>
+						<Link className="card-text" id="link" to="/register"> Sign up for an account </Link>
 						<p></p>
 							<form onSubmit={this.handleSubmit}>
 								<div className="form-group">
@@ -469,7 +475,7 @@ class CCAccount extends React.Component {
 			spentAmt: '',
 		}
 		this.showCardInfo = this. showCardInfo.bind(this);
-		this.showLoyaltyPortal = this.showLoyaltyPortal.bind(this);
+		// this.showLoyaltyPortal = this.showLoyaltyPortal.bind(this);
 		}
 
 	componentDidMount() {
@@ -531,23 +537,23 @@ class CCAccount extends React.Component {
 		return allCards
 	}
 
-	showLoyaltyPortal() {
-		console.log(this.state.loyalty);
-		const loyaltyPortal = []
-		for (let card of this.state.ccInfo)
-			{loyaltyPortal.push(
-				<LoyaltyPortal lpID={card.loyalty_program} lpPrograms={this.state.loyalty} />
-			)
-		}
-		return loyaltyPortal
-	}
+	// showLoyaltyPortal() {
+	// 	console.log(this.state.loyalty);
+	// 	const loyaltyPortal = []
+	// 	for (let card of this.state.ccInfo)
+	// 		{loyaltyPortal.push(
+	// 			<LoyaltyPortal lpID={card.loyalty_program} lpPrograms={this.state.loyalty} />
+	// 		)
+	// 	}
+	// 	return loyaltyPortal
+	// }
 
 	render() {
 				return (
 				<div>
 					<div>
 						{this.showCardInfo()}
-						{this.showLoyaltyPortal()}
+						{/* {this.showLoyaltyPortal()} */}
 					</div>	
 				</div>
 			)}
