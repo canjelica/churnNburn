@@ -567,11 +567,15 @@ class CCInfo extends React.Component {
 	}
 
 	componentDidMount(){
-		if (this.props.bank_id == 1) {
+		if (this.props.bank_id == "1") {
 			this.setState({bank: "Chase Bank"})
 		} else {
 			this.setState({bank: "American Express"})
 		}
+	}
+
+	getRandomNumber(min=1111, max=9999) {
+		return Math.floor(Math.random() * (max-min)) + min;
 	}
 
 	render() {
@@ -579,7 +583,7 @@ class CCInfo extends React.Component {
 			<div>
 				<span>
 					<h4>
-						Your {this.state.bank} {this.props.name} ending in *0804
+						Your {this.props.name} ending in *{this.getRandomNumber()}
 					</h4>
 					</span>
 				<img width="250" height="167" id="credit-card-image" 
