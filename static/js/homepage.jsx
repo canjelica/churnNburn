@@ -146,6 +146,7 @@ class Dashboard extends React.Component {
 
 	componentDidMount() {
 		this.setState({name: sessionStorage.getItem('name')});
+		this.setState({showDash: true})
 		console.log(this.state)
 	}
 
