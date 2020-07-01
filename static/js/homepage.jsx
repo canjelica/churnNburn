@@ -91,9 +91,9 @@ class Homepage extends React.Component {
 	render() {
 		return (
 			<div>
-				<div>
+				<div className="container-fluid">
 					<span>
-						<img className="img-fluid rounded mx-auto d-block" src="../static/img/Logo-text.gif" />
+						<img className="img-fluid rounded mx-auto d-block" id="homepage-logo" src="../static/img/Logo-text.gif" />
 					</span>
 					<p id="headline" >Welcome travelhacker! </p>
 					<p id="paragraph">
@@ -158,6 +158,35 @@ class Dashboard extends React.Component {
 				<div>
 					<NavBar />
 					<p id="headline">Welcome, {this.state.name}!</p>
+					<div className="card-deck">
+					<div className="card card-heading">
+						<img src="https://cdn.pixabay.com/photo/2015/08/26/14/30/wallet-908569_960_720.jpg" className="card-img-top" />
+						<div className="card-body">
+							<h5 className="card-title">My Credit Cards</h5>
+							<p className="dash-text">See a list of your credit cards and calculate time left in your promotional spending period. </p>
+							<a href="/mycards" className="btn btn-primary" id="dash-button">Show Cards</a>
+						</div>
+					</div>
+
+					<div className="card card-heading">
+						<img src="https://cdn.pixabay.com/photo/2017/08/02/11/09/electronic-payments-2570939_960_720.jpg" className="card-img-top" />
+						<div className="card-body">
+							<h5 className="card-title">Add a New Card</h5>
+							<p className="dash-text">Add your newest accounts here and begin tracking your progress towards that travelpoints windfall.</p>
+							<a href="/add-new" className="btn btn-primary" id="dash-button">Add Card</a>
+						</div>
+					</div>
+
+					<div className="card card-heading">
+						<img src="https://cdn.pixabay.com/photo/2017/09/10/14/26/shopping-2735735_960_720.jpg" className="card-img-top" alt="..." />
+						<div className="card-body">
+							<h5 className="card-title">My Profile</h5>
+							<p className="dash-text">View your profile, verify account information and make changes to your password.</p>
+							<a href="/myprofile" className="btn btn-primary" id="dash-button">See Profile</a>
+						</div>
+					</div>
+					</div>
+
 				</div>
 			)
 		}

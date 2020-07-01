@@ -39,6 +39,14 @@ html, body, #parallax {
 	margin-left: 10em;
 }
 
+.dash-text {
+	font-family: Raleway;
+	font-size: 16px;
+	font-weight: normal;
+	text-align: left;
+	color: black;
+}
+
 .form {
 	text-align: center;
 	font-family: Montserrat;
@@ -66,6 +74,16 @@ html, body, #parallax {
 	width: 100px;
 }
 
+#dash-button {
+	background-color:#45BDB5;
+	border: #45BDB5;
+	font-family: Montserrat;
+	color: white;
+	margin-top: 10px;
+	padding: 6px;
+	width: auto;
+}
+
 
 #logout-button {
 	background-color:#45BDB5;
@@ -88,7 +106,7 @@ html, body, #parallax {
 	font-family: Montserrat;
 }
 
-.img-fluid {
+#homepage-logo {
 	max-width: 65%;
 	height: auto;
 }
@@ -123,7 +141,6 @@ html, body, #parallax {
 .active {
 	font-family: Montserrat;
 	font-weight: 900;
-
 }
 
 #credit-card-account {
@@ -143,6 +160,11 @@ html, body, #parallax {
 .br-small {
 	display: block;
 	margin-bottom: .8em;
+}
+
+.br-large {
+	display: block;
+	margin-bottom: 10rem;
 }
 
 #credit-card-image {
