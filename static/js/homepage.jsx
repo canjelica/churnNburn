@@ -520,7 +520,10 @@ class CCAccount extends React.Component {
 				let loyaltyPortal = this.state.loyalty
 				console.log(acctInfo, cardInfo)
 				allCards.push(
-					<div>
+					<div className="row row-cols-1 row-cols-md-3">
+					<div className="col mb-4">
+					<div className="card" id="credit-card-account">
+				
 						<CCInfo
 							imagePath={cardInfo.cc_img}
 							name={cardInfo.cc_name}
@@ -532,6 +535,8 @@ class CCAccount extends React.Component {
 						/>
 
 					<SpendingForm approvalDate={acctInfo.approval_date} card={cardInfo}/> 
+					</div>
+					</div>
 					</div>
 				)
 			}
@@ -553,9 +558,11 @@ class CCAccount extends React.Component {
 	render() {
 				return (
 				<div>
-					<div>
-						{this.showCardInfo()}
-						{/* {this.showLoyaltyPortal()} */}
+						<div className="card-deck">
+						
+							{this.showCardInfo()}
+							{/* {this.showLoyaltyPortal()} */}
+
 					</div>	
 				</div>
 			)}
@@ -569,8 +576,8 @@ class CCInfo extends React.Component {
 	}
 
 	componentDidMount(){
-		if (this.props.bank_id == 1) {
-			this.setState({bank: "Chase Bank"})
+		if (this.props.bankId == 1) {
+			this.setState({bank: "Chase Bank"});
 		} else {
 			this.setState({bank: "American Express"})
 		}
@@ -583,15 +590,16 @@ class CCInfo extends React.Component {
 	render() {
 		return (
 			<div>
-				<span>
-					<h4>
-						Your {this.props.name} ending in *{this.getRandomNumber()}
+				<div>
+					<h4 className="card-heading">
+						Your {this.state.bank} {this.props.name} ending in *{this.getRandomNumber()}
 					</h4>
-					</span>
-				<img width="250" height="167" id="credit-card-image" 
-				src={this.props.imagePath}
-				onClick={this.props.onClick}/>
-			</div>
+					<span className="br-small"></span>
+					<img className="card-img" id="credit-card-image" 
+					src={this.props.imagePath}
+					onClick={this.props.onClick}/>
+				</div>
+				</div>
 		)
 	}
 }
@@ -646,16 +654,20 @@ render() {
 	console.log(this.props)  //not put on state, bc undefined on first render, the rerender 
 	return (
 		<div>
-			<span>
+			<div >
 				<form id="SpendingForm" onSubmit={this.handleSubmit}>
 					<label htmlFor="spendingAmount">
-					How much have you spent on this card to date?  $
+					How much have you spent on this card to date?  
+					<span className="br-small"></span>
+					$ &nbsp;
 					<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spentAmt} />
-					<button name="submit" onClick={this.calculateSpending}>Submit</button>
+					<span className="br-small"></span>
+					<button id="button" name="submit" onClick={this.calculateSpending}>Submit</button>
 					</label>
 				</form>
-				To get your credit card spending bonus, you must spend ${this.state.toSpend} by {this.state.ccDeadline}.
-			</span>
+				<span className="br-small"></span>
+				To get your credit card spending bonus, you must spend <strong>${this.state.toSpend}</strong> by <strong>{this.state.ccDeadline}</strong>.
+			</div>
 		</div>
 
 	)
@@ -671,6 +683,7 @@ class LoyaltyPortal extends React.Component {
 	render() {
 		return (
 			<div>
+				<br></br>
 				<a href={this.props.loyalty_program}>
 					Visit British Airways Avios portal
 				</a> 

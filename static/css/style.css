@@ -61,6 +61,9 @@ html, body, #parallax {
 	border: black;
 	font-family: Montserrat;
 	color: white;
+	margin-top: 10px;
+	padding: 6px;
+	width: 100px;
 }
 
 
@@ -97,12 +100,12 @@ html, body, #parallax {
 	margin-right: auto;
 	text-align: center;
 	background-color: transparent;
+	display: inline-block;
 
 }
 
 #scrolling-card {
 	margin-bottom: 20em;
-
 }
 
 .mini-logo {
@@ -112,11 +115,27 @@ html, body, #parallax {
 .active {
 	font-family: Montserrat;
 	font-weight: 900;
-	
+
 }
 
+#credit-card-account {
+	max-width: 700px;
+	margin: 25px;
+	padding: 25px;
+}
 
+.card-heading {
+	font-family: Montserrat;
+	text-emphasis: bold;
+	font-weight: bold;
+	font-size: 18px;
+	color: #f82986; 
+}
 
+.br-small {
+	display: block;
+	margin-bottom: .8em;
+}
 
 
 
