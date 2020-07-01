@@ -140,12 +140,12 @@ class Dashboard extends React.Component {
 		super(props);
 		this.state = {
 			isLoggedIn: sessionStorage.getItem('userId'),
-			name: this.props.name
+			name: '',
 		}
 	}
 
 	componentDidMount() {
-		this.setState({name: this.props.name});
+		this.setState({name: sessionStorage.getItem('name')});
 		console.log(this.state)
 	}
 
@@ -156,22 +156,9 @@ class Dashboard extends React.Component {
 		if (userId) {
 			return (
 				<div>
-					
 					<NavBar />
-					<p id="paragraph"> 
-					Here is a bunch of filler text for the Dashboard page. Welcome to your Dashboard Page! Here you can navigate to your User Profile, add a new credit card to track, and see what cards you're currently tracking. If you enter in the amount you've currently spent, our handly calculator will tell you when you have to complete your spending bonus.
-					</p>
-			
-
+					<p id="headline">Welcome, {this.state.name}!</p>
 				</div>
-			)
-		} else {
-			return ( 
-			<div className="headline"> 
-				You are not logged in.
-				<Link to="/">Back to Homepage</Link>
-				<Redirect to="/"/>
-			</div>
 			)
 		}
 	}
@@ -190,7 +177,7 @@ class NavBar extends React.Component {
 			<div>
 
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
-					<img className="mini-logo" src="../static/img/Logo-pink.gif" width="75" height="50"></img>
+					<img className="mini-logo" src="../static/img/logo-combo-small.gif" width="200" height="auto"></img>
 					<a className="navbar-brand" id="headline" href="/"> Dashboard </a>
 
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -240,12 +227,14 @@ class LogoutButton extends React.Component {
 		method: 'POST'
 		})
 		.then(response => response.json())
-		.then(sessionStorage.clear());	
+		.then(sessionStorage.clear());
+		return <Redirect to="/" />	
 	}
 
 	render() {
 		return (
 			<div>
+				
 				<button
 					id="logout-button" 
 					type="submit" 
@@ -253,6 +242,7 @@ class LogoutButton extends React.Component {
 					onClick={this.clearSession}>
 					Log out
 					</button>
+				
 			</div>
 		)
 	}
@@ -327,7 +317,7 @@ class Login extends React.Component {
 
 		return (
 			<div className="row">
-				<div className="card mw-100 h-100">
+				<div className="card mw-100 h-100" id="login-card">
 					<div className="card-body">
 						<Link className="card-text" id="link" to="/register"> Sign up for an account </Link>
 						<p></p>
@@ -533,8 +523,7 @@ class CCAccount extends React.Component {
 							reqdSpend={cardInfo.req_spending}
 							card={acctInfo}
 						/>
-
-					<SpendingForm approvalDate={acctInfo.approval_date} card={cardInfo}/> 
+						<SpendingForm approvalDate={acctInfo.approval_date} card={cardInfo}/> 
 					</div>
 					</div>
 					</div>
@@ -568,7 +557,6 @@ class CCAccount extends React.Component {
 			)}
 	}
 
-
 class CCInfo extends React.Component {
 	constructor(props) {
 		super(props);
@@ -589,17 +577,17 @@ class CCInfo extends React.Component {
 
 	render() {
 		return (
+	
 			<div>
-				<div>
-					<h4 className="card-heading">
-						Your {this.state.bank} {this.props.name} ending in *{this.getRandomNumber()}
-					</h4>
-					<span className="br-small"></span>
-					<img className="card-img" id="credit-card-image" 
-					src={this.props.imagePath}
-					onClick={this.props.onClick}/>
-				</div>
-				</div>
+				<h4 className="card-heading">
+					{this.state.bank} {this.props.name} ending in *{this.getRandomNumber()}
+				</h4>
+				<span className="br-small"></span>
+				<img className="card-img" id="credit-card-image" 
+				src={this.props.imagePath}
+				onClick={this.props.onClick}/>
+			</div>
+			
 		)
 	}
 }
@@ -692,7 +680,6 @@ class LoyaltyPortal extends React.Component {
 	}
 }
 
-
 class UserProfile extends React.Component {
 constructor(props) {
 	super(props)
@@ -764,7 +751,6 @@ constructor(props) {
 			)
 		}
 	}
-
 
 class TrackNewAccount extends React.Component {
 	constructor(props) {
@@ -846,8 +832,6 @@ class TrackNewAccount extends React.Component {
 		}
 	}
 
-
-
 class CCImage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -865,7 +849,6 @@ class CCImage extends React.Component {
 		)
 	}
 }
-
 
 class CCForm extends React.Component {
 	constructor(props) {

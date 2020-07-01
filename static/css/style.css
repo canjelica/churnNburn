@@ -100,8 +100,16 @@ html, body, #parallax {
 	margin-right: auto;
 	text-align: center;
 	background-color: transparent;
-	display: inline-block;
+}
 
+#login-card {
+	width: 22rem;
+	font-family: Montserrat;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 300px;
+	text-align: center;
+	background-color: transparent;
 }
 
 #scrolling-card {
@@ -137,7 +145,10 @@ html, body, #parallax {
 	margin-bottom: .8em;
 }
 
-
+#credit-card-image {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
 
 
 
