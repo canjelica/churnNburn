@@ -192,7 +192,7 @@ class NavBar extends React.Component {
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
 					<img className="mini-logo" src="../static/img/Logo-pink.gif" width="75" height="50"></img>
 					<a className="navbar-brand" id="headline" href="/"> Dashboard </a>
-					
+
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
 					</button>
@@ -518,7 +518,7 @@ class CCAccount extends React.Component {
 				let cardInfo = this.state.ccInfo[i]
 				let acctInfo = this.state.ccAcctInfo[i]
 				let loyaltyPortal = this.state.loyalty
-				// console.log(acctInfo, cardInfo)
+				console.log(acctInfo, cardInfo)
 				allCards.push(
 					<div>
 						<CCInfo
@@ -528,10 +528,10 @@ class CCAccount extends React.Component {
 							loyalty={cardInfo.loyalty_program_id}
 							spendTimeframe={cardInfo.spend_timeframe}
 							reqdSpend={cardInfo.req_spending}
+							card={acctInfo}
 						/>
-					
-					<SpendingForm approvalDate={acctInfo.approval_date} /> 
-					<p></p> 
+
+					<SpendingForm approvalDate={acctInfo.approval_date} card={cardInfo}/> 
 					</div>
 				)
 			}
@@ -627,9 +627,9 @@ class SpendingForm extends React.Component {
 		// for(let card of this.state.ccAcctInfo)
 		// {
 		let deadline;
-		let timeframe = this.props.card.spendTimeframe
+		let timeframe = this.props.card.spend_timeframe
 		console.log(timeframe)
-		let date = new Date(this.props.acct.approvalDate) //instantiates Date object
+		let date = new Date(this.props.approvalDate) //instantiates Date object
 		console.log(date)
 		let month = date.getMonth() //gets month of date
 		console.log(month)
