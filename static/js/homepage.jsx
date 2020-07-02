@@ -183,7 +183,7 @@ class NavBar extends React.Component {
 
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
 					<img className="mini-logo" src="../static/img/logo-combo-small.gif" width="175" height="auto"></img>
-					<a className="navbar-brand byline" href="/">DASHBOARD </a>
+					<a className="byline" href="/">DASHBOARD</a>
 
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
@@ -241,6 +241,7 @@ class LogoutButton extends React.Component {
 			<div>
 				
 				<button
+					className="btn btn-primary"
 					id="logout-button" 
 					type="submit" 
 					name="logout" 
@@ -639,7 +640,7 @@ render() {
 					$ &nbsp;
 					<input name="spending-form" type="text" onChange={this.getAmt} value={this.state.spentAmt} />
 					<span className="br-small"></span>
-					<button id="button" name="submit" onClick={this.calculateSpending}>Submit</button>
+					<button id="button" className="btn btn-primary" name="submit" onClick={this.calculateSpending}>Submit</button>
 					</label>
 				</form>
 				<span className="br-small"></span>
@@ -782,13 +783,19 @@ class TrackNewAccount extends React.Component {
 		console.log(this.state)
 		for (let card of this.state.creditCards) 
 		{creditCardsList.push(
-				<CCImage 
-					imagePath={card.cc_img} 
-					ccid={card.cc_id} 
-					ccname={card.cc_name} 
-					loyalty={card.loyalty_program_id} 
-					onClick={() => {this.cardClick(card.cc_id)}}  
-					/>
+			<div className="row row-cols-1 row-cols-md-3">
+				<div className="col mb-4">
+				<div className="card" id="credit-card-solo">
+					<CCImage 
+						imagePath={card.cc_img} 
+						ccid={card.cc_id} 
+						ccname={card.cc_name} 
+						loyalty={card.loyalty_program_id} 
+						onClick={() => {this.cardClick(card.cc_id)}}  
+						/>
+				</div>
+			</div>
+			</div>
 			);
 		}
 		return creditCardsList 
@@ -818,17 +825,17 @@ class TrackNewAccount extends React.Component {
 			<div>"Credit cards now loading..."</div>)
 		} else {
 			return (
-			<div>
-				<h3>To track a credit card and add it to your account, select a specific card below.</h3>
+			<div id="headline">
+				<h3 className="card-heading">To track a credit card and add it to your account, select a specific card below.</h3>
 
-				<div>
+				<div className="container-fluid">
+				<div className="card-deck mx-auto">
 					{this.showForm()}	
-				</div>
 				<br></br>
 				<br></br>
-				<div>
 					{this.renderCC()}
 				</div>
+			</div>
 			</div>
 			)}
 		}
@@ -904,25 +911,33 @@ class CCForm extends React.Component {
 					<label forHTML="last-owned">When did you last own this card?</label>
 					<input type="date" id="last-owned" name="last-owned" onChange={this.previousOwner} value={this.state.last_owned} ref={this.input} />
 					<p></p>
-					<button id="submit" onClick={this.addCCAcct}> Add card</button>
+					<button className="btn btn-primary" id="submit" onClick={this.addCCAcct}> Add card</button>
 				</div>
 				)
 			}
 
 		return (
 			<div>
-				<h3>Please enter the following information about your new {this.state.ccBank} {this.state.ccName} </h3>
-				<form>
-					<label htmlFor="approval-date">
-						When was your card application approved?
-					</label>
-					<input type="date" id="approval-date" name="approval-date" onChange={this.getApprovalDate} value={this.state.approvalDate} ref={this.input} />
-						<p></p>
-					<label htmlFor="client-status">Check here if you have previously owned this card.</label>
-						<input type="checkbox" id="client-status" value="previous owner" onChange={this.getClientStatus} checked={this.state.clientStatus} ref={this.input}/>
-						<p></p>
-					<button id="submit" onClick={this.addCCAcct}> Add card</button>
-				</form>
+				<div className="container-fluid">
+					<div className="card w-75 h-75 mx-auto" id="new-card">
+							<p id="new-card-text">Please enter the following information about your new <b>{this.state.ccBank}</b> <b>{this.state.ccName} </b>
+							</p>
+						<form>
+						<label htmlFor="approval-date" id="new-card-text">
+							When was your card application approved?
+						</label>
+							<input type="date" id="approval-date" name="approval-date" onChange={this.getApprovalDate} value={this.state.approvalDate} ref={this.input} />
+					
+							<div class="form-check">
+								<input type="checkbox" className="form-check-input" id="client-status" value="previous owner" onChange={this.getClientStatus} checked={this.state.clientStatus} ref={this.input}/>
+								<label class="form-check-label" id="new-card-text" htmlFor="client-status">Check here if you have previously owned this card.
+								</label>
+								</div>
+								<button id="button" className="btn btn-primary" onClick={this.addCCAcct}> Add card</button>
+							</form>		
+						
+					</div>
+				</div>
 			</div>
 		)
 	}

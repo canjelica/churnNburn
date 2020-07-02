@@ -26,8 +26,8 @@ html, body, #parallax {
 	font-family: Raleway;
 	font-size: 18px;
 	padding: 20px;
-	color: #f82986;
-	text-shadow: #feeb1d 2px 2px;
+	color: #feeb1d;
+	text-shadow: #f82986 2px 2px;
 	text-transform: uppercase;
 }
 
@@ -121,8 +121,9 @@ html, body, #parallax {
 	border: black;
 	font-family: Montserrat;
 	color: white;
-	width: 80px;
-	height: 40px;
+	width: auto;
+	height: auto;
+	font-size: 14px;
 }
 
 
@@ -178,6 +179,13 @@ html, body, #parallax {
 	padding: 25px;
 }
 
+#credit-card-solo {
+	max-width: fit-content;
+	margin: 25px;
+	background-color: transparent;
+	border: transparent;
+}
+
 .card-heading {
 	font-family: Montserrat;
 	text-emphasis: bold;
@@ -200,17 +208,26 @@ html, body, #parallax {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
-	
 }
 
-#white {
-	color: white;
-	text-transform: uppercase;
+#new-card {
+	padding: 75px;
+	margin-top: 50px;
+	text-align: left;
+	background-image: url("/../static/img/new-card-background.gif");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+#new-card-text {
+	font-family: Raleway;
+	font-size: 16px;
+	text-align: left;
 }
 
 b {
 	font-weight: bolder;
-	text-transform: uppercase;
 	color: #f82986;
 	font-size: 14px;
 }
