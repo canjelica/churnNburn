@@ -908,10 +908,14 @@ class CCForm extends React.Component {
 		if (this.state.clientStatus === "previous owner") {
 			return (
 				<div>
-					<label forHTML="last-owned">When did you last own this card?</label>
-					<input type="date" id="last-owned" name="last-owned" onChange={this.previousOwner} value={this.state.last_owned} ref={this.input} />
-					<p></p>
-					<button className="btn btn-primary" id="submit" onClick={this.addCCAcct}> Add card</button>
+					<div className="container-fluid">
+					<div className="card w-75 h-75" id="new-card">
+						<label id="new-card-text" forHTML="last-owned">When did you last own this card?</label>
+						<input type="date" id="last-owned" name="last-owned" onChange={this.previousOwner} value={this.state.last_owned} ref={this.input} />
+						<p></p>
+						<button id="button" className="btn btn-primary" onClick={this.addCCAcct}> Add card</button>
+				</div>
+				</div>
 				</div>
 				)
 			}
