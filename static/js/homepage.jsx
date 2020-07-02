@@ -142,26 +142,18 @@ class Dashboard extends React.Component {
 			isLoggedIn: sessionStorage.getItem('userId'),
 			name: '',
 		}
-		this.updateDashState = this.updateDashState.bind(this);
 	}
 
 	componentDidMount() {
 		this.setState({name: sessionStorage.getItem('name')});
-		this.setState({showDash: true})
 		console.log(this.state)
-	}
-
-	updateDashState(event) {
-		event.preventDefault();
-		this.setState({showDash: false})
 	}
 
 	render() {
 		
 		const userId = this.state.isLoggedIn;
-		const showDash = this.state.showDash;
 		sessionStorage.setItem('userId', userId)
-		if (userId && showDash) {
+		if (userId) {
 			return (
 				<div>
 					<NavBar />
@@ -172,7 +164,7 @@ class Dashboard extends React.Component {
 						<div className="card-body">
 							<h5 className="card-title">My Credit Cards</h5>
 							<p className="dash-text">See a list of your credit cards and calculate time left in your promotional spending period. </p>
-							<a href="/mycards" className="btn btn-primary" id="dash-button" onClick={this.updateDashState}>Show Cards</a>
+							<a href="/mycards" className="btn btn-primary" id="dash-button">Show Cards</a>
 						</div>
 					</div>
 
@@ -181,7 +173,7 @@ class Dashboard extends React.Component {
 						<div className="card-body">
 							<h5 className="card-title">Add a New Card</h5>
 							<p className="dash-text">Add your newest accounts here and begin tracking your progress towards that travelpoints windfall.</p>
-							<a href="/add-new" className="btn btn-primary" id="dash-button" onClick={this.updateDashState}>Add Card</a>
+							<a href="/add-new" className="btn btn-primary" id="dash-button">Add Card</a>
 						</div>
 					</div>
 
@@ -190,15 +182,12 @@ class Dashboard extends React.Component {
 						<div className="card-body">
 							<h5 className="card-title">My Profile</h5>
 							<p className="dash-text">View your profile, verify account information and make changes to your password.</p>
-							<a href="/myprofile" className="btn btn-primary" id="dash-button" onClick={this.updateDashState}>See Profile</a>
+							<a href="/myprofile" className="btn btn-primary" id="dash-button">See Profile</a>
 						</div>
 					</div>
 					</div>
+
 				</div>
-			)
-		} else {
-			return (
-				<NavBar />
 			)
 		}
 	}
@@ -208,7 +197,6 @@ class Dashboard extends React.Component {
 class NavBar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {}
 	}
 			
 	render() {
@@ -228,13 +216,13 @@ class NavBar extends React.Component {
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav mr-auto">
 							<li className="nav-item active">
-								<a className="nav-link" href="/mycards" onClick={this.updateDashState}>My Credit Cards<span class="sr-only">(current)</span></a>
+								<a className="nav-link" href="/mycards">My Credit Cards<span class="sr-only">(current)</span></a>
 							</li>
 							<li className="nav-item active">
-								<a className="nav-link" href="/add-new" onClick={this.updateDashState}>Add a New Card</a>
+								<a className="nav-link" href="/add-new">Add a New Card</a>
 							</li>
 							<li className="nav-item active">
-								<a className="nav-link" href="/myprofile" onClick={this.updateDashState}>My Profile</a>
+								<a className="nav-link" href="/myprofile">My Profile</a>
 							</li>
 						</ul>
 						<LogoutButton/>
@@ -507,7 +495,6 @@ class CCAccount extends React.Component {
 			spentAmt: '',
 		}
 		this.showCardInfo = this. showCardInfo.bind(this);
-		// this.showLoyaltyPortal = this.showLoyaltyPortal.bind(this);
 		}
 
 	componentDidMount() {
@@ -524,7 +511,7 @@ class CCAccount extends React.Component {
 				alert(data)
 			} else {
 				this.setState({ccAcctInfo: data});
-				// console.log(this.state.ccAcctInfo)
+				console.log(this.state.ccAcctInfo)
 			}
 		})
 		.then( () => fetch('api/cc-info', {method: 'POST'}))
@@ -534,22 +521,16 @@ class CCAccount extends React.Component {
 			console.log(this.state.ccInfo);
 			console.log(this.state.ccAcctInfo);
 		})
-		// .then( () => fetch('api/loyalty-info', {method: 'GET'}))
-		// .then(response => response.json())
-		// .then(data => {
-		// 	this.setState({loyalty: data});
-		// 	console.log(this.state.loyalty)
-		// })
 	}
 
 	showCardInfo() {
 		const allCards = []
-		if (this.state.ccInfo && this.state.ccAcctInfo && this.state.loyalty) {
+		if (this.state.ccInfo && this.state.ccAcctInfo) {
 			for (let i = 0; i < this.state.ccAcctInfo.length; i++) {
 				let cardInfo = this.state.ccInfo[i]
 				let acctInfo = this.state.ccAcctInfo[i]
-				let loyaltyPortal = this.state.loyalty
-				console.log(acctInfo, cardInfo)
+				console.log(acctInfo);
+				console.log(cardInfo);
 				allCards.push(
 					<div className="row row-cols-1 row-cols-md-3">
 					<div className="col mb-4">
@@ -562,7 +543,7 @@ class CCAccount extends React.Component {
 							loyalty={cardInfo.loyalty_program_id}
 							spendTimeframe={cardInfo.spend_timeframe}
 							reqdSpend={cardInfo.req_spending}
-							card={acctInfo}
+							acct={acctInfo}
 						/>
 						<SpendingForm approvalDate={acctInfo.approval_date} card={cardInfo}/> 
 					</div>
@@ -574,29 +555,24 @@ class CCAccount extends React.Component {
 		return allCards
 	}
 
-	// showLoyaltyPortal() {
-	// 	console.log(this.state.loyalty);
-	// 	const loyaltyPortal = []
-	// 	for (let card of this.state.ccInfo)
-	// 		{loyaltyPortal.push(
-	// 			<LoyaltyPortal lpID={card.loyalty_program} lpPrograms={this.state.loyalty} />
-	// 		)
-	// 	}
-	// 	return loyaltyPortal
-	// }
-
 	render() {
+			const ccInfo = this.state.ccInfo
+			if (ccInfo.length < 1) {
 				return (
-				<div>
-						<div className="card-deck">
-						
-							{this.showCardInfo()}
-							{/* {this.showLoyaltyPortal()} */}
-
-					</div>	
+					<div>Loading credit cards ...</div>
+				)
+			} else {
+			return (
+				<div className="card-deck">
+					{this.showCardInfo()}
 				</div>
-			)}
+			)
+		}
 	}
+	}
+
+
+
 
 class CCInfo extends React.Component {
 	constructor(props) {

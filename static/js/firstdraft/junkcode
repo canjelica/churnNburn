@@ -62,3 +62,86 @@ cc_account_id |        cc_account_name         |     date_opened     | credit_ca
 
 
       {/* Router should have all of the links, homepage component, user clicks sign up, link is a Router link. Everywhere else in code, Router links.  */}
+
+
+      class Dashboard extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isLoggedIn: sessionStorage.getItem('userId'),
+			name: '',
+		}
+		this.updateDashState = this.updateDashState.bind(this);
+	}
+
+	componentDidMount() {
+		this.setState({name: sessionStorage.getItem('name')});
+		this.setState({showDash: true})
+		console.log(this.state)
+	}
+
+	updateDashState(event) {
+		event.preventDefault();
+		this.setState({showDash: false});
+		return <CCAccount/>
+	}
+
+	render() {
+		
+		const userId = this.state.isLoggedIn;
+		const showDash = this.state.showDash;
+		sessionStorage.setItem('userId', userId);
+		if (userId && showDash) {
+			return (
+				<div>
+					<NavBar />
+					<p id="headline">Welcome, {this.state.name}!</p>
+					<div className="card-deck">
+					<div className="card card-heading">
+						<img src="https://cdn.pixabay.com/photo/2015/08/26/14/30/wallet-908569_960_720.jpg" className="card-img-top" />
+						<div className="card-body">
+							<h5 className="card-title">My Credit Cards</h5>
+							<p className="dash-text">See a list of your credit cards and calculate time left in your promotional spending period. </p>
+							<a href="/mycards" className="btn btn-primary" id="dash-button" onClick={this.updateDashState}>Show Cards</a>
+						</div>
+					</div>
+
+					<div className="card card-heading">
+						<img src="https://cdn.pixabay.com/photo/2017/08/02/11/09/electronic-payments-2570939_960_720.jpg" className="card-img-top" />
+						<div className="card-body">
+							<h5 className="card-title">Add a New Card</h5>
+							<p className="dash-text">Add your newest accounts here and begin tracking your progress towards that travelpoints windfall.</p>
+							<a href="/add-new" className="btn btn-primary" id="dash-button" onClick={this.updateDashState}>Add Card</a>
+						</div>
+					</div>
+
+					<div className="card card-heading">
+						<img src="https://cdn.pixabay.com/photo/2017/09/10/14/26/shopping-2735735_960_720.jpg" className="card-img-top" alt="..." />
+						<div className="card-body">
+							<h5 className="card-title">My Profile</h5>
+							<p className="dash-text">View your profile, verify account information and make changes to your password.</p>
+							<a href="/myprofile" className="btn btn-primary" id="dash-button" onClick={this.updateDashState} >See Profile</a>
+						</div>
+					</div>
+					</div>
+				</div>
+			)
+		}
+	}
+
+
+
+at ln 548
+
+render() {
+				return (
+				<div>
+						{/* <div className="card-deck"> */}
+						
+							{this.showCardInfo()}
+							{/* {this.showLoyaltyPortal()} */}
+
+					</div>	
+				</div>
+			)}
+	}

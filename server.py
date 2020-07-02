@@ -198,7 +198,7 @@ def get_loyalty_info():
 	for item in loyalty_dicts:
 		lp_dict = {'program_name': item.loyalty_program_name, 'points_portal': item.points_portal}
 		all_lps.append(lp_dict)
-	print(all_lps)
+	print(all_lps, "8"*800)
 
 	return jsonify(all_lps)
 
