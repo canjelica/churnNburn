@@ -109,31 +109,6 @@ class Homepage extends React.Component {
 
 }	
 
-// class Footer extends React.Component {
-// 	render() {
-// 	return (
-// 		<div>
-			
-// 				<div  className="container-fluid" id="footer">
-// 					<img src="../static/img/logo-pink.gif" id="footer-img" />
-// 						<h5 className="title">Churn & Burn</h5>
-// 						<small id="emailHelp" class="form-text text-muted">
-// 							Churn & Burn in no way advocates or supports arson, or irresponsible credit card spending activity.
-// 						</small>
-// 						<h5 className="footer-text">About C&B</h5>
-// 						<ul>
-// 							<li>
-// 								<a id="link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" className="footer-link">Creative Team</a>
-// 							</li>
-// 							<li id="link" className="footer-link">
-// 								<a href="https://coppermind.net/wiki/Hoid">WorldHoppers</a>
-// 							</li>
-// 						</ul>
-// 				</div>
-			
-// 		</div>
-//   )}
-// }
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -157,12 +132,13 @@ class Dashboard extends React.Component {
 			return (
 				<div>
 					<NavBar />
-					<p id="headline">Welcome, {this.state.name}!</p>
+					<p id="welcome">Welcome, {this.state.name}!</p>
+					<div className="container-fluid">
 					<div className="card-deck">
 					<div className="card card-heading">
 						<img src="https://cdn.pixabay.com/photo/2015/08/26/14/30/wallet-908569_960_720.jpg" className="card-img-top" />
 						<div className="card-body">
-							<h5 className="card-title">My Credit Cards</h5>
+							<p className="card-title">My Credit Cards</p>
 							<p className="dash-text">See a list of your credit cards and calculate time left in your promotional spending period. </p>
 							<a href="/mycards" className="btn btn-primary" id="dash-button">Show Cards</a>
 						</div>
@@ -171,8 +147,8 @@ class Dashboard extends React.Component {
 					<div className="card card-heading">
 						<img src="https://cdn.pixabay.com/photo/2017/08/02/11/09/electronic-payments-2570939_960_720.jpg" className="card-img-top" />
 						<div className="card-body">
-							<h5 className="card-title">Add a New Card</h5>
-							<p className="dash-text">Add your newest accounts here and begin tracking your progress towards that travelpoints windfall.</p>
+							<p className="card-title">Add a New Card</p>
+							<p className="dash-text">Add new accounts and begin tracking your progress towards that travelpoints windfall.</p>
 							<a href="/add-new" className="btn btn-primary" id="dash-button">Add Card</a>
 						</div>
 					</div>
@@ -180,13 +156,13 @@ class Dashboard extends React.Component {
 					<div className="card card-heading">
 						<img src="https://cdn.pixabay.com/photo/2017/09/10/14/26/shopping-2735735_960_720.jpg" className="card-img-top" alt="..." />
 						<div className="card-body">
-							<h5 className="card-title">My Profile</h5>
+							<p className="card-title">My Profile</p>
 							<p className="dash-text">View your profile, verify account information and make changes to your password.</p>
 							<a href="/myprofile" className="btn btn-primary" id="dash-button">See Profile</a>
 						</div>
 					</div>
 					</div>
-
+					</div>
 				</div>
 			)
 		}
@@ -206,8 +182,8 @@ class NavBar extends React.Component {
 			<div>
 
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
-					<img className="mini-logo" src="../static/img/logo-combo-small.gif" width="200" height="auto"></img>
-					<a className="navbar-brand" id="headline" href="/"> Dashboard </a>
+					<img className="mini-logo" src="../static/img/logo-combo-small.gif" width="175" height="auto"></img>
+					<a className="navbar-brand byline" href="/">DASHBOARD </a>
 
 					<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
@@ -216,7 +192,7 @@ class NavBar extends React.Component {
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav mr-auto">
 							<li className="nav-item active">
-								<a className="nav-link" href="/mycards">My Credit Cards<span class="sr-only">(current)</span></a>
+								<a className="nav-link" href="/mycards">My Credit Cards<span className="sr-only">(current)</span></a>
 							</li>
 							<li className="nav-item active">
 								<a className="nav-link" href="/add-new">Add a New Card</a>
@@ -276,7 +252,6 @@ class LogoutButton extends React.Component {
 		)
 	}
 }
-
 
 class Login extends React.Component {
 	constructor(props) {
@@ -339,7 +314,7 @@ class Login extends React.Component {
 		if(this.state.name) {
 			return (
 				<div>
-					<h3>Welcome {this.state.name}!</h3>
+					<h3 id="dash-text">Welcome {this.state.name}!</h3>
 				</div>
 			)
 		}
@@ -356,10 +331,10 @@ class Login extends React.Component {
 										Email:
 										<br></br>
 										<input className="form-control" name="email" type="email" onChange = {this.getEmail} ref={this.input} value={this.state.email} />
-										<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+										<small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
 									</label>
 								</div>
-								<div class="form-group">
+								<div className="form-group">
 									<label htmlFor="password">
 										Password:
 										<br></br>
@@ -374,7 +349,6 @@ class Login extends React.Component {
 		)
 	}
 }
-
 	
 class Registration extends React.Component {
 	constructor(props) {
@@ -436,7 +410,7 @@ class Registration extends React.Component {
 			return (
 				<div>
 				<Homepage/>
-				<div class="row" id="scrolling-card">
+				<div className="row" id="scrolling-card">
 					<div className="card mw-100 h-100">
 						<div className="card-body">
 							<Link id="link" to="/">Back to Login</Link>
@@ -450,21 +424,21 @@ class Registration extends React.Component {
 										<input className="form-control" name="firstname" type="text" ref={this.input} onChange = {this.getFName} value={this.state.firstname}/>
 									</label>
 								</div>
-								<div class="form-group">
+								<div className="form-group">
 									<label htmlFor="lastname">
 										Last name:
 										<br></br>
 										<input className="form-control" name="lastname" type="text" ref={this.input} onChange={this.getLName} value={this.state.lastname}/>
 									</label>
 								</div>
-								<div class="form-group">
+								<div className="form-group">
 									<label htmlFor="email">
 										Email address:
 										<br></br>
 										<input className="form-control" name="email" type="text" ref={this.input} onChange={this.getEmail} value={this.state.email}/>
 									</label>
 								</div>
-								<div class="form-group">
+								<div className="form-group">
 									<label htmlFor="password">
 										Password:
 										<br></br>
@@ -479,8 +453,7 @@ class Registration extends React.Component {
 				</div>
 			)
 		}
-	}
-
+}
 
 class CCAccount extends React.Component {
 	
@@ -563,16 +536,15 @@ class CCAccount extends React.Component {
 				)
 			} else {
 			return (
-				<div className="card-deck">
+				<div className="container-fluid">
+				<div className="card-deck mx-auto">
 					{this.showCardInfo()}
+				</div>
 				</div>
 			)
 		}
 	}
-	}
-
-
-
+}
 
 class CCInfo extends React.Component {
 	constructor(props) {
@@ -746,28 +718,41 @@ constructor(props) {
 
 	render() {
 		return(
-			<div>
-				<h4>My Profile</h4>
-					<p>Name: {sessionStorage.getItem('name')}</p>
-					<p>Email: {sessionStorage.getItem('email')}</p>
-					<p>Your profile settings are current.</p>
-					<p>If you'd like to  change your password, enter the new password below. </p>
-				<form id="current-password" onSubmit={this.handleSubmit}>
-					<label htmlFor="current-password">
-						Current password:
-						<input name="current-password" type="text" onChange = {this.getCurrentPassword} ref={this.input} value={this.state.currentPW} />
-					</label>
-					<label htmlFor="new-password">
-						New password:
-						<input name="new-password" type="text" onChange = {this.getNewPassword} ref={this.input} value={this.state.newPW} />
-					</label>
-					<button>Save new</button>
-					</form>
-				<p></p>
+			<div className="row">
+				<div className="card w-75 h-75" id="profile-card">
+
+					<h4 className="card-heading card-title">My Profile</h4>
+						<p></p>
+						<div id="profile-form"><b>Name:</b> {sessionStorage.getItem('name')}
+						<span className="br-small"></span>
+						<b>Email:</b> {sessionStorage.getItem('email')}
+						<p></p>
+						Your profile settings are current.
+						<span className="br-small"></span>
+						If you'd like to  change your password, enter a new password below. </div>
+						<p></p>					
+					<div className="form-group" id="profile-form">	
+					<form id="current-password" onSubmit={this.handleSubmit}>
+						<label htmlFor="current-password">
+							<b>Current password:</b>
+								<br></br>
+							<input className="form-control" name="current-password" type="text" onChange = {this.getCurrentPassword} ref={this.input} value={this.state.currentPW} />
+						</label>
+							<p></p>
+						<label htmlFor="new-password">
+							<b>New password:</b>
+							<br></br>
+							<input className="form-control" name="new-password" type="text" onChange = {this.getNewPassword} ref={this.input} value={this.state.newPW} />
+						</label>
+						<p></p>
+						<button className="btn btn-primary" id="button">Save new</button>
+						</form>
+					</div>
+				</div>
 			</div>
 			)
 		}
-	}
+}
 
 class TrackNewAccount extends React.Component {
 	constructor(props) {
@@ -847,7 +832,7 @@ class TrackNewAccount extends React.Component {
 			</div>
 			)}
 		}
-	}
+}
 
 class CCImage extends React.Component {
 	constructor(props) {

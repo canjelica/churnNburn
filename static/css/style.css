@@ -15,18 +15,39 @@ html, body, #parallax {
 	font-weight: bold;
 	text-align: center;
 	font-family: Montserrat;
-	font-size: 24px;
-	padding: 20px
+	font-size: 20px;
+	padding: 20px;
+	margin-top: 35px;
+}
+
+#welcome {
+	font-weight: bold;
+	text-align: right;
+	font-family: Raleway;
+	font-size: 18px;
+	padding: 20px;
+	color: #f82986;
+	text-shadow: #feeb1d 2px 2px;
+	text-transform: uppercase;
+}
+
+#dashboard-text {
+	font-weight: 900;
+	font-family: Montserrat;
+	font-size: 28px;
 }
 
 .byline {
 	text-emphasis: bold;
 	text-align: center;
 	font-weight: bold;
-	font-size: 36px;
+	font-size: 28px;
 	font-family: Montserrat;
 	margin-top: 20px;
 	margin-bottom: 30px;
+	color: #f82986;
+	text-transform: uppercase;
+	text-shadow: #feeb1d 2px 3px;
 }
 
 #paragraph {
@@ -57,6 +78,12 @@ html, body, #parallax {
 	font-family: Montserrat;
 }
 
+.profile-card {
+	margin-top: 50px;
+	padding: 25px;
+	background-color: #feeb1d;
+}
+
 #link {
 	color: #f82986;
 	font-weight: bold;
@@ -82,7 +109,10 @@ html, body, #parallax {
 	color: white;
 	margin-top: 10px;
 	padding: 6px;
+	padding-left: 9px;
+	padding-right: 9px;
 	width: auto;
+	font-size: 14px;
 }
 
 
@@ -108,7 +138,7 @@ html, body, #parallax {
 }
 
 #homepage-logo {
-	max-width: 65%;
+	max-width: 50%;
 	height: auto;
 }
 
@@ -118,7 +148,6 @@ html, body, #parallax {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
-	background-color: transparent;
 }
 
 #login-card {
@@ -128,7 +157,6 @@ html, body, #parallax {
 	margin-right: auto;
 	margin-bottom: 300px;
 	text-align: center;
-	background-color: transparent;
 }
 
 #scrolling-card {
@@ -158,6 +186,35 @@ html, body, #parallax {
 	color: #f82986; 
 }
 
+
+#profile-form {
+	font-family: Raleway;
+	font-size: 14px;
+}
+
+#profile-card {
+	padding: 75px;
+	margin-top: 50px;
+	text-align: left;
+	background-image: url('/../static/img/background-card.gif');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	
+}
+
+#white {
+	color: white;
+	text-transform: uppercase;
+}
+
+b {
+	font-weight: bolder;
+	text-transform: uppercase;
+	color: #f82986;
+	font-size: 14px;
+}
+
 .br-small {
 	display: block;
 	margin-bottom: .8em;
@@ -176,30 +233,3 @@ html, body, #parallax {
 
 
 
-
-
-
-
-
-
-
-
-
-/* #footer-img {
-	margin-top: 10em;
-	max-height: 10%;
-	max-width: 10%
-}
-
-.footer-link {
-	font-size: 10px;
-
-}
-
-#footer {
-	background-color: white;
-}
-
-.footer-text {
-	font-size: 12px;
-} */

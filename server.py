@@ -188,19 +188,19 @@ def add_new_card():
 
 	return jsonify("Your card has been added to your account.")
 
-@app.route('/api/loyalty-info', methods=['POST'])
-def get_loyalty_info():
-	"""Gets loyalty program information."""
+# @app.route('/api/loyalty-info', methods=['POST'])
+# def get_loyalty_info():
+# 	"""Gets loyalty program information."""
 
-	loyalty_dicts = crud.get_loyalty_info()  #list of dictionaries
-	all_lps = []
+# 	loyalty_dicts = crud.get_loyalty_info()  #list of dictionaries
+# 	all_lps = []
 
-	for item in loyalty_dicts:
-		lp_dict = {'program_name': item.loyalty_program_name, 'points_portal': item.points_portal}
-		all_lps.append(lp_dict)
-	print(all_lps, "8"*800)
+# 	for item in loyalty_dicts:
+# 		lp_dict = {'program_name': item.loyalty_program_name, 'points_portal': item.points_portal}
+# 		all_lps.append(lp_dict)
+# 	print(all_lps, "8"*800)
 
-	return jsonify(all_lps)
+# 	return jsonify(all_lps)
 
 
 	
