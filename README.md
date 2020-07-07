@@ -1,5 +1,5 @@
 
-->![Churn & Burn Logo](https://github.com/canjelica/churnNburn/blob/master/static/img/logo-combo-in-line.gif)<-
+![Churn & Burn Logo](https://github.com/canjelica/churnNburn/blob/master/static/img/logo-combo-small.gif)
 
 # Churn & Burn
 Churn & Burn is a simple tool for travelhackers who primarily use credit card churning as a way of accruing travel points. The webapp allows users to add credit cards upon application approval, tracking active cards during promotional spending periods to calculate how much they have to spend by what deadline in order to secure sign-up bonuses. Users can choose cards from a list of currently available products to add to their accounts, view current cards, and update their user profiles. 
