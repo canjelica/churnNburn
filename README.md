@@ -20,7 +20,7 @@ The app is a one-page app, with three pageviews rendered in one place on the Das
 
 My Cards shows the currently active cards linked to a users account. A spending calculator allows them to input their current spending, and the calculator compares this against the credit card’s requirements, returning how much they need to spend by what date in order to unlock their sign-up bonus. 
 
-[!(https://github.com/canjelica/churnNburn/blob/master/static/img/readme-my-cards.gif] "My Cards Pageview")
+![My Cards Pageview](https://github.com/canjelica/churnNburn/blob/master/static/img/readme-my-cards.gif)
 
 Add a New Card lets users select a credit card from currently offered products to add to their account. Churn & Burn's database updates credit card offerings with their current bank's promotional restrictions.
 
