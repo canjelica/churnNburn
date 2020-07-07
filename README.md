@@ -14,7 +14,7 @@ Churn & Burn is a simple tool for travelhackers who primarily use credit card ch
 
 Churn & Burn has a very simple, intuitive interface. On the landing page, users can register for an account, and log in to access their dashboard.
 
-!(https://github.com/canjelica/churnNburn/blob/master/static/img/readme-login.gif "Landing Page with Registration and Login")
+![Landing Page with Registration and Login](https://github.com/canjelica/churnNburn/blob/master/static/img/readme-login.gif)
 
 The app is a one-page app, with three pageviews rendered in one place on the Dashboard. Users can navigate using the page cards, or from the Navbar above.
 
@@ -24,11 +24,11 @@ My Cards shows the currently active cards linked to a users account. A spending 
 
 Add a New Card lets users select a credit card from currently offered products to add to their account. Churn & Burn's database updates credit card offerings with their current bank's promotional restrictions.
 
-!(https://github.com/canjelica/churnNburn/blob/master/static/img/readme-add-new%20card.gif "Add a New Card Pageview")
+![Add a New Card Pageview](https://github.com/canjelica/churnNburn/blob/master/static/img/readme-add-new%20card.gif)              
 
 My Profiles displays the user's name and password, allowing users to change their current password.
 
-!(https://github.com/canjelica/churnNburn/blob/master/static/img/readme-my-profile.gif "My Profile Pageview")
+![My Profile Pageview](https://github.com/canjelica/churnNburn/blob/master/static/img/readme-my-profile.gif)	
 
 ## Setup/Installation
 *To run Churn & Burn:*
