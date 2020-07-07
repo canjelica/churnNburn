@@ -73,6 +73,8 @@ for lp in lp_data:
 
     lp_in_db.append(db_loyalty_program)
 #--------------------------------------------#
+#----THE FOLLOWING SEED FUNCTIONS ARE FOR DEVELOPMENT TESTING ONLY---#
+#----IF RUNNING THIS SEED DATABASE, BE SURE TO COMMENT OUT FUNCTIONS BELOW---#
 
 #call functions from fakerdata to create list of user dictionaries
 user_in_db = []
