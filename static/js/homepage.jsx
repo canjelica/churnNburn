@@ -233,8 +233,8 @@ class LogoutButton extends React.Component {
 		})
 		.then(response => response.json())
 		.then(sessionStorage.clear());
-		return <Redirect to="/" />	
-		// link instead of button, or wrap the button in a link
+		return <Redirect to="/" />
+		//Try wrapping a link in a button, checkign out invariant failed	
 	}
 
 	render() {
