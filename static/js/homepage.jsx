@@ -206,24 +206,18 @@ class NavBar extends React.Component {
 					</div>
 				</nav>
 			</div>)}}}
-// 		} else {
-// 			return (
-// 				<div> 
-// 					<p>You are not logged in. Please log in.</p>
-// 					<Link to="/"> Back to Login </Link>
-// 				</div>
-// 		)}
-// 	}
-// }
-
 
 
 class LogoutButton extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			isLoggedOut: false
+		}
 
 		sessionStorage.removeItem('user_id');
 		this.clearSession = this.clearSession.bind(this);
+		this.renderRedirect = this.renderRedirect.bind(this);
 	}
 
 	clearSession() {
@@ -232,15 +226,20 @@ class LogoutButton extends React.Component {
 		method: 'POST'
 		})
 		.then(response => response.json())
-		.then(sessionStorage.clear());
-		return <Redirect to="/" />
-		//Try wrapping a link in a button, checkign out invariant failed	
+		.then(sessionStorage.clear())
+		.then(this.setState({isLoggedOut: true}));
+	}
+
+	renderRedirect(){
+		if (this.state.isLoggedOut === true) {
+			return <Redirect to="/" />
+		}
 	}
 
 	render() {
 		return (
 			<div>
-				
+				{this.renderRedirect()}
 				<button
 					className="btn btn-primary"
 					id="logout-button" 
@@ -249,7 +248,6 @@ class LogoutButton extends React.Component {
 					onClick={this.clearSession}>
 					Log out
 					</button>
-				
 			</div>
 		)
 	}
